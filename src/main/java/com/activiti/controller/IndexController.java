@@ -27,6 +27,7 @@ public class IndexController {
             model.put("redirectUrl",redirectUrl);
             return "login";
         }
+        request.getSession().setAttribute("userEmail",email);
         if ("".equals(redirectUrl) || null == redirectUrl)
             return "redirect:/index";
         else
@@ -35,7 +36,6 @@ public class IndexController {
 
     @RequestMapping("/index")
     public String index(){
-        System.out.println("hahahhfdshfg");
         return "index";
     }
 }
