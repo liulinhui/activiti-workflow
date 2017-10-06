@@ -113,13 +113,15 @@ public class CommonUtil {
      * @return
      */
     public boolean emailFormat(String email) {
-        boolean tag = true;
-        final String pattern1 = "^([a-z0-9A-Z]+[-|//.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?//.)+[a-zA-Z]{2,}$";
-        final Pattern pattern = Pattern.compile(pattern1);
-        final Matcher mat = pattern.matcher(email);
-        if (!mat.find()) {
-            tag = false;
+        boolean flag = false;
+        try {
+            String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+            Pattern regex = Pattern.compile(check);
+            Matcher matcher = regex.matcher(email);
+            flag = matcher.matches();
+        } catch (Exception e) {
+            flag = false;
         }
-        return tag;
+        return flag;
     }
 }

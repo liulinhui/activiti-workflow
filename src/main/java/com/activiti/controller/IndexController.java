@@ -30,6 +30,7 @@ public class IndexController {
             model.put("redirectUrl", redirectUrl);
             return "login";
         } else if (!commonUtil.emailFormat(email)) {
+            logger.info("邮箱地址错误："+email);
             model.put("redirectUrl", redirectUrl);
             model.put("emailValidate", "false");
             return "login";
