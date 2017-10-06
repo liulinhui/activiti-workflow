@@ -1,27 +1,22 @@
-package com.activiti.controller;
+package com.activiti.controller.restController;
 
 import com.activiti.common.aop.ApiAnnotation;
 import com.activiti.common.utils.CommonUtil;
-import com.activiti.pojo.schedule.ScheduleDto;
 import com.activiti.pojo.user.StudentWorkInfo;
 import com.activiti.pojo.user.User;
 import com.activiti.service.JudgementService;
 import com.activiti.service.ScheduleService;
 import com.activiti.service.UserService;
-import com.alibaba.fastjson.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by 12490 on 2017/8/1.
