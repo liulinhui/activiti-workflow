@@ -1,5 +1,6 @@
 package com.activiti.common.interceptor;
 
+import com.activiti.common.utils.ConstantsUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -21,8 +22,8 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        String email=(String) httpServletRequest.getSession().getAttribute("userEmail");
-        logger.info("{email="+email+"}>>>START HTTP REQUEST:"+httpServletRequest.getRequestURL());
+        String email=(String) httpServletRequest.getSession().getAttribute(ConstantsUtils.sessionEmail);
+        logger.info("{user="+email+"}>>>START HTTP REQUEST:"+httpServletRequest.getRequestURL());
         String uri=httpServletRequest.getServletPath();
         String redirectUri="login?redirectUrl="+uri;
         if ("".equals(email)|| null==email){
@@ -56,6 +57,6 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
         String email=(String) httpServletRequest.getSession().getAttribute("userEmail");
-        logger.info("{email="+email+"}>>>END HTTP REQUEST:"+httpServletRequest.getRequestURL());
+        logger.info("{user="+email+"}>>>END HTTP REQUEST:"+httpServletRequest.getRequestURL());
     }
 }

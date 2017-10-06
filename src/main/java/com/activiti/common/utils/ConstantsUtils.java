@@ -12,4 +12,6 @@ public class ConstantsUtils {
 
     public static  final String emailTopic="EMAIL";
 
+    public static final String sessionEmail="userEmail";
+
 }
