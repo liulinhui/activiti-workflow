@@ -1,16 +1,15 @@
 <div class="header">
     <ul class="layui-nav" lay-filter="">
-        <li class="layui-nav-item layui-this"><a href="">最新活动</a></li>
-        <li class="layui-nav-item "><a href="">产品</a></li>
-        <li class="layui-nav-item"><a href="">大数据</a></li>
         <li class="layui-nav-item">
-            <a href="javascript:;">解决方案</a>
+            <a href=""><img src="${base}/img/beier.png" class="layui-nav-img">${userEmail!"我"}</a>
             <dl class="layui-nav-child">
-                <dd><a href="">移动模块</a></dd>
-                <dd><a href="">后台模版</a></dd>
-                <dd><a href="">电商平台</a></dd>
+                <dd><a href="javascript:;">个人信息</a></dd>
+                <dd><a href="javascript:;">操作记录</a></dd>
             </dl>
         </li>
-        <li class="layui-nav-item"><a href="">社区</a></li>
+        <li class="layui-nav-item layui-this"><a href="">已部署的工作流</a></li>
+        <li class="layui-nav-item"><a href="">做题</a></li>
+        <li class="layui-nav-item"><a href="">参与互评</a></li>
+        <li class="layui-nav-item"><a href="">管理员配置</a></li>
     </ul>
 </div>
