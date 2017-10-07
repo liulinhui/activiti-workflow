@@ -14,10 +14,16 @@
 <div class="layui-side layui-bg-black">
     <div class="layui-side-scroll">
         <ul class="layui-nav layui-nav-tree" lay-filter="test">
-            <li class="layui-nav-item layui-nav-itemed"><a class="" href="">已部署的工作流</a></li>
-            <li class="layui-nav-item"><a href="">做题</a></li>
+            <li class="layui-nav-item"><a href="">答题</a></li>
             <li class="layui-nav-item"><a href="">参与互评</a></li>
-            <li class="layui-nav-item"><a href="">管理员配置</a></li>
+            <li class="layui-nav-item"><a class="" href="">已部署的工作流</a></li>
+            <li class="layui-nav-item  layui-nav-itemed">
+                <a href="">管理员配置</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">配置时间表</a></dd>
+                    <dd><a href="javascript:;">发布题目</a></dd>
+                </dl>
+            </li>
         </ul>
     </div>
 </div>
