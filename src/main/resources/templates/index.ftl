@@ -16,9 +16,10 @@
     </div>
 <#include "footer.ftl">
 </div>
-<script src="//res.layui.com/layui/src/layui.js?t=1507265229122" charset="utf-8"></script>
-<script>layui.use('element', function () {
-    var element = layui.element;
-});</script>
+<script>
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+</script>
 </body>
 </html>
