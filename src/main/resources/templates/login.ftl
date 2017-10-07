@@ -8,7 +8,7 @@
     <meta name="keyword" content="keywords">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <#include "include.ftl">
-    <link href="${base}/bootstrap/bootstrap.css" rel="stylesheet">
+    <link href="${base}/plugins/bootstrap/bootstrap.css" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
     <link href="${base}/css/style_v1.css?v=12" rel="stylesheet">
@@ -45,4 +45,13 @@
     </div>
 </div>
 </body>
+<script>
+    (function () {
+        var emailValidate=${emailValidate!"true"};
+        if (emailValidate===false){
+            alert("邮箱格式有误，请重新输入！")
+        }
+    })()
+
+</script>
 </html>
