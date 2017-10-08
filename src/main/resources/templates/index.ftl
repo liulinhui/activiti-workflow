@@ -10,7 +10,11 @@
     <div class="layui-body">
         <div style="padding: 15px;">
             <blockquote class="layui-elem-quote">
-                最新通告
+                最新通告<a>
+            <@identity_validate userEmail="1249055292@qq.com">
+                ${identity!""}
+            </@identity_validate>
+            </a>
             </blockquote>
         </div>
     </div>

@@ -25,10 +25,8 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         String email = (String) httpServletRequest.getSession().getAttribute(ConstantsUtils.sessionEmail);
         logger.info("{user=" + email + "}>>>START HTTP REQUEST:" + httpServletRequest.getRequestURL());
-        String uri = httpServletRequest.getServletPath();
-        String redirectUri = "login?redirectUrl=" + uri;
         if ("".equals(email) || null == email) {
-            httpServletResponse.sendRedirect(redirectUri);
+            httpServletResponse.sendRedirect("login?redirectUrl=" + httpServletRequest.getServletPath());
             return false;
         }
         return true;
