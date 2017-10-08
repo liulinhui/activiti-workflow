@@ -20,7 +20,7 @@
             </li>
             <li class="layui-nav-item"><a id="my-job-done" href="javascript:;">已完成任务</a></li>
             <li class="layui-nav-item"><a id="my-grade-info" href="javascript:;">成绩信息</a></li>
-            <li class="layui-nav-item  layui-nav-itemed">
+            <li class="layui-nav-item">
                 <a href="javascript:;">管理员配置</a>
                 <dl class="layui-nav-child">
                     <dd><a id="my-activiti-conf" href="javascript:;">工作流配置</a></dd>
