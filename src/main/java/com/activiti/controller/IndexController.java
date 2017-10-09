@@ -2,6 +2,8 @@ package com.activiti.controller;
 
 import com.activiti.common.utils.CommonUtil;
 import com.activiti.common.utils.ConstantsUtils;
+import com.activiti.pojo.user.UserRole;
+import com.activiti.service.UserService;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by 12490 on 2017/8/1.
@@ -21,6 +24,8 @@ public class IndexController {
 
     @Autowired
     private CommonUtil commonUtil;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping("/login")
     public String greeting(HttpServletRequest request, ModelMap model) {
@@ -151,7 +156,8 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/userRole")
-    public String userRole(HttpServletRequest request) {
+    public String userRole(HttpServletRequest request,ModelMap modelMap) {
+        modelMap.put("userRoleList",userService.selectAllUserRole());
         return "submodule/userRole";
     }
 }

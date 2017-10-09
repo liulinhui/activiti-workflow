@@ -1,8 +1,6 @@
 layui.use('element', function () {
+    var $ = layui.jquery, layer = layui.layer;
     var element = layui.element;
-});
-
-$(document).ready(function () {
     var layui_body = $('.layui-body');
     $('#my-activiti-conf').on('click', function () {
         layui_body.html('');

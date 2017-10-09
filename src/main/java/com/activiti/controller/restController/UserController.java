@@ -4,6 +4,7 @@ import com.activiti.common.aop.ApiAnnotation;
 import com.activiti.common.utils.CommonUtil;
 import com.activiti.pojo.user.StudentWorkInfo;
 import com.activiti.pojo.user.User;
+import com.activiti.pojo.user.UserRole;
 import com.activiti.service.JudgementService;
 import com.activiti.service.ScheduleService;
 import com.activiti.service.UserService;
@@ -101,5 +102,36 @@ public class UserController {
         return null;
     }
 
+    /**
+     * 删除管理员用户
+     *
+     * @param email
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/deleteUserRole")
+    @ApiAnnotation
+    public Object deleteUserRole(@RequestParam(value = "email", required = true) String email) {
+        return userService.deleteUserRole(email);
+    }
+
+    /**
+     * 添加管理员用户
+     *
+     * @param email
+     * @param id
+     * @param remarks
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/addUserRole")
+    @ApiAnnotation
+    public Object addUserRole(@RequestParam(value = "email", required = true) String email,
+                              @RequestParam(value = "id", required = true) int id,
+                              @RequestParam(value = "remarks", required = true) String remarks) throws Exception {
+        if (!commonUtil.emailFormat(email))
+            throw new Exception("邮箱格式不正确");
+        return userService.insertUserRole(new UserRole(id, email, remarks));
+    }
 }
 

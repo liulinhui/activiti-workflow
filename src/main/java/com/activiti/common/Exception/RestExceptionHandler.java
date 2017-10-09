@@ -21,27 +21,23 @@ public class RestExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(RestExceptionHandler.class);
 
     @ExceptionHandler(value = {ConstraintViolationException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestApiResponse constraintViolationException(ConstraintViolationException ex) {
         return new RestApiResponse(500, ex.getMessage(),false);
     }
 
     @ExceptionHandler(value = {IllegalArgumentException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestApiResponse IllegalArgumentException(IllegalArgumentException ex) {
         logger.error(ExceptionUtils.getStackTrace(ex));
         return new RestApiResponse(500, ex.getMessage(),false);
     }
 
     @ExceptionHandler(value = {NoHandlerFoundException.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     public RestApiResponse noHandlerFoundException(Exception ex) {
         return new RestApiResponse(404, ex.getMessage(),false);
     }
 
 
     @ExceptionHandler(value = {Exception.class})
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public RestApiResponse unknownException(Exception ex) {
         ex.printStackTrace();
         return new RestApiResponse(500, ex.getMessage(),false);

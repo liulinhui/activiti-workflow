@@ -44,7 +44,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
         String email = (String) httpServletRequest.getSession().getAttribute(ConstantsUtils.sessionEmail);
-        if (!"".equals(email) && null != email)
+        if (null != modelAndView && !"".equals(email) && null != email)
             modelAndView.getModel().put("userEmail", httpServletRequest.getSession().getAttribute(ConstantsUtils.sessionEmail));
     }
 

@@ -12,6 +12,9 @@ public class UserRole implements Serializable {
     private String email;
     private String remarks;  //备注
 
+    public UserRole() {
+    }
+
     public UserRole(int id, String email, String remarks) {
         this.id = id;
         this.email = email;
