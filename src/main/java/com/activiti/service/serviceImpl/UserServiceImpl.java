@@ -3,6 +3,7 @@ package com.activiti.service.serviceImpl;
 import com.activiti.mapper.UserMapper;
 import com.activiti.pojo.user.StudentWorkInfo;
 import com.activiti.pojo.user.User;
+import com.activiti.pojo.user.UserRole;
 import com.activiti.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -60,5 +61,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public int deleteChaosUserInfo() {
        return userMapper.deleteChaosUserInfo();
+    }
+
+    @Override
+    public int insertUserRole(UserRole userRole) {
+        return userMapper.insertUserRole(userRole);
+    }
+
+    @Override
+    public List<UserRole> selectAllUserRole() {
+        return userMapper.selectAllUserRole();
+    }
+
+    @Override
+    public int deleteUserRole(String email) {
+        return userMapper.deleteUserRole(email);
     }
 }

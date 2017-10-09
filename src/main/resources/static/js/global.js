@@ -44,6 +44,11 @@ $(document).ready(function () {
         layui_body.html(ajaxGet('./gradeInfo'));
     });
 
+    $('#my-user-role').on('click', function () {
+        layui_body.html('');
+        layui_body.html(ajaxGet('./userRole'));
+    });
+
     var ajaxGet = function (url) {
         return $.ajax({url: url, async: false}).responseText;
     }

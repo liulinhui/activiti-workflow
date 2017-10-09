@@ -59,4 +59,19 @@
         WHERE COURSE_CODE = #{courseCode} AND JOIN_JUDGE_TIME = NULL
     </select>
 
+    <insert id="insertUserRole" parameterType="com.activiti.pojo.user.UserRole">
+        INSERT INTO judge_user_role (ID, EMAIL, REMARKS)
+        VALUES (
+        #{id},#{email},#{remarks}
+        )
+    </insert>
+
+    <select id="selectAllUserRole" resultType="com.activiti.pojo.user.UserRole">
+        SELECT * FROM judge_user_role
+    </select>
+
+    <delete id="deleteUserRole" parameterType="string">
+        DELETE FROM judge_user_role WHERE EMAIL=#{email}
+    </delete>
+
 </mapper>

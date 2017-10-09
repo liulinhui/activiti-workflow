@@ -13,21 +13,31 @@
             <li class="layui-nav-item  layui-nav-itemed">
                 <a href="javascript:;">我的任务</a>
                 <dl class="layui-nav-child">
-                    <dd><a id="my-answer" href="javascript:;">答题</a></dd>
-                    <dd><a id="my-assessment" href="javascript:;">参与互评</a></dd>
-                    <dd><a id="my-judgement" href="javascript:;">成绩审核</a></dd>
+                <@identity_validate userEmail="${userEmail!}" id="1">
+                    <#if identity?? && identity==true>
+                        <dd><a id="my-judgement" href="javascript:;">成绩审核</a></dd>
+                    <#else >
+                        <dd><a id="my-answer" href="javascript:;">答题</a></dd>
+                        <dd><a id="my-assessment" href="javascript:;">参与互评</a></dd>
+                    </#if>
+                </@identity_validate>
                 </dl>
             </li>
             <li class="layui-nav-item"><a id="my-job-done" href="javascript:;">已完成任务</a></li>
             <li class="layui-nav-item"><a id="my-grade-info" href="javascript:;">成绩信息</a></li>
-            <li class="layui-nav-item">
-                <a href="javascript:;">管理员配置</a>
-                <dl class="layui-nav-child">
-                    <dd><a id="my-activiti-conf" href="javascript:;">工作流配置</a></dd>
-                    <dd><a id="my-time-conf" href="javascript:;">配置时间表</a></dd>
-                    <dd><a id="my-publish" href="javascript:;">发布题目</a></dd>
-                </dl>
-            </li>
+        <@identity_validate userEmail="${userEmail!}" id="1">
+            <#if identity?? && identity==true>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">管理员配置</a>
+                    <dl class="layui-nav-child">
+                        <dd><a id="my-activiti-conf" href="javascript:;">工作流配置</a></dd>
+                        <dd><a id="my-time-conf" href="javascript:;">配置时间表</a></dd>
+                        <dd><a id="my-publish" href="javascript:;">发布题目</a></dd>
+                        <dd><a id="my-user-role" href="javascript:;">管理员配置</a></dd>
+                    </dl>
+                </li>
+            </#if>
+        </@identity_validate>
         </ul>
     </div>
 </div>

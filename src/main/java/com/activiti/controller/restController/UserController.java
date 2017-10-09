@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by 12490 on 2017/8/1.
  */
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @RestController
 public class UserController {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -54,7 +54,7 @@ public class UserController {
      */
     @RequestMapping("/commitWork")
     @ResponseBody
-    @ApiAnnotation(validate = {"courseCode","emailAddress","workDetail"})
+    @ApiAnnotation(validate = {"courseCode", "emailAddress", "workDetail"})
     public Object commitWork(StudentWorkInfo studentWorkInfo) {
         User user = new User(commonUtil.getRandomUserName(), studentWorkInfo.getEmailAddress());
         userService.insertUser(user);
@@ -100,5 +100,6 @@ public class UserController {
 //        }
         return null;
     }
+
 }
 

@@ -92,3 +92,14 @@ CREATE TABLE IF NOT EXISTS JUDGE_JUDGEMENT_LS (
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
+
+-- ----------------------------
+-- Table for record JUDGE_USER_ROLE
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS JUDGE_USER_ROLE (
+  ID      INT(8)      NOT NULL,
+  EMAIL   VARCHAR(30) NOT NULL,
+  REMARKS VARCHAR(50)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;

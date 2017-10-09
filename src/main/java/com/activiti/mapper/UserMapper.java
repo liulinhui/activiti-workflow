@@ -2,6 +2,7 @@ package com.activiti.mapper;
 
 import com.activiti.pojo.user.StudentWorkInfo;
 import com.activiti.pojo.user.User;
+import com.activiti.pojo.user.UserRole;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -66,4 +67,24 @@ public interface UserMapper {
      * @return
      */
     int deleteChaosUserInfo();
+
+    /**
+     * 插入用户角色
+     * @param userRole
+     * @return
+     */
+    int insertUserRole(UserRole userRole);
+
+    /**
+     * 查询所有用户角色
+     * @return
+     */
+    List<UserRole> selectAllUserRole();
+
+    /**
+     * 删除用户角色
+     * @param email
+     * @return
+     */
+    int deleteUserRole(String email);
 }

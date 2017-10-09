@@ -144,4 +144,14 @@ public class IndexController {
     public String judgement(HttpServletRequest request) {
         return "submodule/judgement";
     }
+
+    /**
+     * 管理员配置页面
+     * @param request
+     * @return
+     */
+    @RequestMapping("/userRole")
+    public String userRole(HttpServletRequest request) {
+        return "submodule/userRole";
+    }
 }
