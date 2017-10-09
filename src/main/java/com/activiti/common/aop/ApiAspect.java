@@ -66,6 +66,7 @@ public class ApiAspect {
         String params = request.getQueryString();
         ApiAnnotation apiAnnotation = (ApiAnnotation) method.getAnnotation(ApiAnnotation.class);
         RestApiResponse restApiResponse = new RestApiResponse();
+        InvokeLog log = new InvokeLog(commonUtil.getSequenceId(), params, email, request.getRequestURI());
         try {
             if (apiAnnotation.validate().length > 0) {
                 //入参
@@ -77,12 +78,15 @@ public class ApiAspect {
             }
             result = joinPoint.proceed();
             restApiResponse = new RestApiResponse(true, result);
+            log.setCommon("success", JSON.toJSON(restApiResponse).toString());
         } catch (Exception e) {
             restApiResponse = new RestApiResponse(500, e.getMessage(), false);
+            log.setCommon("fail", JSON.toJSON(restApiResponse).toString());
         }
-        InvokeLog log = new InvokeLog(commonUtil.getSequenceId(), params, restApiResponse.toString(), email, request.getRequestURI());
         invokeLog.set(log);
-        asyncTasks.insertInvokeLogTask(invokeLog.get());
+        if (apiAnnotation.insertLog()){
+            asyncTasks.insertInvokeLogTask(invokeLog.get());
+        }
         return restApiResponse;
     }
 

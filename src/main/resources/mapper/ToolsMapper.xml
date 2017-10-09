@@ -2,14 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.activiti.mapper.ToolsMapper">
     <insert id="insertInvokeLog" parameterType="com.activiti.pojo.tools.InvokeLog">
-    INSERT INTO judge_invoke_log (UUID, INVOKE_TIME, PARAMS, RESULT, EMAIL, REQUEST_URI)
-    VALUES (
-      #{uuid},
-      #{invokeTime},
-      #{params},
-      #{result},
-      #{email},
-      #{requestUri}
-    )
+        INSERT INTO judge_invoke_log (UUID, INVOKE_TIME, PARAMS, RESULT, EMAIL, REQUEST_URI,STATUS,TIME)
+        VALUES (
+            #{uuid},
+            #{invokeTime},
+            #{params},
+            #{result},
+            #{email},
+            #{requestUri},
+            #{status},
+            #{time}
+        )
     </insert>
+
+    <select id="selectInvokeLog" resultType="com.activiti.pojo.tools.InvokeLog">
+        SELECT *
+        FROM judge_invoke_log
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="countInvokeLog" resultType="long">
+        SELECT count(*)
+        FROM judge_invoke_log;
+    </select>
 </mapper>

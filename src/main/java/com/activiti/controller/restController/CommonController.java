@@ -1,7 +1,9 @@
 package com.activiti.controller.restController;
 
 import com.activiti.common.aop.ApiAnnotation;
+import com.activiti.mapper.ToolsMapper;
 import com.activiti.pojo.schedule.ScheduleDto;
+import com.activiti.pojo.tools.InvokeLog;
 import com.activiti.service.CommonService;
 import com.activiti.service.ScheduleService;
 import com.alibaba.fastjson.JSONObject;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 /**
@@ -27,6 +30,8 @@ public class CommonController {
     private CommonService commonService;
     @Autowired
     private ScheduleService scheduleService;
+    @Autowired
+    private ToolsMapper toolsMapper;
 
     /**
      * GitHub请求题目和答案
@@ -137,5 +142,33 @@ public class CommonController {
         if (comparator.compare(nowDate, new DateTime(scheduleDto.getPublishTime())) > 0)
             return 7;
         return -1;
+    }
+
+    /**
+     * 日志查询
+     *
+     * @param page
+     * @param limit
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/selectInvokeLog")
+    @ApiAnnotation(insertLog = false)
+    public Object selectInvokeLog(@RequestParam(value = "page", required = true) long page,
+                                  @RequestParam(value = "limit", required = true) int limit) {
+        return  toolsMapper.selectInvokeLog((page - 1) * limit, limit);
+    }
+
+    /**
+     * 查询总页数
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/countInvokeLog")
+    @ApiAnnotation(insertLog = false)
+    public Object countInvokeLog() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("count", toolsMapper.countInvokeLog());
+        return  jsonObject;
     }
 }

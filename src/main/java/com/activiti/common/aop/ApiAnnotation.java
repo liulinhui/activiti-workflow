@@ -13,4 +13,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 public @interface ApiAnnotation {
     String[] validate() default {};  //必传参数
+    boolean insertLog() default true;
 }

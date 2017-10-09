@@ -1,6 +1,7 @@
 package com.activiti.pojo.tools;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class InvokeLog implements Serializable {
     private static final long serialVersionUID = 2120869894112984147L;
@@ -10,16 +11,39 @@ public class InvokeLog implements Serializable {
     private String result;
     private String email;
     private String requestUri;
+    private String status;
+    private Date time;
 
     public InvokeLog() {
     }
 
-    public InvokeLog(long uuid, String params, String result, String email, String requestUri) {
+    public InvokeLog(long uuid, String params, String email, String requestUri) {
         this.uuid = uuid;
         this.params = params;
-        this.result = result;
         this.email = email;
         this.requestUri = requestUri;
+    }
+
+    public void setCommon(String status, String result) {
+        this.result = result;
+        this.status = status;
+        this.time = new Date();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public long getUuid() {

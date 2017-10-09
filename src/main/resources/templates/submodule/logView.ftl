@@ -7,124 +7,56 @@
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>接口调用日志查询</legend>
         <div>
-            <table class="demo">
+            <table class="logInfoTable">
             </table>
+            <div id="invokeLogLayPage"></div>
         </div>
     </fieldset>
 </div>
 <script>
-    layui.use('table', function () {
+    layui.use(['table', 'laypage'], function () {
         var table = layui.table;
-        //展示已知数据
-        table.render({
-            elem: '.demo'
-            ,data: [{
-                "id": "10001"
-                ,"username": "杜甫"
-                ,"email": "xianxin@layui.com"
-                ,"sex": "男"
-                ,"city": "浙江杭州"
-                ,"sign": "人生恰似一场修行"
-                ,"experience": "116"
-                ,"ip": "192.168.0.8"
-                ,"logins": "108"
-                ,"joinTime": "2016-10-14"
-            }, {
-                "id": "10002"
-                ,"username": "李白"
-                ,"email": "xianxin@layui.com"
-                ,"sex": "男"
-                ,"city": "浙江杭州"
-                ,"sign": "人生恰似一场修行"
-                ,"experience": "12"
-                ,"ip": "192.168.0.8"
-                ,"logins": "106"
-                ,"joinTime": "2016-10-14"
-                ,"LAY_CHECKED": true
-            }, {
-                "id": "10003"
-                ,"username": "王勃"
-                ,"email": "xianxin@layui.com"
-                ,"sex": "男"
-                ,"city": "浙江杭州"
-                ,"sign": "人生恰似一场修行"
-                ,"experience": "65"
-                ,"ip": "192.168.0.8"
-                ,"logins": "106"
-                ,"joinTime": "2016-10-14"
-            }, {
-                "id": "10004"
-                ,"username": "贤心"
-                ,"email": "xianxin@layui.com"
-                ,"sex": "男"
-                ,"city": "浙江杭州"
-                ,"sign": "人生恰似一场修行"
-                ,"experience": "666"
-                ,"ip": "192.168.0.8"
-                ,"logins": "106"
-                ,"joinTime": "2016-10-14"
-            }, {
-                "id": "10005"
-                ,"username": "贤心"
-                ,"email": "xianxin@layui.com"
-                ,"sex": "男"
-                ,"city": "浙江杭州"
-                ,"sign": "人生恰似一场修行"
-                ,"experience": "86"
-                ,"ip": "192.168.0.8"
-                ,"logins": "106"
-                ,"joinTime": "2016-10-14"
-            }, {
-                "id": "10006"
-                ,"username": "贤心"
-                ,"email": "xianxin@layui.com"
-                ,"sex": "男"
-                ,"city": "浙江杭州"
-                ,"sign": "人生恰似一场修行"
-                ,"experience": "12"
-                ,"ip": "192.168.0.8"
-                ,"logins": "106"
-                ,"joinTime": "2016-10-14"
-            }, {
-                "id": "10007"
-                ,"username": "贤心"
-                ,"email": "xianxin@layui.com"
-                ,"sex": "男"
-                ,"city": "浙江杭州"
-                ,"sign": "人生恰似一场修行"
-                ,"experience": "16"
-                ,"ip": "192.168.0.8"
-                ,"logins": "106"
-                ,"joinTime": "2016-10-14"
-            }, {
-                "id": "10008"
-                ,"username": "贤心"
-                ,"email": "xianxin@layui.com"
-                ,"sex": "男"
-                ,"city": "浙江杭州"
-                ,"sign": "人生恰似一场修行"
-                ,"experience": "106"
-                ,"ip": "192.168.0.8"
-                ,"logins": "106"
-                ,"joinTime": "2016-10-14"
-            }]
-            ,height: 272
-            ,cols: [[ //标题栏
-                {space: true}
-                ,{field: 'id', title: 'ID', width: 80, sort: true}
-                ,{field: 'username', title: '用户名', width: 120}
-                ,{field: 'email', title: '邮箱', width: 150}
-                ,{field: 'sign', title: '签名', width: 150}
-                ,{field: 'sex', title: '性别', width: 80}
-                ,{field: 'city', title: '城市', width: 100}
-                ,{field: 'experience', title: '积分', width: 80, sort: true}
-            ]]
-            ,skin: 'row' //表格风格
-            ,height: 500 //容器高度
-            ,even: true
-            ,page: true //是否显示分页
-            ,limits: [5, 7, 10]
-            ,limit: 5 //每页默认显示的数量
+        var laypage = layui.laypage;
+        var $ = layui.jquery;
+        $.ajax({
+            url: './api/common/countInvokeLog',
+            dataType: 'json',
+            success: function (data) {
+                laypage.render({
+                    elem: 'invokeLogLayPage',
+                    count: data.data.count,
+                    layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
+                    jump: function (obj) {
+                        var param = {page: obj.curr, limit: obj.limit};
+                        $.ajax({
+                            url: './api/common/selectInvokeLog',
+                            data: param,
+                            dataType: 'json',
+                            success: function (data) {
+                                table.render({
+                                    elem: '.logInfoTable',
+                                    data: data.data,
+                                    height: 272,
+                                    width: 3000,
+                                    cols: [[ //标题栏
+                                        {field: 'uuid', title: '序列号', width: 200},
+                                        {field: 'invokeTime', title: '调用时长', width: 100},
+                                        {field: 'params', title: '入参', width: 150},
+                                        {field: 'result', title: '出参', width: 500},
+                                        {field: 'email', title: '邮箱', width: 200},
+                                        {field: 'requestUri', title: '访问地址', width: 250},
+                                        {field: 'status', title: '调用状态', width: 150},
+                                        {field: 'time', title: '时间', width: 150}
+                                    ]],
+                                    skin: 'row', //表格风格
+                                    even: true,
+                                    page: false //是否显示分页
+                                })
+                            }
+                        })
+                    }
+                });
+            }
         });
     })
 </script>
