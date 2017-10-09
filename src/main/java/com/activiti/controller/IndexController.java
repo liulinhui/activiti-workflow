@@ -160,4 +160,14 @@ public class IndexController {
         modelMap.put("userRoleList",userService.selectAllUserRole());
         return "submodule/userRole";
     }
+
+    /**
+     * 管理员配置页面
+     * @param request
+     * @return
+     */
+    @RequestMapping("/logView")
+    public String logView(HttpServletRequest request,ModelMap modelMap) {
+        return "submodule/logView";
+    }
 }

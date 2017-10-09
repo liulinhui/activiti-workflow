@@ -34,6 +34,7 @@
                         <dd><a id="my-time-conf" href="javascript:;">配置时间表</a></dd>
                         <dd><a id="my-publish" href="javascript:;">发布题目</a></dd>
                         <dd><a id="my-user-role" href="javascript:;">管理员配置</a></dd>
+                        <dd><a id="my-log-view" href="javascript:;">日志查看</a></dd>
                     </dl>
                 </li>
             </#if>

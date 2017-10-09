@@ -4,42 +4,44 @@
             人员管理
         </blockquote>
     </div>
-    <fieldset class="layui-elem-field site-demo-button" style="margin-top: 30px;">
+    <fieldset class="layui-elem-field" style="margin-top: 30px;">
         <legend>管理员列表</legend>
         <div class="layui-btn-group" style="margin-bottom: 10px;">
             <button class="add-user-role layui-btn" data-type="parseTable">添加管理员</button>
         </div>
-        <table class="layui-table">
-            <colgroup>
-                <col width="200">
-                <col width="500">
-                <col width="200">
-                <col width="50">
-            </colgroup>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>邮箱</th>
-                <th>描述</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <#if userRoleList??>
-                <#list userRoleList as item>
+        <div>
+            <table class="layui-table">
+                <colgroup>
+                    <col width="200">
+                    <col width="500">
+                    <col width="200">
+                    <col width="50">
+                </colgroup>
+                <thead>
                 <tr>
-                    <td class="id">${item.id}</td>
-                    <td class="email">${item.email}</td>
-                    <td class="remarks">${item.remarks}</td>
-                    <td>
-                        <button email="${item.email}" data-method="notice" class="layui-btn-danger layui-btn">刪除
-                        </button>
-                    </td>
+                    <th>ID</th>
+                    <th>邮箱</th>
+                    <th>描述</th>
+                    <th>操作</th>
                 </tr>
-                </#list>
-            </#if>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <#if userRoleList??>
+                    <#list userRoleList as item>
+                    <tr>
+                        <td class="id">${item.id}</td>
+                        <td class="email">${item.email}</td>
+                        <td class="remarks">${item.remarks}</td>
+                        <td>
+                            <button email="${item.email}" data-method="notice" class="layui-btn-danger layui-btn">刪除
+                            </button>
+                        </td>
+                    </tr>
+                    </#list>
+                </#if>
+                </tbody>
+            </table>
+        </div>
     </fieldset>
     <div style="display: none;" class="add-user-role-form">
         <form class="layui-form" action="./api/user/addUserRole" style="padding: 10% 20% 10% 0%;">

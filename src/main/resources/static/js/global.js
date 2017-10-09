@@ -47,6 +47,11 @@ layui.use('element', function () {
         layui_body.html(ajaxGet('./userRole'));
     });
 
+    $('#my-log-view').on('click', function () {
+        layui_body.html('');
+        layui_body.html(ajaxGet('./logView'));
+    });
+
     var ajaxGet = function (url) {
         return $.ajax({url: url, async: false}).responseText;
     }
