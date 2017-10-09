@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.activiti.mapper.ToolsMapper">
+    <insert id="insertInvokeLog" parameterType="com.activiti.pojo.tools.InvokeLog">
+    INSERT INTO judge_invoke_log (UUID, INVOKE_TIME, PARAMS, RESULT, EMAIL, REQUEST_URI)
+    VALUES (
+      #{uuid},
+      #{invokeTime},
+      #{params},
+      #{result},
+      #{email},
+      #{requestUri}
+    )
+    </insert>
+</mapper>
