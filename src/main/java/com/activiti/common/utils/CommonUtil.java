@@ -1,6 +1,7 @@
 package com.activiti.common.utils;
 
 import com.activiti.common.mail.MailService;
+import com.activiti.common.sequence.Sequence;
 import com.activiti.pojo.email.EmailDto;
 import com.activiti.pojo.email.EmailType;
 import com.activiti.service.ScheduleService;
@@ -29,6 +30,7 @@ import java.util.regex.Pattern;
 @Component
 public class CommonUtil {
     private static final Logger logger = LoggerFactory.getLogger(CommonUtil.class);
+    private static Sequence sequence = new Sequence(0, 0);
 
     @Autowired
     private MailService mailService;
@@ -123,5 +125,13 @@ public class CommonUtil {
             flag = false;
         }
         return flag;
+    }
+
+    /**
+     * 获取随机数
+     * @return
+     */
+    public long getSequenceId() {
+        return sequence.nextId();
     }
 }

@@ -103,3 +103,17 @@ CREATE TABLE IF NOT EXISTS JUDGE_USER_ROLE (
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
+
+-- ----------------------------
+-- Table for record JUDGE_INVOKE_LOG
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS JUDGE_INVOKE_LOG (
+  UUID        BIGINT,
+  INVOKE_TIME BIGINT,
+  PARAMS      VARCHAR(100),
+  RESULT      VARCHAR(500),
+  EMAIL       VARCHAR(50),
+  REQUEST_URI VARCHAR(50)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;

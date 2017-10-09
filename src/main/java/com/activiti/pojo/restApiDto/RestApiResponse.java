@@ -65,6 +65,8 @@ public class RestApiResponse implements Serializable {
         return "RestApiResponse{" +
                 "errorMessage='" + errorMessage + '\'' +
                 ", resCode=" + resCode +
+                ", success=" + success +
+                ", data=" + data +
                 '}';
     }
 }
