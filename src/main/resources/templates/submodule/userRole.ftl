@@ -6,10 +6,10 @@
     </div>
     <fieldset class="layui-elem-field" style="margin-top: 30px;">
         <legend>管理员列表</legend>
-        <div class="layui-btn-group" style="margin-bottom: 10px;">
+        <div class="layui-btn-group" style="margin: 1% 0% 1% 5%;">
             <button class="add-user-role layui-btn" data-type="parseTable">添加管理员</button>
         </div>
-        <div>
+        <div style="padding: 0% 10% 3% 5%;">
             <table class="layui-table">
                 <colgroup>
                     <col width="200">
