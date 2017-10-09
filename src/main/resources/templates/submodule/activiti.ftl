@@ -36,12 +36,12 @@
             </thead>
             <tbody>
             <tr>
-                <td>贤心</td>
-                <td>汉族</td>
-                <td>1989-10-14</td>
-                <td>人生似修行</td>
-                <td>1989-10-14</td>
-                <td>人生似修行</td>
+                <td>assessment:1:6</td>
+                <td>1</td>
+                <td>My Process</td>
+                <td>D:\apache-tomcat-8.0.45\webapps\activiti-explorer\WEB-INF\classes\org\activiti\explorer\conf</td>
+                <td>D:\apache-tomcat-8.0.45\webapps\activiti-explorer\WEB-INF\classes\org\activiti\explorer\conf</td>
+                <td>assessment</td>
             </tr>
             </tbody>
         </table>
