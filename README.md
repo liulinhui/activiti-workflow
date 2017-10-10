@@ -4,7 +4,7 @@ thymeleaf,redis+ehCache两级缓存,kafka,邮件服务以及spring-activiti流�
  
 # 一、 用户认证与权限
 
-把activiti认证与权限转交给open ldap
+把activiti认证与权限转交给open ldap（待实现）
 
 # 二、互评流程设计
 
@@ -122,6 +122,13 @@ thymeleaf,redis+ehCache两级缓存,kafka,邮件服务以及spring-activiti流�
 
 # 四、邮件服务
 
-每阶段截止日期前系统会自动发邮件提醒用户。
+每阶段截止日期前系统会自动发邮件提醒用户。（接口己实现）
 
 # 五、性能优化
+
++ redis二级缓存。
++ kafka异步邮件发送。
+
+# 六、接口
+
+[接口说明](./doc/接口说明.md)
