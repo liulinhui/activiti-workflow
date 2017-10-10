@@ -67,7 +67,7 @@ thymeleaf,redis+ehCache两级缓存,kafka,邮件服务以及spring-activiti流�
 
 ### （6）成绩核查申请阶段
 
-![reCheckRequest.jpg](./doc/ictures/reCheckRequest.jpg)
+![reCheckRequest.jpg](./doc/pictures/reCheckRequest.jpg)
 
 当时间到达“成绩核查阶段”的开始时间（2017.8.24T00:00），会进入到“成绩核查阶段”子流程。在这个子流程中：
 
