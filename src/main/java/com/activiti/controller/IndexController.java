@@ -91,16 +91,6 @@ public class IndexController {
     }
 
     /**
-     * 发布题目
-     * @param request
-     * @return
-     */
-    @RequestMapping("/publish")
-    public String publish(HttpServletRequest request) {
-        return "submodule/publish";
-    }
-
-    /**
      * 已完成的任务
      * @param request
      * @return

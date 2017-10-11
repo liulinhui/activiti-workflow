@@ -20,6 +20,7 @@ public class ScheduleDto implements Serializable {
     private Date auditEndTime;   //学生审查结束时间
     private Date publishTime;    //发布成绩时间
     private int judgeTimes;    //每个学生需要互评的次数（后期算出）
+    private String githubAddress;   //题目地址
 
     public ScheduleDto() {
     }
@@ -102,6 +103,14 @@ public class ScheduleDto implements Serializable {
 
     public void setPublishTime(Date publishTime) {
         this.publishTime = publishTime;
+    }
+
+    public String getGithubAddress() {
+        return githubAddress;
+    }
+
+    public void setGithubAddress(String githubAddress) {
+        this.githubAddress = githubAddress;
     }
 
     @Override

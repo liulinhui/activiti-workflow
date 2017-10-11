@@ -27,11 +27,6 @@ layui.use('element', function () {
         layui_body.html(ajaxGet('./timeConf'));
     });
 
-    $('#my-publish').on('click', function () {
-        layui_body.html('');
-        layui_body.html(ajaxGet('./publish'));
-    });
-
     $('#my-job-done').on('click', function () {
         layui_body.html('');
         layui_body.html(ajaxGet('./jobDone'));
