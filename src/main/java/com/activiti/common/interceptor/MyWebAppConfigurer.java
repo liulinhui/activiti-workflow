@@ -2,6 +2,7 @@ package com.activiti.common.interceptor;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
@@ -17,4 +18,11 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/login","/error");
         super.addInterceptors(registry);
     }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/mooc-workflow/**").addResourceLocations("classpath:/static/");
+        super.addResourceHandlers(registry);
+    }
+
 }
