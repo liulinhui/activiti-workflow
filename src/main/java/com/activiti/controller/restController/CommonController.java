@@ -5,12 +5,11 @@ import com.activiti.common.utils.CommonUtil;
 import com.activiti.mapper.ScheduleMapper;
 import com.activiti.mapper.ToolsMapper;
 import com.activiti.pojo.schedule.ScheduleDto;
-import com.activiti.pojo.tools.InvokeLog;
 import com.activiti.service.CommonService;
 import com.activiti.service.ScheduleService;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.codec.binary.Base64;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
 import org.joda.time.DateTimeFieldType;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -44,16 +42,16 @@ public class CommonController {
     /**
      * GitHub请求题目和答案
      *
-     * @param qDir
-     * @param qNo
+     * @param githubUrl
      * @return
      */
     @RequestMapping("/getQAContent")
     @ResponseBody
     @ApiAnnotation
-    public Object getQAFromGitHub(@RequestParam(value = "qDir", required = true) String qDir,
-                                  @RequestParam(value = "qNo", required = true) String qNo) {
-        return commonService.getQAFromGitHub(qDir, qNo);
+    public Object getQAFromGitHub(@RequestParam(value = "githubUrl", required = true) String githubUrl) {
+        JSONObject jsonObject = commonService.getQAFromGitHub(githubUrl);
+        String content = new String(Base64.decodeBase64(jsonObject.get("content").toString().getBytes()));
+        return commonService.getQAFromGitHub(githubUrl);
     }
 
     /**
@@ -84,7 +82,7 @@ public class CommonController {
         String courseCode = scheduleDto.getCourseCode();
         if (null != scheduleService.selectScheduleTime(courseCode)) throw new Exception(courseCode + "该课程已经存在");
         if (null == courseCode) throw new Exception("courseCode字段不能为空");
-        if (!commonUtil.validateTime(scheduleDto))throw new Exception("时间段配置错误");
+        if (!commonUtil.validateTime(scheduleDto)) throw new Exception("时间段配置错误");
         scheduleService.insertScheduleTime(scheduleDto);
         return "课程部署成功";
     }

@@ -21,14 +21,12 @@ public class CommonServiceImpl implements CommonService {
     /**
      * 从gitlab取题目数据
      *
-     * @param qDir 题目地址
-     * @param qNo  题目序号
+     * @param githubUrl 题目地址
      * @return
      */
     @Override
-    @Cacheable(value = "ehCache300", key = "'QAFromGitLab_'+#qDir+#qNo")
-    public JSONObject getQAFromGitHub(String qDir, String qNo)  {
-        String url = ConstantsUtils.getQAFromGitHub + qDir + "/" + qNo + ".json";
-        return commonUtil.getQAFromGitHub(url);
+    @Cacheable(value = "ehCache300", key = "'QAFromGitLab_'+#githubUrl")
+    public JSONObject getQAFromGitHub(String githubUrl)  {
+        return commonUtil.getQAFromGitHub(githubUrl);
     }
 }

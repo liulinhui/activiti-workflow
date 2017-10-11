@@ -7,5 +7,5 @@ import com.alibaba.fastjson.JSONObject;
  */
 public interface CommonService {
 
-    JSONObject getQAFromGitHub(String qDir,String qNo);
+    JSONObject getQAFromGitHub(String githubUrl);
 }

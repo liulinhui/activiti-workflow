@@ -1,14 +1,13 @@
 <div class="my-answer">
-
-
     <fieldset class="layui-elem-field" style="margin-top: 30px;">
         <legend>课程列表:</legend>
         <div style="    margin: 20px 30px 20px;">
-            <#if scheduleDtoList??>
-                <#list scheduleDtoList as item>
-                    <button class="layui-btn layui-btn-normal" github="${item.githubAddress}" code="${item.courseCode}">${item.courseName}</button>
-                </#list>
-            </#if>
+        <#if scheduleDtoList??>
+            <#list scheduleDtoList as item>
+                <button class="layui-btn layui-btn-normal my-answer-courseBtn" github="${item.githubAddress}"
+                        courseCode="${item.courseCode}">${item.courseName}</button>
+            </#list>
+        </#if>
         </div>
     </fieldset>
 
@@ -38,7 +37,20 @@
 </div>
 
 <script>
-    layui.use(['form', 'layedit', 'laydate', 'table', 'laypage'], function () {
-
+    layui.use(['form'], function () {
+        var $ = layui.jquery;
+        $('.my-answer .my-answer-courseBtn').on('click', function () {
+            var githubUrl = $(this).attr('github');
+            var courseCode = $(this).attr('courseCode');
+            alert(githubUrl);
+            $.ajax({
+                url:'./api/common/getQAContent',
+                data:{githubUrl:githubUrl},
+                dataType:'json',
+                success:function (data) {
+                    alert(data)
+                }
+            })
+        })
     })
 </script>
