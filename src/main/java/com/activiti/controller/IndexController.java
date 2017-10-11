@@ -2,7 +2,9 @@ package com.activiti.controller;
 
 import com.activiti.common.utils.CommonUtil;
 import com.activiti.common.utils.ConstantsUtils;
+import com.activiti.pojo.schedule.ScheduleDto;
 import com.activiti.pojo.user.UserRole;
+import com.activiti.service.ScheduleService;
 import com.activiti.service.UserService;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +29,8 @@ public class IndexController {
     private CommonUtil commonUtil;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ScheduleService scheduleService;
 
     @RequestMapping("/login")
     public String greeting(HttpServletRequest request, ModelMap model) {
@@ -72,6 +77,7 @@ public class IndexController {
 
     /**
      * 工作流配置
+     *
      * @param request
      * @return
      */
@@ -82,6 +88,7 @@ public class IndexController {
 
     /**
      * 配置时间表页面
+     *
      * @param request
      * @return
      */
@@ -92,6 +99,7 @@ public class IndexController {
 
     /**
      * 已完成的任务
+     *
      * @param request
      * @return
      */
@@ -102,6 +110,7 @@ public class IndexController {
 
     /**
      * 已完成的任务
+     *
      * @param request
      * @return
      */
@@ -112,16 +121,20 @@ public class IndexController {
 
     /**
      * 答题页面
+     *
      * @param request
      * @return
      */
     @RequestMapping("/answer")
-    public String answer(HttpServletRequest request) {
+    public String answer(HttpServletRequest request,ModelMap modelMap) {
+        List<ScheduleDto> scheduleDtoList = scheduleService.selectAllScheduleTime(0, 5000);
+        modelMap.put("scheduleDtoList",scheduleDtoList);
         return "submodule/answer";
     }
 
     /**
      * 互评页面
+     *
      * @param request
      * @return
      */
@@ -132,6 +145,7 @@ public class IndexController {
 
     /**
      * 成绩审核页面
+     *
      * @param request
      * @return
      */
@@ -142,22 +156,24 @@ public class IndexController {
 
     /**
      * 管理员配置页面
+     *
      * @param request
      * @return
      */
     @RequestMapping("/userRole")
-    public String userRole(HttpServletRequest request,ModelMap modelMap) {
-        modelMap.put("userRoleList",userService.selectAllUserRole());
+    public String userRole(HttpServletRequest request, ModelMap modelMap) {
+        modelMap.put("userRoleList", userService.selectAllUserRole());
         return "submodule/userRole";
     }
 
     /**
      * 管理员配置页面
+     *
      * @param request
      * @return
      */
     @RequestMapping("/logView")
-    public String logView(HttpServletRequest request,ModelMap modelMap) {
+    public String logView(HttpServletRequest request, ModelMap modelMap) {
         return "submodule/logView";
     }
 }

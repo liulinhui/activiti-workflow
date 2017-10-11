@@ -16,6 +16,8 @@
                 <@identity_validate userEmail="${userEmail!}" id="1">
                     <#if identity?? && identity==true>
                         <dd><a id="my-judgement" href="javascript:;">成绩审核</a></dd>
+                        <dd><a id="my-answer" href="javascript:;">答题</a></dd>
+                        <dd><a id="my-assessment" href="javascript:;">参与互评</a></dd>
                     <#else >
                         <dd><a id="my-answer" href="javascript:;">答题</a></dd>
                         <dd><a id="my-assessment" href="javascript:;">参与互评</a></dd>

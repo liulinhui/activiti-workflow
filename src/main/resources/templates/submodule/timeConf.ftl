@@ -4,7 +4,7 @@
     </fieldset>
     <div class="layui-form">
         <div class="layui-form-item">
-            <label class="layui-form-label">课程ID</label>
+            <label class="layui-form-label">课程代码</label>
             <div class="layui-input-block">
                 <input type="text" name="courseCode" lay-verify="required" placeholder="请输入" autocomplete="off"
                        class="layui-input">
@@ -142,16 +142,16 @@
                                         height: 272,
                                         width: 3000,
                                         cols: [[ //标题栏
-                                            {field: 'courseName', title: '课程ID', width: 100},
-                                            {field: 'courseCode', title: '课程名称', width: 150},
-                                            {field: 'githubAddress', title: 'GitHub地址', width: 400},
-                                            {field: 'startTimeString', title: '答题开始', width: 150},
-                                            {field: 'commitEndTimeString', title: '答题结束', width: 150},
-                                            {field: 'judgeStartTimeString', title: '互评开始', width: 150},
-                                            {field: 'judgeEndTimeString', title: '互评结束', width: 150},
-                                            {field: 'auditStartTimeString', title: '审查开始', width: 150},
-                                            {field: 'auditEndTimeString', title: '审查结束', width: 150},
-                                            {field: 'publishTimeString', title: '成绩发布', width: 150}
+                                            {field: 'courseName', title: '课程名称', width: 100},
+                                            {field: 'courseCode', title: '课程代码', width: 150},
+                                            {field: 'githubAddress', title: 'GitHub地址', width: 335},
+                                            {field: 'startTimeString', title: '答题开始', width: 160},
+                                            {field: 'commitEndTimeString', title: '答题结束', width: 160},
+                                            {field: 'judgeStartTimeString', title: '互评开始', width: 160},
+                                            {field: 'judgeEndTimeString', title: '互评结束', width: 160},
+                                            {field: 'auditStartTimeString', title: '审查开始', width: 160},
+                                            {field: 'auditEndTimeString', title: '审查结束', width: 160},
+                                            {field: 'publishTimeString', title: '成绩发布', width: 160}
                                         ]],
                                         skin: 'row', //表格风格
                                         even: true,

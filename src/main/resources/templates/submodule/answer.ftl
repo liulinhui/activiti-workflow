@@ -1,25 +1,31 @@
 <div class="my-answer">
-    <div>
-        <blockquote class="layui-elem-quote">
-            开始答题
-        </blockquote>
-    </div>
+
+
+    <fieldset class="layui-elem-field" style="margin-top: 30px;">
+        <legend>课程列表:</legend>
+        <div style="    margin: 20px 30px 20px;">
+            <#if scheduleDtoList??>
+                <#list scheduleDtoList as item>
+                    <button class="layui-btn layui-btn-normal" github="${item.githubAddress}" code="${item.courseCode}">${item.courseName}</button>
+                </#list>
+            </#if>
+        </div>
+    </fieldset>
 
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>课程ID:</legend>
     </fieldset>
-
     <form class="layui-form" action="">
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">题目</label>
             <div class="layui-input-block">
-                <textarea class="layui-textarea" name="" cols="" rows="" readonly>1+1=?</textarea>
+                <textarea class="layui-textarea" name="" cols="" rows="" readonly></textarea>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">开始作答</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+                <textarea placeholder="请输入内容" lay-verify="required" class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item">
@@ -30,3 +36,9 @@
         </div>
     </form>
 </div>
+
+<script>
+    layui.use(['form', 'layedit', 'laydate', 'table', 'laypage'], function () {
+
+    })
+</script>
