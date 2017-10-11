@@ -1,6 +1,7 @@
 package com.activiti.controller.restController;
 
 import com.activiti.common.aop.ApiAnnotation;
+import com.activiti.common.utils.CommonUtil;
 import com.activiti.mapper.ScheduleMapper;
 import com.activiti.mapper.ToolsMapper;
 import com.activiti.pojo.schedule.ScheduleDto;
@@ -37,6 +38,8 @@ public class CommonController {
     private ToolsMapper toolsMapper;
     @Autowired
     private ScheduleMapper scheduleMapper;
+    @Autowired
+    private CommonUtil commonUtil;
 
     /**
      * GitHub请求题目和答案
@@ -81,6 +84,7 @@ public class CommonController {
         String courseCode = scheduleDto.getCourseCode();
         if (null != scheduleService.selectScheduleTime(courseCode)) throw new Exception(courseCode + "该课程已经存在");
         if (null == courseCode) throw new Exception("courseCode字段不能为空");
+        if (!commonUtil.validateTime(scheduleDto))throw new Exception("时间段配置错误");
         scheduleService.insertScheduleTime(scheduleDto);
         return "课程部署成功";
     }

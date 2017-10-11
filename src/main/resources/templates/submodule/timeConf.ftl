@@ -96,7 +96,7 @@
         <div>
             <table class="my-time-conf-table">
             </table>
-            <div id="my-time-conf-LayPage"></div>
+            <div style="margin-left: 15%;" id="my-time-conf-LayPage"></div>
         </div>
     </fieldset>
 </div>
@@ -125,6 +125,7 @@
                     laypage.render({
                         elem: 'my-time-conf-LayPage',
                         count: data.data.count,
+                        theme:'#FF5722',
                         limit:5,
                         limits:[5,10,15],
                         layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
@@ -144,13 +145,13 @@
                                             {field: 'courseName', title: '课程ID', width: 100},
                                             {field: 'courseCode', title: '课程名称', width: 150},
                                             {field: 'githubAddress', title: 'GitHub地址', width: 400},
-                                            {field: 'startTime', title: '答题开始', width: 150},
-                                            {field: 'commitEndTime', title: '答题结束', width: 150},
-                                            {field: 'judgeStartTime', title: '互评开始', width: 150},
-                                            {field: 'judgeEndTime', title: '互评结束', width: 150},
-                                            {field: 'auditStartTime', title: '审查开始', width: 150},
-                                            {field: 'auditEndTime', title: '审查结束', width: 150},
-                                            {field: 'publishTime', title: '成绩发布', width: 150}
+                                            {field: 'startTimeString', title: '答题开始', width: 150},
+                                            {field: 'commitEndTimeString', title: '答题结束', width: 150},
+                                            {field: 'judgeStartTimeString', title: '互评开始', width: 150},
+                                            {field: 'judgeEndTimeString', title: '互评结束', width: 150},
+                                            {field: 'auditStartTimeString', title: '审查开始', width: 150},
+                                            {field: 'auditEndTimeString', title: '审查结束', width: 150},
+                                            {field: 'publishTimeString', title: '成绩发布', width: 150}
                                         ]],
                                         skin: 'row', //表格风格
                                         even: true,

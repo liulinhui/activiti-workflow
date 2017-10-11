@@ -4,6 +4,7 @@ import com.activiti.common.mail.MailService;
 import com.activiti.common.sequence.Sequence;
 import com.activiti.pojo.email.EmailDto;
 import com.activiti.pojo.email.EmailType;
+import com.activiti.pojo.schedule.ScheduleDto;
 import com.activiti.service.ScheduleService;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpResponse;
@@ -12,6 +13,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeComparator;
+import org.joda.time.DateTimeFieldType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.util.Date;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -129,9 +134,40 @@ public class CommonUtil {
 
     /**
      * 获取随机数
+     *
      * @return
      */
     public long getSequenceId() {
         return sequence.nextId();
+    }
+
+    /**
+     * 验证部署时间的正确性
+     *
+     * @param a
+     * @return
+     */
+    public boolean validateTime(ScheduleDto a) {
+        Date[] dates = {a.getStartTime(), a.getCommitEndTime(), a.getJudgeStartTime(), a.getJudgeEndTime(), a.getAuditStartTime(), a.getAuditEndTime()};
+        DateTimeComparator comparator = DateTimeComparator.getInstance(DateTimeFieldType.secondOfDay());
+        for (int i = dates.length - 1; i > 0; --i) {
+            for (int j = 0; j < i; ++j) {
+                if (comparator.compare(new DateTime(dates[j + 1]), new DateTime(dates[j])) <= 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 格式化日期
+     *
+     * @param date
+     * @return
+     */
+    public static String dateToString(Date date) {
+        DateTime dateTime = new DateTime(date);
+        return dateTime.toString("yyyy/MM/dd HH:mm:ss");
     }
 }

@@ -4,7 +4,16 @@
         <div>
             <table class="logInfoTable">
             </table>
-            <div id="invokeLogLayPage"></div>
+            <div style="margin-left: 15%;" id="invokeLogLayPage"></div>
+        </div>
+    </fieldset>
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>通知邮件发送情况</legend>
+        <div>
+            <table class="emailInfoTable">
+            </table>
+            <div id="emailInfoLayPage"></div>
         </div>
     </fieldset>
 </div>
@@ -21,6 +30,7 @@
                     elem: 'invokeLogLayPage',
                     count: data.data.count,
                     layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
+                    theme:'#FF5722',
                     jump: function (obj) {
                         var param = {page: obj.curr, limit: obj.limit};
                         $.ajax({
@@ -40,8 +50,8 @@
                                         {field: 'result', title: '出参', width: 500},
                                         {field: 'email', title: '邮箱', width: 200},
                                         {field: 'requestUri', title: '访问地址', width: 250},
-                                        {field: 'status', title: '调用状态', width: 150},
-                                        {field: 'time', title: '时间', width: 150}
+                                        {field: 'status', title: '调用状态', width: 100},
+                                        {field: 'dateString', title: '时间', width: 200}
                                     ]],
                                     skin: 'row', //表格风格
                                     even: true,

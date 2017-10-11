@@ -1,5 +1,7 @@
 package com.activiti.pojo.tools;
 
+import com.activiti.common.utils.CommonUtil;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,8 +15,17 @@ public class InvokeLog implements Serializable {
     private String requestUri;
     private String status;
     private Date time;
+    private String dateString;
 
     public InvokeLog() {
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
     }
 
     public InvokeLog(long uuid, String params, String email, String requestUri) {
@@ -40,6 +51,7 @@ public class InvokeLog implements Serializable {
 
     public void setTime(Date time) {
         this.time = time;
+        this.dateString = CommonUtil.dateToString(time);
     }
 
     public void setStatus(String status) {

@@ -1,5 +1,7 @@
 package com.activiti.pojo.schedule;
 
+import com.activiti.common.utils.CommonUtil;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -55,6 +57,7 @@ public class ScheduleDto implements Serializable {
 
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
+        this.startTimeString= CommonUtil.dateToString(startTime);
     }
 
     public Date getCommitEndTime() {
@@ -63,6 +66,7 @@ public class ScheduleDto implements Serializable {
 
     public void setCommitEndTime(Date commitEndTime) {
         this.commitEndTime = commitEndTime;
+        this.commitEndTimeString= CommonUtil.dateToString(commitEndTime);
     }
 
     public Date getJudgeStartTime() {
@@ -71,6 +75,7 @@ public class ScheduleDto implements Serializable {
 
     public void setJudgeStartTime(Date judgeStartTime) {
         this.judgeStartTime = judgeStartTime;
+        this.judgeStartTimeString=CommonUtil.dateToString(judgeStartTime);
     }
 
     public Date getJudgeEndTime() {
@@ -79,6 +84,7 @@ public class ScheduleDto implements Serializable {
 
     public void setJudgeEndTime(Date judgeEndTime) {
         this.judgeEndTime = judgeEndTime;
+        this.judgeEndTimeString=CommonUtil.dateToString(judgeEndTime);
     }
 
     public Date getAuditStartTime() {
@@ -87,6 +93,7 @@ public class ScheduleDto implements Serializable {
 
     public void setAuditStartTime(Date auditStartTime) {
         this.auditStartTime = auditStartTime;
+        this.auditStartTimeString=CommonUtil.dateToString(auditStartTime);
     }
 
     public Date getAuditEndTime() {
@@ -95,6 +102,7 @@ public class ScheduleDto implements Serializable {
 
     public void setAuditEndTime(Date auditEndTime) {
         this.auditEndTime = auditEndTime;
+        this.auditEndTimeString=CommonUtil.dateToString(auditEndTime);
     }
 
     public Date getPublishTime() {
@@ -103,6 +111,7 @@ public class ScheduleDto implements Serializable {
 
     public void setPublishTime(Date publishTime) {
         this.publishTime = publishTime;
+        this.publishTimeString=CommonUtil.dateToString(publishTime);
     }
 
     public String getGithubAddress() {
@@ -111,6 +120,70 @@ public class ScheduleDto implements Serializable {
 
     public void setGithubAddress(String githubAddress) {
         this.githubAddress = githubAddress;
+    }
+
+    private String startTimeString;      //提交作业开始时间
+    private String commitEndTimeString;  //提交作业结束时间
+    private String judgeStartTimeString; //互评开始时间
+    private String judgeEndTimeString;   //互评结束时间
+    private String auditStartTimeString;  //学生审查开始时间
+    private String auditEndTimeString;   //学生审查结束时间
+    private String publishTimeString;    //发布成绩时间
+
+    public String getStartTimeString() {
+        return startTimeString;
+    }
+
+    public void setStartTimeString(String startTimeString) {
+        this.startTimeString = startTimeString;
+    }
+
+    public String getCommitEndTimeString() {
+        return commitEndTimeString;
+    }
+
+    public void setCommitEndTimeString(String commitEndTimeString) {
+        this.commitEndTimeString = commitEndTimeString;
+    }
+
+    public String getJudgeStartTimeString() {
+        return judgeStartTimeString;
+    }
+
+    public void setJudgeStartTimeString(String judgeStartTimeString) {
+        this.judgeStartTimeString = judgeStartTimeString;
+    }
+
+    public String getJudgeEndTimeString() {
+        return judgeEndTimeString;
+    }
+
+    public void setJudgeEndTimeString(String judgeEndTimeString) {
+        this.judgeEndTimeString = judgeEndTimeString;
+    }
+
+    public String getAuditStartTimeString() {
+        return auditStartTimeString;
+    }
+
+    public void setAuditStartTimeString(String auditStartTimeString) {
+        this.auditStartTimeString = auditStartTimeString;
+    }
+
+    public String getAuditEndTimeString() {
+        return auditEndTimeString;
+    }
+
+    public void setAuditEndTimeString(String auditEndTimeString) {
+        this.auditEndTimeString = auditEndTimeString;
+    }
+
+    public String getPublishTimeString() {
+        return publishTimeString;
+    }
+
+    public void setPublishTimeString(String publishTimeString) {
+        this.publishTimeString = publishTimeString;
     }
 
     @Override
