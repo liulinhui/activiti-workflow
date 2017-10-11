@@ -4,7 +4,7 @@ thymeleaf,redis+ehCache两级缓存,kafka,邮件服务以及spring-activiti流�
  
 # 一、 用户认证与权限
 
-把activiti认证与权限转交给open ldap
+把activiti认证与权限转交给open ldap（待实现）
 
 # 二、互评流程设计
 
@@ -67,7 +67,7 @@ thymeleaf,redis+ehCache两级缓存,kafka,邮件服务以及spring-activiti流�
 
 ### （6）成绩核查申请阶段
 
-![reCheckRequest.jpg](./doc/ictures/reCheckRequest.jpg)
+![reCheckRequest.jpg](./doc/pictures/reCheckRequest.jpg)
 
 当时间到达“成绩核查阶段”的开始时间（2017.8.24T00:00），会进入到“成绩核查阶段”子流程。在这个子流程中：
 
@@ -122,6 +122,13 @@ thymeleaf,redis+ehCache两级缓存,kafka,邮件服务以及spring-activiti流�
 
 # 四、邮件服务
 
-每阶段截止日期前系统会自动发邮件提醒用户。
+每阶段截止日期前系统会自动发邮件提醒用户。（接口己实现）
 
 # 五、性能优化
+
++ redis二级缓存。
++ kafka异步邮件发送。
+
+# 六、接口
+
+[接口说明](./doc/接口说明.md)
