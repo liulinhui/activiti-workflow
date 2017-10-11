@@ -1,12 +1,14 @@
 package com.activiti.controller.restController;
 
 import com.activiti.common.aop.ApiAnnotation;
+import com.activiti.mapper.ScheduleMapper;
 import com.activiti.mapper.ToolsMapper;
 import com.activiti.pojo.schedule.ScheduleDto;
 import com.activiti.pojo.tools.InvokeLog;
 import com.activiti.service.CommonService;
 import com.activiti.service.ScheduleService;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
@@ -33,6 +35,8 @@ public class CommonController {
     private ScheduleService scheduleService;
     @Autowired
     private ToolsMapper toolsMapper;
+    @Autowired
+    private ScheduleMapper scheduleMapper;
 
     /**
      * GitHub请求题目和答案
@@ -71,11 +75,11 @@ public class CommonController {
     @RequestMapping("/insertScheduleTime")
     @ResponseBody
     @ApiAnnotation
-    public Object insertScheduleTime(@RequestParam(required = true,value = "data") String param) throws Exception {
-        JSONObject jsonObject= JSON.parseObject(param);
-        ScheduleDto scheduleDto=jsonObject.toJavaObject(ScheduleDto.class);
+    public Object insertScheduleTime(@RequestParam(required = true, value = "data") String param) throws Exception {
+        JSONObject jsonObject = JSON.parseObject(param);
+        ScheduleDto scheduleDto = jsonObject.toJavaObject(ScheduleDto.class);
         String courseCode = scheduleDto.getCourseCode();
-        if (null!=scheduleService.selectScheduleTime(courseCode))throw new Exception(courseCode+"该课程已经存在");
+        if (null != scheduleService.selectScheduleTime(courseCode)) throw new Exception(courseCode + "该课程已经存在");
         if (null == courseCode) throw new Exception("courseCode字段不能为空");
         scheduleService.insertScheduleTime(scheduleDto);
         return "课程部署成功";
@@ -105,8 +109,24 @@ public class CommonController {
     @RequestMapping("/selectAllScheduleTime")
     @ResponseBody
     @ApiAnnotation
-    public Object selectAllScheduleTime() {
-        return scheduleService.selectAllScheduleTime();
+    public Object selectAllScheduleTime(@RequestParam(value = "page", required = true) long page,
+                                        @RequestParam(value = "limit", required = true) int limit) {
+        List<ScheduleDto> scheduleDtoList = scheduleService.selectAllScheduleTime((page - 1) * limit, limit);
+        return scheduleDtoList;
+    }
+
+    /**
+     * 查询所有课程相关的时间表
+     *
+     * @return
+     */
+    @RequestMapping("/countAllScheduleTime")
+    @ResponseBody
+    @ApiAnnotation
+    public Object countAllScheduleTime() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("count", scheduleMapper.countAllScheduleTime());
+        return jsonObject;
     }
 
     /**
@@ -160,11 +180,12 @@ public class CommonController {
     @ApiAnnotation(insertLog = false)
     public Object selectInvokeLog(@RequestParam(value = "page", required = true) long page,
                                   @RequestParam(value = "limit", required = true) int limit) {
-        return  toolsMapper.selectInvokeLog((page - 1) * limit, limit);
+        return toolsMapper.selectInvokeLog((page - 1) * limit, limit);
     }
 
     /**
      * 查询总页数
+     *
      * @return
      */
     @ResponseBody
@@ -173,6 +194,6 @@ public class CommonController {
     public Object countInvokeLog() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("count", toolsMapper.countInvokeLog());
-        return  jsonObject;
+        return jsonObject;
     }
 }

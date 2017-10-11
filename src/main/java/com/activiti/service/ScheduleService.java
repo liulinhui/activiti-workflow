@@ -15,5 +15,5 @@ public interface ScheduleService {
 
     void updateScheduleTime(ScheduleDto scheduleDto);
 
-    List<ScheduleDto> selectAllScheduleTime();
+    List<ScheduleDto> selectAllScheduleTime(long offset,int limit);
 }

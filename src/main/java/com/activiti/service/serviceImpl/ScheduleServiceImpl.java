@@ -37,7 +37,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public List<ScheduleDto> selectAllScheduleTime() {
-        return scheduleMapper.selectAllScheduleTime();
+    public List<ScheduleDto> selectAllScheduleTime(long offset,int limit) {
+        return scheduleMapper.selectAllScheduleTime(offset,limit);
     }
 }

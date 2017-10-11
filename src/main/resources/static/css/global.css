@@ -49,7 +49,7 @@
 
 /* åº•éƒ¨ */
 .footer{padding: 30px 0; line-height: 30px; text-align: center; color: #666; font-weight: 300;}
-body .layui-layout-admin .footer-demo{height: auto; padding: 15px 0; line-height: 26px;}
+body .layui-layout-admin .footer-demo{height: auto; padding: 15px 0; line-height: 15px;}
 .footer a{padding: 0 5px;}
 
 /* é¦–é¡µbanneréƒ¨åˆ† */

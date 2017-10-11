@@ -1,6 +1,7 @@
 package com.activiti.mapper;
 
 import com.activiti.pojo.schedule.ScheduleDto;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,6 +36,8 @@ public interface ScheduleMapper {
      * 查询所有课程的时间表
      * @return
      */
-    List<ScheduleDto> selectAllScheduleTime();
+    List<ScheduleDto> selectAllScheduleTime(@Param("offset")long offset, @Param("limit") int limit);
+
+    long countAllScheduleTime();
 
 }

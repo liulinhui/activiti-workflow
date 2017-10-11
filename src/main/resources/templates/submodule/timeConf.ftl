@@ -93,32 +93,19 @@
     </div>
     <fieldset class="layui-elem-field" style="margin-top: 30px;">
         <legend>已配置的课程</legend>
-        <div style="padding: 0% 10% 3% 5%;">
-            <table class="layui-table">
-                <colgroup>
-                    <col width="200">
-                    <col width="500">
-                    <col width="200">
-                    <col width="50">
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>邮箱</th>
-                    <th>描述</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
+        <div>
+            <table class="my-time-conf-table">
             </table>
+            <div id="my-time-conf-LayPage"></div>
         </div>
     </fieldset>
 </div>
 
 <script>
-    layui.use(['form', 'layedit', 'laydate'], function () {
+    layui.use(['form', 'layedit', 'laydate','table', 'laypage'], function () {
         var form = layui.form, layer = layui.layer, layedit = layui.layedit, laydate = layui.laydate, $ = layui.jquery;
+        var table = layui.table;
+        var laypage = layui.laypage;
         var list = ['startTime', 'commitEndTime', 'judgeStartTime', 'judgeEndTime', 'auditStartTime', 'auditEndTime', 'publishTime'];
         for (var index in list) {
             //时间选择器
@@ -127,6 +114,55 @@
                 type: 'datetime'
             });
         }
+        /**
+         * 加载数据表格
+         */
+        var loadTable=function () {
+            $.ajax({
+                url: './api/common/countAllScheduleTime',
+                dataType: 'json',
+                success: function (data) {
+                    laypage.render({
+                        elem: 'my-time-conf-LayPage',
+                        count: data.data.count,
+                        limit:5,
+                        limits:[5,10,15],
+                        layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
+                        jump: function (obj) {
+                            var param = {page: obj.curr, limit: obj.limit};
+                            $.ajax({
+                                url: './api/common/selectAllScheduleTime',
+                                data: param,
+                                dataType: 'json',
+                                success: function (data) {
+                                    table.render({
+                                        elem: '.my-time-conf-table',
+                                        data: data.data,
+                                        height: 272,
+                                        width: 3000,
+                                        cols: [[ //标题栏
+                                            {field: 'courseName', title: '课程ID', width: 100},
+                                            {field: 'courseCode', title: '课程名称', width: 150},
+                                            {field: 'githubAddress', title: 'GitHub地址', width: 400},
+                                            {field: 'startTime', title: '答题开始', width: 150},
+                                            {field: 'commitEndTime', title: '答题结束', width: 150},
+                                            {field: 'judgeStartTime', title: '互评开始', width: 150},
+                                            {field: 'judgeEndTime', title: '互评结束', width: 150},
+                                            {field: 'auditStartTime', title: '审查开始', width: 150},
+                                            {field: 'auditEndTime', title: '审查结束', width: 150},
+                                            {field: 'publishTime', title: '成绩发布', width: 150}
+                                        ]],
+                                        skin: 'row', //表格风格
+                                        even: true,
+                                        page: false //是否显示分页
+                                    })
+                                }
+                            })
+                        }
+                    });
+                }
+            });
+        };
         //监听提交
         form.on('submit(my-time-conf-submit)', function (data) {
             $.ajax({
@@ -134,10 +170,12 @@
                 data:{data:JSON.stringify(data.field)},
                 dataType:'json',
                 success:function (result) {
-                    if (result.success)
+                    if (result.success){
                         layer.alert(JSON.stringify(result), {
                             title: '部署成功'
                         });
+                        loadTable();
+                    }
                     else
                         layer.alert(JSON.stringify(result), {
                         title: '部署失败'
@@ -149,6 +187,8 @@
 
         $('.my-time-conf .my-time-conf-cancel').on('click',function () {
             $('.my-time-conf input').val('');
-        })
+        });
+
+        loadTable();
     })
 </script>
