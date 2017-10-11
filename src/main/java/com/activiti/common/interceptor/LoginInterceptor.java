@@ -11,6 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LoginInterceptor implements HandlerInterceptor {
     private final Logger logger = LoggerFactory.getLogger(HandlerInterceptor.class);
+    private static String env;
+
+    public LoginInterceptor(String env) {
+        this.env=env;
+    }
+
+    public LoginInterceptor() {
+    }
 
     /**
      * 在请求处理之前进行调用（Controller方法调用之前）
@@ -44,6 +52,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
         String email = (String) httpServletRequest.getSession().getAttribute(ConstantsUtils.sessionEmail);
+        modelAndView.getModel().put("projectEnv",env);
         if (null != modelAndView && !"".equals(email) && null != email)
             modelAndView.getModel().put("userEmail", httpServletRequest.getSession().getAttribute(ConstantsUtils.sessionEmail));
     }
