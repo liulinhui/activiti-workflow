@@ -1,9 +1,4 @@
 <div class="my-log-view">
-    <div>
-        <blockquote class="layui-elem-quote">
-            日志查看
-        </blockquote>
-    </div>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>接口调用日志查询</legend>
         <div>

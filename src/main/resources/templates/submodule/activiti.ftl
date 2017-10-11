@@ -1,19 +1,7 @@
 <div class="my-activiti-conf">
-<#--<div >-->
-<#--<blockquote class="layui-elem-quote">-->
-<#--最新通告-->
-<#--<a>-->
-<#--<@identity_validate userEmail="${userEmail!}">-->
-<#--${identity!""}-->
-<#--</@identity_validate>-->
-<#--</a>-->
-<#--</blockquote>-->
-<#--</div>-->
-    <div>
-        <blockquote class="layui-elem-quote">
-            已部署的工作流
-        </blockquote>
-    </div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>已部署的流程</legend>
+    </fieldset>
     <div class="layui-form">
         <table class="layui-table">
             <colgroup>

@@ -1,9 +1,4 @@
 <div class="my-user-role">
-    <div>
-        <blockquote class="layui-elem-quote">
-            人员管理
-        </blockquote>
-    </div>
     <fieldset class="layui-elem-field" style="margin-top: 30px;">
         <legend>管理员列表</legend>
         <div class="layui-btn-group" style="margin: 1% 0% 1% 5%;">
