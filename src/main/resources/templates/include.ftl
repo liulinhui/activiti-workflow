@@ -1,4 +1,4 @@
-<#if projectEnv?? && projectEnv=="prod">
+<#if projectEnv?? && projectEnv=="pro">
     <#assign base="/mooc-workflow"+request.contextPath />
 <#else >
     <#assign base=request.contextPath />
