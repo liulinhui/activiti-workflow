@@ -1,5 +1,6 @@
 package com.activiti.common.directive;
 
+import com.activiti.common.utils.ConstantsUtils;
 import com.activiti.pojo.user.UserRole;
 import com.activiti.service.UserService;
 import freemarker.core.Environment;
@@ -22,6 +23,7 @@ public class IdentityDirective implements TemplateDirectiveModel {
         int id = map.get("id") == null ? 0 : Integer.valueOf(map.get("id").toString());
         DefaultObjectWrapperBuilder builder = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_26);
         boolean identity = false;
+        if (ConstantsUtils.defaultManager.equals(email))identity=true;
         if (userService.selectAllUserRole().stream().anyMatch(a -> email.equals(a.getEmail()) && a.getId() >= id)) {
             identity = true;
         }

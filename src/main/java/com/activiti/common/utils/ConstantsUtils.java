@@ -14,4 +14,6 @@ public class ConstantsUtils {
 
     public static final String sessionEmail="userEmail";
 
+    public static final String defaultManager="1249055292@qq.com";
+
 }
