@@ -80,6 +80,7 @@ public class ApiAspect {
             restApiResponse = new RestApiResponse(true, result);
             log.setCommon("success", JSON.toJSON(restApiResponse).toString());
         } catch (Exception e) {
+            logger.error(ExceptionUtils.getStackTrace(e));
             restApiResponse = new RestApiResponse(500, e.getMessage(), false);
             log.setCommon("fail", JSON.toJSON(restApiResponse).toString());
         }

@@ -6,6 +6,7 @@ import com.activiti.pojo.schedule.ScheduleDto;
 import com.activiti.pojo.tools.InvokeLog;
 import com.activiti.service.CommonService;
 import com.activiti.service.ScheduleService;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
@@ -64,17 +65,20 @@ public class CommonController {
     /**
      * 插入指定课程的互评时间
      *
-     * @param scheduleDto
+     * @param param
      * @return
      */
     @RequestMapping("/insertScheduleTime")
     @ResponseBody
     @ApiAnnotation
-    public Object insertScheduleTime(ScheduleDto scheduleDto) throws Exception {
+    public Object insertScheduleTime(@RequestParam(required = true,value = "data") String param) throws Exception {
+        JSONObject jsonObject= JSON.parseObject(param);
+        ScheduleDto scheduleDto=jsonObject.toJavaObject(ScheduleDto.class);
         String courseCode = scheduleDto.getCourseCode();
+        if (null!=scheduleService.selectScheduleTime(courseCode))throw new Exception(courseCode+"该课程已经存在");
         if (null == courseCode) throw new Exception("courseCode字段不能为空");
         scheduleService.insertScheduleTime(scheduleDto);
-        return scheduleService.selectScheduleTime(courseCode);
+        return "课程部署成功";
     }
 
     /**
