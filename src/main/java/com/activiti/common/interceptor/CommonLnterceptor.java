@@ -9,8 +9,16 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LoginInterceptor implements HandlerInterceptor {
+public class CommonLnterceptor implements HandlerInterceptor {
     private final Logger logger = LoggerFactory.getLogger(HandlerInterceptor.class);
+    private static String env;
+
+    public CommonLnterceptor(String env) {
+        this.env = env;
+    }
+
+    public CommonLnterceptor() {
+    }
 
     /**
      * 在请求处理之前进行调用（Controller方法调用之前）
@@ -23,12 +31,6 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        String email = (String) httpServletRequest.getSession().getAttribute(ConstantsUtils.sessionEmail);
-        logger.info("{user=" + email + "}>>>START HTTP REQUEST:" + httpServletRequest.getRequestURL());
-        if ("".equals(email) || null == email) {
-            httpServletResponse.sendRedirect("login?redirectUrl=" + httpServletRequest.getServletPath());
-            return false;
-        }
         return true;
     }
 
@@ -43,9 +45,7 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-        String email = (String) httpServletRequest.getSession().getAttribute(ConstantsUtils.sessionEmail);
-        if (null != modelAndView && !"".equals(email) && null != email)
-            modelAndView.getModel().put("userEmail", httpServletRequest.getSession().getAttribute(ConstantsUtils.sessionEmail));
+        modelAndView.getModel().put("projectEnv", env);
     }
 
     /**
@@ -59,7 +59,5 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-        String email = (String) httpServletRequest.getSession().getAttribute("userEmail");
-        logger.info("{user=" + email + "}>>>END HTTP REQUEST:" + httpServletRequest.getRequestURL());
     }
 }
