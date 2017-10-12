@@ -175,8 +175,8 @@ public class CommonController {
     @ResponseBody
     @RequestMapping("/selectInvokeLog")
     @ApiAnnotation(insertLog = false)
-    public Object selectInvokeLog(@RequestParam(value = "page", required = true) long page,
-                                  @RequestParam(value = "limit", required = true) int limit) {
+    public Object selectInvokeLog(@RequestParam(value = "page") long page,
+                                  @RequestParam(value = "limit") int limit) {
         return toolsMapper.selectInvokeLog((page - 1) * limit, limit);
     }
 

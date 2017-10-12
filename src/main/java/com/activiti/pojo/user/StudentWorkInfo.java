@@ -1,5 +1,7 @@
 package com.activiti.pojo.user;
 
+import com.activiti.common.utils.CommonUtil;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,10 +15,19 @@ public class StudentWorkInfo implements Serializable {
     private String emailAddress;
     private String workDetail;
     private Date lastCommitTime;
+    private String lastCommitTimeString;
     private Double grade;
     private String judgeType;  //teacher：老師评分  student:学生互评
     private int judgeTimes;      //作业被评论次数
     private Date joinJudgeTime;   //参与互评的时间
+
+    public String getLastCommitTimeString() {
+        return lastCommitTimeString;
+    }
+
+    public void setLastCommitTimeString(String lastCommitTimeString) {
+        this.lastCommitTimeString = lastCommitTimeString;
+    }
 
     public StudentWorkInfo() {
     }
@@ -58,6 +69,7 @@ public class StudentWorkInfo implements Serializable {
 
     public void setLastCommitTime(Date lastCommitTime) {
         this.lastCommitTime = lastCommitTime;
+        this.lastCommitTimeString= CommonUtil.dateToString(lastCommitTime);
     }
 
     public Double getGrade() {

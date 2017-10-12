@@ -47,11 +47,11 @@
                                         {field: 'uuid', title: '序列号', width: 200},
                                         {field: 'invokeTime', title: '调用时长', width: 100},
                                         {field: 'params', title: '入参', width: 150},
-                                        {field: 'result', title: '出参', width: 500},
+                                        {field: 'result', title: '出参', width: 560},
                                         {field: 'email', title: '邮箱', width: 200},
                                         {field: 'requestUri', title: '访问地址', width: 250},
                                         {field: 'status', title: '调用状态', width: 100},
-                                        {field: 'dateString', title: '时间', width: 200}
+                                        {field: 'dateString', title: '时间', width: 150}
                                     ]],
                                     skin: 'row', //表格风格
                                     even: true,

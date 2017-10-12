@@ -3,12 +3,14 @@ package com.activiti.controller.restController;
 import com.activiti.common.aop.ApiAnnotation;
 import com.activiti.common.utils.CommonUtil;
 import com.activiti.common.utils.ConstantsUtils;
+import com.activiti.mapper.UserMapper;
 import com.activiti.pojo.user.StudentWorkInfo;
 import com.activiti.pojo.user.User;
 import com.activiti.pojo.user.UserRole;
 import com.activiti.service.JudgementService;
 import com.activiti.service.ScheduleService;
 import com.activiti.service.UserService;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,8 @@ public class UserController {
     private JudgementService judgementService;
     @Autowired
     private ScheduleService scheduleService;
+    @Autowired
+    private UserMapper userMapper;
 
     /*
      *  根据Email获取用户信息
@@ -71,19 +75,31 @@ public class UserController {
     /**
      * 查询学生提交的作业
      *
-     * @param email
      * @param courseCode
      * @return
      */
     @RequestMapping("/selectStudentWorkInfo")
     @ResponseBody
     @ApiAnnotation
-    public Object selectStudentWorkInfo(@RequestParam(value = "email", required = true) String email,
-                                        @RequestParam(value = "courseCode", required = true) String courseCode) {
-        StudentWorkInfo studentWorkInfo = new StudentWorkInfo();
-        studentWorkInfo.setCourseCode(courseCode);
-        studentWorkInfo.setEmailAddress(email);
-        return userService.selectStudentWorkInfo(studentWorkInfo);
+    public Object selectStudentWorkInfo(
+            @RequestParam(value = "courseCode", required = false) String courseCode,
+            @RequestParam(value = "page", required = false,defaultValue = "1") long page,
+            @RequestParam(value = "limit", required = false,defaultValue = "1") int limit,
+            @RequestParam(value = "count", required = false) boolean count,
+            HttpServletRequest request) {
+        String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        if (null != courseCode && !"".equals(courseCode)) {
+            StudentWorkInfo studentWorkInfo = new StudentWorkInfo();
+            studentWorkInfo.setCourseCode(courseCode);
+            studentWorkInfo.setEmailAddress(email);
+            return userService.selectStudentWorkInfo(studentWorkInfo);
+        } else if (count) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("count", userMapper.countStudentWorkInfo(email));
+            return jsonObject;
+        } else {
+            return userMapper.selectStudentWorkInfoPage(email,(page - 1) * limit, limit );
+        }
     }
 
     @RequestMapping("/selectWorkListToJudge")

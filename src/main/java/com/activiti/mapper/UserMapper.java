@@ -3,6 +3,7 @@ package com.activiti.mapper;
 import com.activiti.pojo.user.StudentWorkInfo;
 import com.activiti.pojo.user.User;
 import com.activiti.pojo.user.UserRole;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -41,6 +42,21 @@ public interface UserMapper {
      * @return
      */
     StudentWorkInfo selectStudentWorkInfo(StudentWorkInfo studentWorkInfo);
+
+    /**
+     * 查询学生作业信息
+     * @param email
+     * @param offset
+     * @param limit
+     * @return
+     */
+    List<StudentWorkInfo> selectStudentWorkInfoPage(@Param("email") String email, @Param("offset") long offset, @Param("limit") int limit);
+
+    /**
+     * 学生总数量
+     * @return
+     */
+    long countStudentWorkInfo(String email);
 
     /**
      * 查询没有分数的学生d的email

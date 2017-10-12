@@ -47,6 +47,14 @@
         WHERE COURSE_CODE = #{courseCode} AND EMAIL_ADDRESS = #{emailAddress}
     </select>
 
+    <select id="selectStudentWorkInfoPage" resultType="com.activiti.pojo.user.StudentWorkInfo">
+        SELECT * FROM judge_stu_work_info WHERE EMAIL_ADDRESS=#{email} LIMIT #{offset}, #{limit};
+    </select>
+
+    <select id="countStudentWorkInfo" parameterType="string" resultType="long">
+        SELECT count(*) FROM judge_stu_work_info WHERE EMAIL_ADDRESS=#{email};
+    </select>
+
     <select id="selectNoGradeUser" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT EMAIL_ADDRESS
         FROM judge_stu_work_info
