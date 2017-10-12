@@ -4,7 +4,7 @@
         <div style="    margin: 20px 30px 20px;">
         <#if scheduleDtoList??>
             <#list scheduleDtoList as item>
-                <button class="layui-btn layui-btn-normal my-answer-courseBtn" github="${item.githubAddress}"
+                <button class="layui-btn layui-btn-normal my-answer-courseBtn"
                         courseCode="${item.courseCode}">${item.courseName}</button>
             </#list>
         </#if>
@@ -44,11 +44,10 @@
         var form = layui.form;
         var fieldset = $('.my-answer .my-answer-fieldset-courseCode');
         $('.my-answer .my-answer-courseBtn').on('click', function () {
-            var githubUrl = $(this).attr('github');
             var courseCode = $(this).attr('courseCode');
             $.ajax({
                 url: './api/common/getQAContent',
-                data: {githubUrl: githubUrl},
+                data: {courseCode: courseCode},
                 dataType: 'json',
                 success: function (data) {
                     $('.my-answer-question').val(data.data);

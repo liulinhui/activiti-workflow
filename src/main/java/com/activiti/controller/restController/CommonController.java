@@ -43,14 +43,15 @@ public class CommonController {
     /**
      * GitHub请求题目和答案
      *
-     * @param githubUrl
+     * @param courseCode
      * @return
      */
     @RequestMapping("/getQAContent")
     @ResponseBody
     @ApiAnnotation
-    public Object getQAFromGitHub(@RequestParam(value = "githubUrl", required = true) String githubUrl) throws UnsupportedEncodingException {
-        String content = new String(Base64.decodeBase64(commonService.getQAFromGitHub(githubUrl).get("content").toString().getBytes()), "utf-8");
+    public Object getQAFromGitHub(@RequestParam(value = "courseCode") String courseCode) throws UnsupportedEncodingException {
+        String githubAddress=scheduleMapper.selectScheduleTime(courseCode).getGithubAddress();
+        String content = new String(Base64.decodeBase64(commonService.getQAFromGitHub(githubAddress).get("content").toString().getBytes()), "utf-8");
         JSONObject result = JSONObject.parseObject(content);
         return result.get("question");
     }
