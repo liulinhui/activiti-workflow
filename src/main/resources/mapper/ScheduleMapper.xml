@@ -8,9 +8,9 @@
     </select>
 
     <insert id="insertScheduleTime" parameterType="com.activiti.pojo.schedule.ScheduleDto">
-        INSERT INTO judge_schedule_time (course_name, course_code, judge_start_time, judge_end_time, audit_start_time, audit_end_time, publish_time,github_address)
+        INSERT INTO judge_schedule_time (course_name, course_code, judge_start_time, judge_end_time, audit_start_time, audit_end_time, publish_time, github_address)
             VALUE (#{courseName}, #{courseCode}, #{judgeStartTime}, #{judgeEndTime},
-                   #{auditStartTime}, #{auditEndTime}, #{publishTime},#{githubAddress})
+                   #{auditStartTime}, #{auditEndTime}, #{publishTime}, #{githubAddress})
     </insert>
 
     <update id="updateScheduleTime" parameterType="com.activiti.pojo.schedule.ScheduleDto">
@@ -42,19 +42,39 @@
     </update>
 
     <select id="selectAllScheduleTime" resultType="com.activiti.pojo.schedule.ScheduleDto">
-        SELECT * FROM judge_schedule_time LIMIT #{offset}, #{limit};
+        SELECT *
+        FROM judge_schedule_time
+        LIMIT #{offset}, #{limit};
     </select>
-    
+
     <delete id="deleteCourse" parameterType="string">
-        DELETE FROM judge_schedule_time WHERE COURSE_CODE=#{courseCode};
+        DELETE FROM judge_schedule_time
+        WHERE COURSE_CODE = #{courseCode};
     </delete>
 
     <select id="selectAllOfScheduleTime" resultType="com.activiti.pojo.schedule.ScheduleDto">
-        SELECT * FROM judge_schedule_time;
+        SELECT *
+        FROM judge_schedule_time;
     </select>
 
     <select id="countAllScheduleTime" resultType="long">
-        SELECT count(*) FROM judge_schedule_time;
+        SELECT count(*)
+        FROM judge_schedule_time;
     </select>
+
+    <update id="createTable" parameterType="string">
+        CREATE TABLE IF NOT EXISTS ${tableName} (
+            `USER_ID` INT(11) NOT NULL AUTO_INCREMENT,
+            `USER_NAME` VARCHAR(20) DEFAULT NULL,
+            `EMAIL_ADDRESS` VARCHAR(30) UNIQUE NOT NULL,
+            `ABILITY_LEVEL` VARCHAR(10) DEFAULT NULL,
+            INDEX index_email_address (`EMAIL_ADDRESS`),
+            PRIMARY KEY (`USER_ID`)
+        )ENGINE = MyISAM DEFAULT CHARSET = utf8
+    </update>
+
+    <update id="dropTable" parameterType="string">
+        DROP TABLE ${tableName};
+    </update>
 
 </mapper>

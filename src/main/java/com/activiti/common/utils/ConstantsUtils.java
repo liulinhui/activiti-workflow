@@ -21,4 +21,6 @@ public class ConstantsUtils {
     public static final String TRIGGER_NAME = "动态任务触发器";
     public static final String TRIGGER_GROUP_NAME = "ASSESSMENT_JOB_GROUP";
 
+    public static final String tablePrefixName="JUDGE_STU_INFO_";
+
 }

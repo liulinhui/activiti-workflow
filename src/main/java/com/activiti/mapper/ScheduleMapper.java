@@ -44,4 +44,8 @@ public interface ScheduleMapper {
 
     long countAllScheduleTime();
 
+    int createTable(@Param("tableName")String tableName);
+
+    int dropTable(@Param("tableName")String tableName);
+
 }

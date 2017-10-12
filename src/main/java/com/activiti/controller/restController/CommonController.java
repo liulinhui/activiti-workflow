@@ -90,6 +90,7 @@ public class CommonController {
         if (null != scheduleService.selectScheduleTime(courseCode)) throw new Exception(courseCode + "该课程已经存在");
         if (null == courseCode) throw new Exception("courseCode字段不能为空");
         if (!commonUtil.validateTime(scheduleDto)) throw new Exception("时间段配置错误");
+        scheduleMapper.createTable("`"+ConstantsUtils.tablePrefixName + courseCode.toUpperCase()+"`");
         scheduleService.insertScheduleTime(scheduleDto);
         commonUtil.addNewActivitiJob(scheduleDto);
         return "课程部署成功";
@@ -112,6 +113,7 @@ public class CommonController {
             identity = true;
         }
         if (identity) {
+            scheduleMapper.dropTable("`"+ConstantsUtils.tablePrefixName + courseCode.toUpperCase()+"`");
             commonUtil.removeNewActivitiJob(scheduleService.selectScheduleTime(courseCode));
             scheduleMapper.deleteCourse(courseCode);
             return "课程移除成功";
