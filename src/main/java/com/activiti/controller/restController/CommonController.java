@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
@@ -48,10 +49,10 @@ public class CommonController {
     @RequestMapping("/getQAContent")
     @ResponseBody
     @ApiAnnotation
-    public Object getQAFromGitHub(@RequestParam(value = "githubUrl", required = true) String githubUrl) {
-        JSONObject jsonObject = commonService.getQAFromGitHub(githubUrl);
-        String content = new String(Base64.decodeBase64(jsonObject.get("content").toString().getBytes()));
-        return commonService.getQAFromGitHub(githubUrl);
+    public Object getQAFromGitHub(@RequestParam(value = "githubUrl", required = true) String githubUrl) throws UnsupportedEncodingException {
+        String content = new String(Base64.decodeBase64(commonService.getQAFromGitHub(githubUrl).get("content").toString().getBytes()),"utf-8");
+        JSONObject result=JSONObject.parseObject(content);
+        return result.get("question");
     }
 
     /**

@@ -2,6 +2,7 @@ package com.activiti.controller.restController;
 
 import com.activiti.common.aop.ApiAnnotation;
 import com.activiti.common.utils.CommonUtil;
+import com.activiti.common.utils.ConstantsUtils;
 import com.activiti.pojo.user.StudentWorkInfo;
 import com.activiti.pojo.user.User;
 import com.activiti.pojo.user.UserRole;
@@ -10,11 +11,9 @@ import com.activiti.service.ScheduleService;
 import com.activiti.service.UserService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,13 +49,18 @@ public class UserController {
     /**
      * 提交作业
      *
-     * @param studentWorkInfo courseCode,emailAddress,workDetail
+     * @param courseCode
+     * @param workDetail
+     * @param request
      * @return
      */
     @RequestMapping("/commitWork")
     @ResponseBody
-    @ApiAnnotation(validate = {"courseCode", "emailAddress", "workDetail"})
-    public Object commitWork(StudentWorkInfo studentWorkInfo) {
+    @ApiAnnotation
+    public Object commitWork(@RequestParam(required = true, name = "courseCode") String courseCode,
+                             @RequestParam(required = true, name = "workDetail") String workDetail, HttpServletRequest request) {
+        String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, email, workDetail, new Date());
         User user = new User(commonUtil.getRandomUserName(), studentWorkInfo.getEmailAddress());
         userService.insertUser(user);
         studentWorkInfo.setLastCommitTime(new Date());
