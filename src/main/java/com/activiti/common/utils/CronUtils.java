@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class CronUtils {
 
-    public static String formatDateByPattern(Date date, String dateFormat){
+    private static String formatDateByPattern(Date date, String dateFormat){
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
         String formatTimeStr = null;
         if (date != null) {

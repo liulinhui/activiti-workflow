@@ -2,6 +2,7 @@ package com.activiti.controller;
 
 import com.activiti.common.utils.CommonUtil;
 import com.activiti.common.utils.ConstantsUtils;
+import com.activiti.mapper.ScheduleMapper;
 import com.activiti.pojo.schedule.ScheduleDto;
 import com.activiti.pojo.user.UserRole;
 import com.activiti.service.ScheduleService;
@@ -31,6 +32,8 @@ public class IndexController {
     private UserService userService;
     @Autowired
     private ScheduleService scheduleService;
+    @Autowired
+    private ScheduleMapper scheduleMapper;
 
     @RequestMapping("/login")
     public String greeting(HttpServletRequest request, ModelMap model) {
@@ -116,7 +119,7 @@ public class IndexController {
      */
     @RequestMapping("/answer")
     public String answer(HttpServletRequest request,ModelMap modelMap) {
-        List<ScheduleDto> scheduleDtoList = scheduleService.selectAllScheduleTime(0, 5000);
+        List<ScheduleDto> scheduleDtoList = scheduleMapper.selectAllOfScheduleTime();
         modelMap.put("scheduleDtoList",scheduleDtoList);
         return "submodule/answer";
     }

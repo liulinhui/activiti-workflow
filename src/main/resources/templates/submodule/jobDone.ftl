@@ -75,7 +75,6 @@
 
         //已完成的答题任务监控工具条
         table.on('tool(myJobAnswerDoneTable)', function (obj) {
-            console.log(obj);
             var courseCode = obj.data.courseCode;
             if (obj.event === 'origin') {
                 $.ajax({

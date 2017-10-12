@@ -79,7 +79,7 @@
                         $('.my-answer .my-answer-answer').val('');
                     }
                     else
-                        layer.alert('<p>提交失败,请确认您是否已经做过本题。<p>', {
+                        layer.alert('<p>'+result.errorMessage+'<p>', {
                             title: '提交失败'
                         });
                 }

@@ -45,6 +45,10 @@
         SELECT * FROM judge_schedule_time LIMIT #{offset}, #{limit};
     </select>
 
+    <select id="selectAllOfScheduleTime" resultType="com.activiti.pojo.schedule.ScheduleDto">
+        SELECT * FROM judge_schedule_time;
+    </select>
+
     <select id="countAllScheduleTime" resultType="long">
         SELECT count(*) FROM judge_schedule_time;
     </select>

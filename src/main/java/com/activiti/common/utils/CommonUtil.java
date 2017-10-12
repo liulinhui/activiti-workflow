@@ -170,4 +170,15 @@ public class CommonUtil {
         DateTime dateTime = new DateTime(date);
         return dateTime.toString("yyyy/MM/dd HH:mm:ss");
     }
+
+    /**
+     * 判断a是否大于b
+     * @param a
+     * @param b
+     * @return
+     */
+    public boolean compareDate(Date a, Date b) {
+        DateTimeComparator comparator = DateTimeComparator.getInstance(DateTimeFieldType.secondOfDay());
+        return comparator.compare(new DateTime(a), new DateTime(b)) > 0 ? true : false;
+    }
 }

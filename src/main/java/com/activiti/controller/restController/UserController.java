@@ -61,9 +61,12 @@ public class UserController {
     @RequestMapping("/commitWork")
     @ResponseBody
     @ApiAnnotation
-    public Object commitWork(@RequestParam(required = true, name = "courseCode") String courseCode,
-                             @RequestParam(required = true, name = "workDetail") String workDetail, HttpServletRequest request) {
+    public Object commitWork(@RequestParam(name = "courseCode") String courseCode,
+                             @RequestParam(name = "workDetail") String workDetail, HttpServletRequest request) throws Exception {
         String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        Date deadline = scheduleService.selectScheduleTime(courseCode).getJudgeStartTime();
+        if (commonUtil.compareDate(new Date(), deadline))
+            throw new Exception("提交作业截至时间:" + CommonUtil.dateToString(deadline));
         StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, email, workDetail, new Date());
         User user = new User(commonUtil.getRandomUserName(), studentWorkInfo.getEmailAddress());
         userService.insertUser(user);
@@ -83,8 +86,8 @@ public class UserController {
     @ApiAnnotation
     public Object selectStudentWorkInfo(
             @RequestParam(value = "courseCode", required = false) String courseCode,
-            @RequestParam(value = "page", required = false,defaultValue = "1") long page,
-            @RequestParam(value = "limit", required = false,defaultValue = "1") int limit,
+            @RequestParam(value = "page", required = false, defaultValue = "1") long page,
+            @RequestParam(value = "limit", required = false, defaultValue = "1") int limit,
             @RequestParam(value = "count", required = false) boolean count,
             HttpServletRequest request) {
         String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
@@ -98,7 +101,7 @@ public class UserController {
             jsonObject.put("count", userMapper.countStudentWorkInfo(email));
             return jsonObject;
         } else {
-            return userMapper.selectStudentWorkInfoPage(email,(page - 1) * limit, limit );
+            return userMapper.selectStudentWorkInfoPage(email, (page - 1) * limit, limit);
         }
     }
 
