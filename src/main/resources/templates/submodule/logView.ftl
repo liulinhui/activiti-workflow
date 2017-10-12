@@ -41,7 +41,7 @@
                                 table.render({
                                     elem: '.logInfoTable',
                                     data: data.data,
-                                    height: 272,
+                                    height: 420,
                                     width: 3000,
                                     cols: [[ //标题栏
                                         {field: 'uuid', title: '序列号', width: 200},

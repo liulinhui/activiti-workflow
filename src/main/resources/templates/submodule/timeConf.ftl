@@ -1,4 +1,43 @@
 <div class="my-time-conf">
+<#--已部署的流程-->
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>已部署的流程</legend>
+    </fieldset>
+    <div class="layui-form">
+        <table class="layui-table">
+            <colgroup>
+                <col width="150">
+                <col width="80">
+                <col width="150">
+                <col width="400">
+                <col width="400">
+                <col width="200">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>部署ID</th>
+                <th>工作流名称</th>
+                <th>工作流资源</th>
+                <th>流程图资源</th>
+                <th>Key</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>assessment:1:6</td>
+                <td>1</td>
+                <td>My Process</td>
+                <td>D:\apache-tomcat-8.0.45\webapps\activiti-explorer\WEB-INF\classes\org\activiti\explorer\conf</td>
+                <td>D:\apache-tomcat-8.0.45\webapps\activiti-explorer\WEB-INF\classes\org\activiti\explorer\conf</td>
+                <td>assessment</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <br>
+<#--课程配置-->
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>课程配置</legend>
     </fieldset>
@@ -24,6 +63,8 @@
                        class="layui-input">
             </div>
         </div>
+        <br>
+        <br>
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
             <legend>时间配置</legend>
         </fieldset>
@@ -91,6 +132,8 @@
             </div>
         </div>
     </div>
+    <br>
+    <br>
     <fieldset class="layui-elem-field" style="margin-top: 30px;">
         <legend>已配置的课程</legend>
         <div>
@@ -99,10 +142,11 @@
             <div style="margin-left: 15%;" id="my-time-conf-LayPage"></div>
         </div>
     </fieldset>
+
 </div>
 
 <script>
-    layui.use(['form', 'layedit', 'laydate','table', 'laypage'], function () {
+    layui.use(['form', 'layedit', 'laydate', 'table', 'laypage'], function () {
         var form = layui.form, layer = layui.layer, layedit = layui.layedit, laydate = layui.laydate, $ = layui.jquery;
         var table = layui.table;
         var laypage = layui.laypage;
@@ -117,7 +161,7 @@
         /**
          * 加载数据表格
          */
-        var loadTable=function () {
+        var loadTable = function () {
             $.ajax({
                 url: './api/common/countAllScheduleTime',
                 dataType: 'json',
@@ -125,9 +169,9 @@
                     laypage.render({
                         elem: 'my-time-conf-LayPage',
                         count: data.data.count,
-                        theme:'#FF5722',
-                        limit:5,
-                        limits:[5,10,15],
+                        theme: '#FF5722',
+                        limit: 5,
+                        limits: [5, 10, 15],
                         layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
                         jump: function (obj) {
                             var param = {page: obj.curr, limit: obj.limit};
@@ -167,11 +211,11 @@
         //监听提交
         form.on('submit(my-time-conf-submit)', function (data) {
             $.ajax({
-                url:'./api/common/insertScheduleTime',
-                data:{data:JSON.stringify(data.field)},
-                dataType:'json',
-                success:function (result) {
-                    if (result.success){
+                url: './api/common/insertScheduleTime',
+                data: {data: JSON.stringify(data.field)},
+                dataType: 'json',
+                success: function (result) {
+                    if (result.success) {
                         layer.alert(JSON.stringify(result), {
                             title: '部署成功'
                         });
@@ -179,14 +223,14 @@
                     }
                     else
                         layer.alert(JSON.stringify(result), {
-                        title: '部署失败'
-                    });
+                            title: '部署失败'
+                        });
                 }
             });
             return false;
         });
 
-        $('.my-time-conf .my-time-conf-cancel').on('click',function () {
+        $('.my-time-conf .my-time-conf-cancel').on('click', function () {
             $('.my-time-conf input').val('');
         });
 

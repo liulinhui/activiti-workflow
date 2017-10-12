@@ -2,10 +2,6 @@ layui.use('element', function () {
     var $ = layui.jquery, layer = layui.layer;
     var element = layui.element;
     var layui_body = $('.layui-body');
-    $('#my-activiti-conf').on('click', function () {
-        layui_body.html('');
-        layui_body.html(ajaxGet('./activitiConf'));
-    });
 
     $('#my-answer').on('click', function () {
         layui_body.html('');

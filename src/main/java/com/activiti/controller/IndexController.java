@@ -76,17 +76,6 @@ public class IndexController {
     }
 
     /**
-     * 工作流配置
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping("/activitiConf")
-    public String activitiConf(HttpServletRequest request) {
-        return "submodule/activiti";
-    }
-
-    /**
      * 配置时间表页面
      *
      * @param request

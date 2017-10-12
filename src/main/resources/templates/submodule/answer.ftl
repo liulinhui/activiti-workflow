@@ -32,7 +32,7 @@
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn " lay-submit="" lay-filter="my-answer-commit-btn">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button type="reset" class="layui-btn layui-btn-primary my-answer-cancel-btn">重置</button>
             </div>
         </div>
     </div>
@@ -57,10 +57,14 @@
                 }
             })
         });
+
+        $('.my-answer .my-answer-cancel-btn').on('click', function () {
+            $('.my-answer .my-answer-answer').val('');
+        });
+
         //监听提交
         form.on('submit(my-answer-commit-btn)', function (data) {
             var courseCode = fieldset.attr('courseCode');
-            alert(JSON.stringify(data.field));
             $.ajax({
                 url: './api/user/commitWork',
                 data: {
@@ -70,12 +74,13 @@
                 dataType: 'json',
                 success: function (result) {
                     if (result.success) {
-                        layer.alert(JSON.stringify(result), {
+                        layer.alert('<p>提交成功，我们已将互评相关邮件发送至您的邮箱，请注意查收！<p>', {
                             title: '提交成功'
                         });
+                        $('.my-answer .my-answer-answer').val('');
                     }
                     else
-                        layer.alert(JSON.stringify(result), {
+                        layer.alert('<p>提交失败,请确认您是否已经做过本题。<p>', {
                             title: '提交失败'
                         });
                 }
