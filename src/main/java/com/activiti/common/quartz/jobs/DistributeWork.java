@@ -1,9 +1,11 @@
 package com.activiti.common.quartz.jobs;
 
 import com.activiti.common.quartz.QuartzManager;
+import com.activiti.common.utils.CommonUtil;
+import com.activiti.common.utils.ConstantsUtils;
+import com.activiti.common.utils.CronUtils;
 import com.activiti.mapper.ScheduleMapper;
 import com.activiti.pojo.schedule.ScheduleDto;
-import net.sf.ehcache.util.SetAsList;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
 import org.joda.time.DateTimeFieldType;
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 /**
  * 任务管理
@@ -32,6 +34,9 @@ public class DistributeWork implements ApplicationContextAware {
     private QuartzManager quartzManager;
     @Autowired
     private ScheduleMapper scheduleMapper;
+    @Autowired
+    private CommonUtil commonUtil;
+
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -45,7 +50,7 @@ public class DistributeWork implements ApplicationContextAware {
             }
         });
         scheduleDtoList.forEach(scheduleDto -> {
-
+            commonUtil.addNewActivitiJob(scheduleDto);
         });
     }
 }

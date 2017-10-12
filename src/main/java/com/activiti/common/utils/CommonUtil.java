@@ -1,6 +1,10 @@
 package com.activiti.common.utils;
 
 import com.activiti.common.mail.MailService;
+import com.activiti.common.quartz.QuartzManager;
+import com.activiti.common.quartz.jobs.AssessmentStartJob;
+import com.activiti.common.quartz.jobs.PublishGradeEmailNotifyJob;
+import com.activiti.common.quartz.jobs.UnAssessmentNotifyJob;
 import com.activiti.common.sequence.Sequence;
 import com.activiti.pojo.email.EmailDto;
 import com.activiti.pojo.email.EmailType;
@@ -41,6 +45,8 @@ public class CommonUtil {
     private MailService mailService;
     @Autowired
     private ScheduleService scheduleService;
+    @Autowired
+    private QuartzManager quartzManager;
 
 
     /**
@@ -173,6 +179,7 @@ public class CommonUtil {
 
     /**
      * 判断a是否大于b
+     *
      * @param a
      * @param b
      * @return
@@ -180,5 +187,22 @@ public class CommonUtil {
     public boolean compareDate(Date a, Date b) {
         DateTimeComparator comparator = DateTimeComparator.getInstance(DateTimeFieldType.secondOfDay());
         return comparator.compare(new DateTime(a), new DateTime(b)) > 0 ? true : false;
+    }
+
+    /**
+     * 添加一个新流程任务
+     *
+     * @param scheduleDto
+     */
+    public void addNewActivitiJob(ScheduleDto scheduleDto) {
+        if (compareDate(scheduleDto.getJudgeStartTime(), new Date()))
+            quartzManager.addJob(ConstantsUtils.NOTIFY_TO_ASSESSMENT, scheduleDto.getCourseCode(),
+                    scheduleDto.getCourseCode()+ConstantsUtils.NOTIFY_TO_ASSESSMENT, ConstantsUtils.TRIGGER_GROUP_NAME, AssessmentStartJob.class, CronUtils.getCron(scheduleDto.getJudgeStartTime()));
+        if (compareDate(scheduleDto.getJudgeEndTime(), new Date()))
+            quartzManager.addJob(ConstantsUtils.NOTIFY_HAVE_NOT_JOIN_ASSESSMENT, scheduleDto.getCourseCode(),
+                    scheduleDto.getCourseCode()+ConstantsUtils.NOTIFY_HAVE_NOT_JOIN_ASSESSMENT, ConstantsUtils.TRIGGER_GROUP_NAME, UnAssessmentNotifyJob.class, CronUtils.getCron(scheduleDto.getJudgeEndTime()));
+        if (compareDate(scheduleDto.getPublishTime(), new Date()))
+            quartzManager.addJob(ConstantsUtils.NOTIFY_PUBLISH_GRADE, scheduleDto.getCourseCode(),
+                    scheduleDto.getCourseCode()+ConstantsUtils.NOTIFY_PUBLISH_GRADE, ConstantsUtils.TRIGGER_GROUP_NAME, PublishGradeEmailNotifyJob.class, CronUtils.getCron(scheduleDto.getPublishTime()));
     }
 }

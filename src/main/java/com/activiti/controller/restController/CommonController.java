@@ -50,7 +50,7 @@ public class CommonController {
     @ResponseBody
     @ApiAnnotation
     public Object getQAFromGitHub(@RequestParam(value = "courseCode") String courseCode) throws UnsupportedEncodingException {
-        String githubAddress=scheduleMapper.selectScheduleTime(courseCode).getGithubAddress();
+        String githubAddress = scheduleMapper.selectScheduleTime(courseCode).getGithubAddress();
         String content = new String(Base64.decodeBase64(commonService.getQAFromGitHub(githubAddress).get("content").toString().getBytes()), "utf-8");
         JSONObject result = JSONObject.parseObject(content);
         return result.get("question");
@@ -86,6 +86,7 @@ public class CommonController {
         if (null == courseCode) throw new Exception("courseCode字段不能为空");
         if (!commonUtil.validateTime(scheduleDto)) throw new Exception("时间段配置错误");
         scheduleService.insertScheduleTime(scheduleDto);
+        commonUtil.addNewActivitiJob(scheduleDto);
         return "课程部署成功";
     }
 
