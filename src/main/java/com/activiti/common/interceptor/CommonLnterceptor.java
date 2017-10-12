@@ -45,7 +45,8 @@ public class CommonLnterceptor implements HandlerInterceptor {
      */
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-        modelAndView.getModel().put("projectEnv", env);
+        if (null!=modelAndView)
+            modelAndView.getModel().put("projectEnv", env);
     }
 
     /**
