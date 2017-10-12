@@ -1,5 +1,6 @@
 package com.activiti.common.utils;
 
+import com.activiti.common.kafka.MailProducer;
 import com.activiti.common.mail.MailService;
 import com.activiti.common.quartz.QuartzManager;
 import com.activiti.common.quartz.jobs.AssessmentStartJob;
@@ -44,9 +45,10 @@ public class CommonUtil {
     @Autowired
     private MailService mailService;
     @Autowired
-    private ScheduleService scheduleService;
-    @Autowired
     private QuartzManager quartzManager;
+    @Autowired
+    private MailProducer mailProducer;
+
 
 
     /**
