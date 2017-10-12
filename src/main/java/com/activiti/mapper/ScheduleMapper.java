@@ -38,6 +38,8 @@ public interface ScheduleMapper {
      */
     List<ScheduleDto> selectAllScheduleTime(@Param("offset")long offset, @Param("limit") int limit);
 
+    int deleteCourse(String courseCode);
+
     List<ScheduleDto> selectAllOfScheduleTime();
 
     long countAllScheduleTime();

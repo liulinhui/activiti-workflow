@@ -117,7 +117,7 @@
     <fieldset class="layui-elem-field" style="margin-top: 30px;">
         <legend>已配置的课程</legend>
         <div>
-            <table class="my-time-conf-table">
+            <table class="my-time-conf-table" lay-filter="my-time-conf-table">
             </table>
             <div style="margin-left: 15%;" id="my-time-conf-LayPage"></div>
         </div>
@@ -167,13 +167,19 @@
                                         width: 3000,
                                         cols: [[ //标题栏
                                             {field: 'courseName', title: '课程名称', width: 100},
-                                            {field: 'courseCode', title: '课程代码', width: 150},
-                                            {field: 'githubAddress', title: 'GitHub地址', width: 650},
+                                            {field: 'courseCode', title: '课程代码', width: 100},
+                                            {field: 'githubAddress', title: 'GitHub地址', width: 600},
                                             {field: 'judgeStartTimeString', title: '互评开始', width: 160},
                                             {field: 'judgeEndTimeString', title: '互评结束', width: 160},
                                             {field: 'auditStartTimeString', title: '审查开始', width: 160},
                                             {field: 'auditEndTimeString', title: '审查结束', width: 160},
-                                            {field: 'publishTimeString', title: '成绩发布', width: 160}
+                                            {field: 'publishTimeString', title: '成绩发布', width: 160},
+                                            {
+                                                field: 'operation',
+                                                title: '操作',
+                                                width: 100,
+                                                templet: '#my-time-conf-operation'
+                                            },
                                         ]],
                                         skin: 'row', //表格风格
                                         even: true,
@@ -213,5 +219,37 @@
         });
 
         loadTable();
+
+        table.on('tool(my-time-conf-table)', function (obj) {
+            var courseCode = obj.data.courseCode;
+            if (obj.event === 'delete') {
+                $.ajax({
+                    url: './api/common/removeScheduleTime',
+                    data: {courseCode: courseCode},
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result.success) {
+                            layer.open({
+                                title: '操作成功',
+                                shadeClose: true,
+                                content: '<p>' + result.data + '<p>'
+                            });
+                            loadTable();
+                        } else {
+                            layer.open({
+                                title: '操作失败',
+                                shadeClose: true,
+                                content: '<p>' + result.errorMessage + '<p>'
+                            });
+                        }
+                    }
+                })
+            }
+        })
+        ;
     })
+</script>
+
+<script type="text/html" id="my-time-conf-operation">
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="delete">删除</a>
 </script>

@@ -2,11 +2,13 @@ package com.activiti.controller.restController;
 
 import com.activiti.common.aop.ApiAnnotation;
 import com.activiti.common.utils.CommonUtil;
+import com.activiti.common.utils.ConstantsUtils;
 import com.activiti.mapper.ScheduleMapper;
 import com.activiti.mapper.ToolsMapper;
 import com.activiti.pojo.schedule.ScheduleDto;
 import com.activiti.service.CommonService;
 import com.activiti.service.ScheduleService;
+import com.activiti.service.UserService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -39,6 +42,8 @@ public class CommonController {
     private ScheduleMapper scheduleMapper;
     @Autowired
     private CommonUtil commonUtil;
+    @Autowired
+    private UserService userService;
 
     /**
      * GitHub请求题目和答案
@@ -88,6 +93,31 @@ public class CommonController {
         scheduleService.insertScheduleTime(scheduleDto);
         commonUtil.addNewActivitiJob(scheduleDto);
         return "课程部署成功";
+    }
+
+    /**
+     * 移除指定课程的互评时间
+     *
+     * @param courseCode
+     * @return
+     */
+    @RequestMapping("/removeScheduleTime")
+    @ResponseBody
+    @ApiAnnotation
+    public Object removeScheduleTime(@RequestParam(value = "courseCode") String courseCode, HttpServletRequest request) throws Exception {
+        String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        boolean identity = false;
+        if (ConstantsUtils.defaultManager.equals(email)) identity = true;
+        if (userService.selectAllUserRole().stream().anyMatch(a -> email.equals(a.getEmail()))) {
+            identity = true;
+        }
+        if (identity) {
+            commonUtil.removeNewActivitiJob(scheduleService.selectScheduleTime(courseCode));
+            scheduleMapper.deleteCourse(courseCode);
+            return "课程移除成功";
+        } else {
+            throw new Exception(email + "不是管理员，无法进行此操作！");
+        }
     }
 
     /**

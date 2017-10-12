@@ -84,9 +84,7 @@
                     success: function (result) {
                         var question = result.data;
                         layer.open({
-                            type: 1,
-                            title: false,
-                            closeBtn: 0,
+                            title: '原题',
                             shadeClose: true,
                             content: '<p>' + question + '<p>'
                         });
@@ -108,6 +106,6 @@
 </script>
 
 <script type="text/html" id="my-job-done-answer-detail">
-    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="origin">查看原始题目</a>
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="origin">查看原题</a>
     <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="detail">查看流程图</a>
 </script>

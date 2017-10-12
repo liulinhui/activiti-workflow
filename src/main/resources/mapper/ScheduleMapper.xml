@@ -44,6 +44,10 @@
     <select id="selectAllScheduleTime" resultType="com.activiti.pojo.schedule.ScheduleDto">
         SELECT * FROM judge_schedule_time LIMIT #{offset}, #{limit};
     </select>
+    
+    <delete id="deleteCourse" parameterType="string">
+        DELETE FROM judge_schedule_time WHERE COURSE_CODE=#{courseCode};
+    </delete>
 
     <select id="selectAllOfScheduleTime" resultType="com.activiti.pojo.schedule.ScheduleDto">
         SELECT * FROM judge_schedule_time;

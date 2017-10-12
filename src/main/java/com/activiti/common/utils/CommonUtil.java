@@ -212,6 +212,23 @@ public class CommonUtil {
     }
 
     /**
+     * 添加一个新流程任务
+     *
+     * @param scheduleDto
+     */
+    public void removeNewActivitiJob(ScheduleDto scheduleDto) {
+        if (compareDate(scheduleDto.getJudgeStartTime(), new Date()))
+            quartzManager.removeJob(ConstantsUtils.NOTIFY_TO_ASSESSMENT, scheduleDto.getCourseCode(),
+                    scheduleDto.getCourseCode() + ConstantsUtils.NOTIFY_TO_ASSESSMENT, ConstantsUtils.TRIGGER_GROUP_NAME);
+        if (compareDate(scheduleDto.getJudgeEndTime(), new Date()))
+            quartzManager.removeJob(ConstantsUtils.NOTIFY_HAVE_NOT_JOIN_ASSESSMENT, scheduleDto.getCourseCode(),
+                    scheduleDto.getCourseCode() + ConstantsUtils.NOTIFY_HAVE_NOT_JOIN_ASSESSMENT, ConstantsUtils.TRIGGER_GROUP_NAME);
+        if (compareDate(scheduleDto.getPublishTime(), new Date()))
+            quartzManager.removeJob(ConstantsUtils.NOTIFY_PUBLISH_GRADE, scheduleDto.getCourseCode(),
+                    scheduleDto.getCourseCode() + ConstantsUtils.NOTIFY_PUBLISH_GRADE, ConstantsUtils.TRIGGER_GROUP_NAME);
+    }
+
+    /**
      * 通知参加互评，并且打乱学生提交顺序
      *
      * @param courseCode 课程代码

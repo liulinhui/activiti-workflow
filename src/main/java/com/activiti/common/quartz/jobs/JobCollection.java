@@ -9,6 +9,6 @@ import java.util.List;
 /**
  * 保存一些静态变量
  */
-public class JobCollection {
-    public static CommonUtil commonUtil;
+class JobCollection {
+    static CommonUtil commonUtil;
 }
