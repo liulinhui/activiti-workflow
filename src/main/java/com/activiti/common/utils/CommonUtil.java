@@ -148,7 +148,7 @@ public class CommonUtil {
      * @return
      */
     public boolean validateTime(ScheduleDto a) {
-        Date[] dates = {a.getStartTime(), a.getCommitEndTime(), a.getJudgeStartTime(), a.getJudgeEndTime(), a.getAuditStartTime(), a.getAuditEndTime()};
+        Date[] dates = {a.getJudgeStartTime(), a.getJudgeEndTime(), a.getAuditStartTime(), a.getAuditEndTime()};
         DateTimeComparator comparator = DateTimeComparator.getInstance(DateTimeFieldType.secondOfDay());
         for (int i = dates.length - 1; i > 0; --i) {
             for (int j = 0; j < i; ++j) {

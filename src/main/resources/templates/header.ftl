@@ -25,7 +25,7 @@
                 </@identity_validate>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a id="my-job-done" href="javascript:;">已完成任务</a></li>
+            <li class="layui-nav-item"><a id="my-job-done" href="javascript:;">任务完成情况</a></li>
             <li class="layui-nav-item"><a id="my-grade-info" href="javascript:;">成绩信息</a></li>
         <@identity_validate userEmail="${userEmail!}" id="1">
             <#if identity?? && identity==true>

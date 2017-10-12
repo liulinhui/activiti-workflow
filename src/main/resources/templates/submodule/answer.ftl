@@ -74,7 +74,7 @@
                 dataType: 'json',
                 success: function (result) {
                     if (result.success) {
-                        layer.alert('<p>提交成功，我们已将互评相关邮件发送至您的邮箱，请注意查收！<p>', {
+                        layer.alert('<p>提交成功，可以到任务完成情况中查看详细信息，我们已将互评相关邮件发送至您的邮箱，请注意查收！<p>', {
                             title: '提交成功'
                         });
                         $('.my-answer .my-answer-answer').val('');

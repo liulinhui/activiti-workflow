@@ -14,8 +14,6 @@ public class ScheduleDto implements Serializable {
 
     private String courseName;  //课程名称
     private String courseCode;  //课程代码
-    private Date startTime;      //提交作业开始时间
-    private Date commitEndTime;  //提交作业结束时间
     private Date judgeStartTime; //互评开始时间
     private Date judgeEndTime;   //互评结束时间
     private Date auditStartTime;  //学生审查开始时间
@@ -49,24 +47,6 @@ public class ScheduleDto implements Serializable {
 
     public void setCourseCode(String courseCode) {
         this.courseCode = courseCode;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-        this.startTimeString= CommonUtil.dateToString(startTime);
-    }
-
-    public Date getCommitEndTime() {
-        return commitEndTime;
-    }
-
-    public void setCommitEndTime(Date commitEndTime) {
-        this.commitEndTime = commitEndTime;
-        this.commitEndTimeString= CommonUtil.dateToString(commitEndTime);
     }
 
     public Date getJudgeStartTime() {
@@ -191,8 +171,6 @@ public class ScheduleDto implements Serializable {
         return "ScheduleDto{" +
                 "courseName='" + courseName + '\'' +
                 ", courseCode='" + courseCode + '\'' +
-                ", startTime=" + startTime +
-                ", commitEndTime=" + commitEndTime +
                 ", judgeStartTime=" + judgeStartTime +
                 ", judgeEndTime=" + judgeEndTime +
                 ", auditStartTime=" + auditStartTime +

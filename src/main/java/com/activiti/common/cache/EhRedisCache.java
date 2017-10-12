@@ -66,11 +66,13 @@ public class EhRedisCache implements Cache {
 
     @Override
     public void put(Object key, Object value) {
-        ehCache.put(new Element(key, value));
-        logger.info("Cache L1 put (ehcache) :{}={}", key, value);
-        final String keyStr = key.toString();
-        final Object valueStr = value;
-        redisCommonUtil.put(keyStr, value, liveTime);
+        if (null!=value){
+            ehCache.put(new Element(key, value));
+            logger.info("Cache L1 put (ehcache) :{}={}", key, value);
+            final String keyStr = key.toString();
+            final Object valueStr = value;
+            redisCommonUtil.put(keyStr, value, liveTime);
+        }
     }
 
     @Override

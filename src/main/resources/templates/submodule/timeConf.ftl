@@ -63,27 +63,7 @@
                        class="layui-input">
             </div>
         </div>
-        <br>
-        <br>
-        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-            <legend>时间配置</legend>
-        </fieldset>
         <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">答题开始</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="startTime" lay-verify="required" class="layui-input my-time-conf-startTime"
-                           placeholder="yyyy-MM-dd HH:mm:ss">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">答题结束</label>
-                <div class="layui-input-inline">
-                    <input type="text" lay-verify="required" name="commitEndTime"
-                           class="layui-input my-time-conf-commitEndTime"
-                           placeholder="yyyy-MM-dd HH:mm:ss">
-                </div>
-            </div>
             <div class="layui-inline">
                 <label class="layui-form-label">互评开始</label>
                 <div class="layui-input-inline">
@@ -188,9 +168,7 @@
                                         cols: [[ //标题栏
                                             {field: 'courseName', title: '课程名称', width: 100},
                                             {field: 'courseCode', title: '课程代码', width: 150},
-                                            {field: 'githubAddress', title: 'GitHub地址', width: 335},
-                                            {field: 'startTimeString', title: '答题开始', width: 160},
-                                            {field: 'commitEndTimeString', title: '答题结束', width: 160},
+                                            {field: 'githubAddress', title: 'GitHub地址', width: 650},
                                             {field: 'judgeStartTimeString', title: '互评开始', width: 160},
                                             {field: 'judgeEndTimeString', title: '互评结束', width: 160},
                                             {field: 'auditStartTimeString', title: '审查开始', width: 160},

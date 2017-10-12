@@ -50,8 +50,8 @@ public class CommonController {
     @ResponseBody
     @ApiAnnotation
     public Object getQAFromGitHub(@RequestParam(value = "githubUrl", required = true) String githubUrl) throws UnsupportedEncodingException {
-        String content = new String(Base64.decodeBase64(commonService.getQAFromGitHub(githubUrl).get("content").toString().getBytes()),"utf-8");
-        JSONObject result=JSONObject.parseObject(content);
+        String content = new String(Base64.decodeBase64(commonService.getQAFromGitHub(githubUrl).get("content").toString().getBytes()), "utf-8");
+        JSONObject result = JSONObject.parseObject(content);
         return result.get("question");
     }
 
@@ -146,13 +146,7 @@ public class CommonController {
         if (null == scheduleDto) return -1;
         DateTime nowDate = new DateTime();
         DateTimeComparator comparator = DateTimeComparator.getInstance(DateTimeFieldType.secondOfDay());
-        if (comparator.compare(nowDate, new DateTime(scheduleDto.getStartTime())) < 0)
-            return 0;
-        if (comparator.compare(nowDate, new DateTime(scheduleDto.getStartTime())) > 0 &&
-                comparator.compare(nowDate, new DateTime(scheduleDto.getCommitEndTime())) < 0)
-            return 1;
-        if (comparator.compare(nowDate, new DateTime(scheduleDto.getCommitEndTime())) > 0 &&
-                comparator.compare(nowDate, new DateTime(scheduleDto.getJudgeStartTime())) < 0)
+        if (comparator.compare(nowDate, new DateTime(scheduleDto.getJudgeStartTime())) < 0)
             return 2;
         if (comparator.compare(nowDate, new DateTime(scheduleDto.getJudgeStartTime())) > 0 &&
                 comparator.compare(nowDate, new DateTime(scheduleDto.getJudgeEndTime())) < 0)

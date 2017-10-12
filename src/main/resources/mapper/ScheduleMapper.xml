@@ -8,8 +8,8 @@
     </select>
 
     <insert id="insertScheduleTime" parameterType="com.activiti.pojo.schedule.ScheduleDto">
-        INSERT INTO judge_schedule_time (course_name, course_code, start_time, commit_end_time, judge_start_time, judge_end_time, audit_start_time, audit_end_time, publish_time,github_address)
-            VALUE (#{courseName}, #{courseCode}, #{startTime}, #{commitEndTime}, #{judgeStartTime}, #{judgeEndTime},
+        INSERT INTO judge_schedule_time (course_name, course_code, judge_start_time, judge_end_time, audit_start_time, audit_end_time, publish_time,github_address)
+            VALUE (#{courseName}, #{courseCode}, #{judgeStartTime}, #{judgeEndTime},
                    #{auditStartTime}, #{auditEndTime}, #{publishTime},#{githubAddress})
     </insert>
 
