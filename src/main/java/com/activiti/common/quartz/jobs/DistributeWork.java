@@ -41,7 +41,7 @@ public class DistributeWork implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         List<ScheduleDto> scheduleDtoList = new ArrayList<>();
-        JobCollection.applicationContext = applicationContext;
+        JobCollection.commonUtil = (CommonUtil)applicationContext.getBean("CommonUtil");
         DateTime nowDate = new DateTime(new Date());
         DateTimeComparator comparator = DateTimeComparator.getInstance(DateTimeFieldType.secondOfDay());
         scheduleMapper.selectAllOfScheduleTime().forEach(scheduleDto -> {

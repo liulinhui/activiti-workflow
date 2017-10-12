@@ -3,6 +3,8 @@ package com.activiti.common.quartz.jobs;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.impl.JobDetailImpl;
+import org.quartz.impl.JobExecutionContextImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +17,6 @@ public class PublishGradeEmailNotifyJob extends JobCollection implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        logger.info("执行定时任务定时任务>>>>>>>>>定时邮件通知成绩");
+        commonUtil.publishGradeEmailNotifyJob(((JobDetailImpl) (jobExecutionContext).getJobDetail()).getGroup());
     }
 }

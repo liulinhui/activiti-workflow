@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * 共同帮助类
  * Created by 12490 on 2017/8/13.
  */
-@Component
+@Component("CommonUtil")
 public class CommonUtil {
     private static final Logger logger = LoggerFactory.getLogger(CommonUtil.class);
     private static Sequence sequence = new Sequence(0, 0);
@@ -82,14 +82,19 @@ public class CommonUtil {
      * @param emailDto
      */
     public void sendEmail(EmailDto emailDto) {
-        if (emailDto.getType() == EmailType.simple) {
-            mailService.sendSimpleMail(emailDto.getAddress(), emailDto.getSubject(), emailDto.getContent());
-        } else if (emailDto.getType() == EmailType.html) {
-            mailService.sendHtmlMail(emailDto.getAddress(), emailDto.getSubject(), emailDto.getContent());
-        } else if (emailDto.getType() == EmailType.attachment) {
-            mailService.sendAttachmentsMail(emailDto.getAddress(), emailDto.getSubject(), emailDto.getContent(), emailDto.getRscPath());
-        } else if (emailDto.getType() == EmailType.resource) {
-            mailService.sendInlineResourceMail(emailDto.getAddress(), emailDto.getSubject(), emailDto.getContent(), emailDto.getRscPath(), emailDto.getRscId());
+        switch (emailDto.getType()) {
+            case html:
+                mailService.sendHtmlMail(emailDto.getAddress(), emailDto.getSubject(), emailDto.getContent());
+                break;
+            case simple:
+                mailService.sendSimpleMail(emailDto.getAddress(), emailDto.getSubject(), emailDto.getContent());
+                break;
+            case resource:
+                mailService.sendInlineResourceMail(emailDto.getAddress(), emailDto.getSubject(), emailDto.getContent(), emailDto.getRscPath(), emailDto.getRscId());
+            case attachment:
+                mailService.sendAttachmentsMail(emailDto.getAddress(), emailDto.getSubject(), emailDto.getContent(), emailDto.getRscPath());
+            default:
+                break;
         }
     }
 
@@ -197,12 +202,39 @@ public class CommonUtil {
     public void addNewActivitiJob(ScheduleDto scheduleDto) {
         if (compareDate(scheduleDto.getJudgeStartTime(), new Date()))
             quartzManager.addJob(ConstantsUtils.NOTIFY_TO_ASSESSMENT, scheduleDto.getCourseCode(),
-                    scheduleDto.getCourseCode()+ConstantsUtils.NOTIFY_TO_ASSESSMENT, ConstantsUtils.TRIGGER_GROUP_NAME, AssessmentStartJob.class, CronUtils.getCron(scheduleDto.getJudgeStartTime()));
+                    scheduleDto.getCourseCode() + ConstantsUtils.NOTIFY_TO_ASSESSMENT, ConstantsUtils.TRIGGER_GROUP_NAME, AssessmentStartJob.class, CronUtils.getCron(scheduleDto.getJudgeStartTime()));
         if (compareDate(scheduleDto.getJudgeEndTime(), new Date()))
             quartzManager.addJob(ConstantsUtils.NOTIFY_HAVE_NOT_JOIN_ASSESSMENT, scheduleDto.getCourseCode(),
-                    scheduleDto.getCourseCode()+ConstantsUtils.NOTIFY_HAVE_NOT_JOIN_ASSESSMENT, ConstantsUtils.TRIGGER_GROUP_NAME, UnAssessmentNotifyJob.class, CronUtils.getCron(scheduleDto.getJudgeEndTime()));
+                    scheduleDto.getCourseCode() + ConstantsUtils.NOTIFY_HAVE_NOT_JOIN_ASSESSMENT, ConstantsUtils.TRIGGER_GROUP_NAME, UnAssessmentNotifyJob.class, CronUtils.getCron(scheduleDto.getJudgeEndTime()));
         if (compareDate(scheduleDto.getPublishTime(), new Date()))
             quartzManager.addJob(ConstantsUtils.NOTIFY_PUBLISH_GRADE, scheduleDto.getCourseCode(),
-                    scheduleDto.getCourseCode()+ConstantsUtils.NOTIFY_PUBLISH_GRADE, ConstantsUtils.TRIGGER_GROUP_NAME, PublishGradeEmailNotifyJob.class, CronUtils.getCron(scheduleDto.getPublishTime()));
+                    scheduleDto.getCourseCode() + ConstantsUtils.NOTIFY_PUBLISH_GRADE, ConstantsUtils.TRIGGER_GROUP_NAME, PublishGradeEmailNotifyJob.class, CronUtils.getCron(scheduleDto.getPublishTime()));
+    }
+
+    /**
+     * 通知参加互评，并且打乱学生提交顺序
+     *
+     * @param courseCode 课程代码
+     */
+    public void assessmentStartJob(String courseCode) {
+        logger.info("课程ID=" + courseCode + ">>>>>>>执行定时任务>>>>>>>>>定时通知参加互评，并且打乱学生提交顺序");
+    }
+
+    /**
+     * 邮件通知成绩
+     *
+     * @param courseCode 课程代码
+     */
+    public void publishGradeEmailNotifyJob(String courseCode) {
+        logger.info("课程ID=" + courseCode + ">>>>>>>执行定时任务定时任务>>>>>>>>>定时邮件通知成绩");
+    }
+
+    /**
+     * 邮件提醒没有参加互评的人以及将它们的流程结束
+     *
+     * @param courseCode 课程代码
+     */
+    public void unAssessmentNotifyJob(String courseCode) {
+        logger.info("课程ID=" + courseCode + ">>>>>>>执行定时任务>>>>>>>>>邮件提醒没有参加互评的人以及将它们的流程结束");
     }
 }
