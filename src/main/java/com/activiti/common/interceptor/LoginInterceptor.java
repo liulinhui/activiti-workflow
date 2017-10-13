@@ -1,5 +1,6 @@
 package com.activiti.common.interceptor;
 
+import com.activiti.common.utils.CommonUtil;
 import com.activiti.common.utils.ConstantsUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        String email = (String) httpServletRequest.getSession().getAttribute(ConstantsUtils.sessionEmail);
+        String email = CommonUtil.getEmailFromSession(httpServletRequest);
         logger.info("{user=" + email + "}>>>START HTTP REQUEST:" + httpServletRequest.getRequestURL());
         if ("".equals(email) || null == email) {
             httpServletResponse.sendRedirect("login?redirectUrl=" + httpServletRequest.getServletPath());

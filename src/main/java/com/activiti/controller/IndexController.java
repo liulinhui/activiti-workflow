@@ -116,7 +116,7 @@ public class IndexController {
      */
     @RequestMapping("/gradeInfo")
     public String gradeInfo(HttpServletRequest request) {
-        return commonUtil.isManageRole(request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString())
+        return commonUtil.isManageRole(commonUtil.getEmailFromSession(request))
                 ? "submodule/gradeInfoAdminView" : "submodule/gradeInfo";
     }
 
@@ -141,7 +141,7 @@ public class IndexController {
      */
     @RequestMapping("/assessment")
     public String assessment(HttpServletRequest request, ModelMap modelMap) {
-        String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        String email = CommonUtil.getEmailFromSession(request);
         List<ScheduleDto> scheduleDtoList = new ArrayList<>();
         scheduleMapper.selectAllOfScheduleTime().forEach(scheduleDto -> {
             String courseCode = scheduleDto.getCourseCode();

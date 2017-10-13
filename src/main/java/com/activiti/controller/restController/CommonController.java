@@ -108,7 +108,7 @@ public class CommonController {
     @ResponseBody
     @ApiAnnotation
     public Object removeScheduleTime(@RequestParam(value = "courseCode") String courseCode, HttpServletRequest request) throws Exception {
-        String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        String email = CommonUtil.getEmailFromSession(request);
         boolean identity = false;
         if (commonUtil.isManageRole(email)) {
             identity = true;

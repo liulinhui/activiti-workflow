@@ -77,7 +77,7 @@ public class UserController {
     @ApiAnnotation
     public Object commitWork(@RequestParam(name = "courseCode") String courseCode,
                              @RequestParam(name = "workDetail") String workDetail, HttpServletRequest request) throws Exception {
-        String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        String email = CommonUtil.getEmailFromSession(request);
         Date deadline = scheduleService.selectScheduleTime(courseCode).getJudgeStartTime();
         if (commonUtil.compareDate(new Date(), deadline))
             throw new Exception("提交作业截至时间:" + CommonUtil.dateToString(deadline));
@@ -105,7 +105,7 @@ public class UserController {
             @RequestParam(value = "limit", required = false, defaultValue = "1") int limit,
             @RequestParam(value = "count", required = false) boolean count,
             HttpServletRequest request) {
-        String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        String email = CommonUtil.getEmailFromSession(request);
         if (null != courseCode && !"".equals(courseCode)) {
             StudentWorkInfo studentWorkInfo = new StudentWorkInfo();
             studentWorkInfo.setCourseCode(courseCode);
@@ -130,7 +130,7 @@ public class UserController {
     @ResponseBody
     @ApiAnnotation
     public Object selectWorkListToJudge(@RequestParam(value = "courseCode") String courseCode, HttpServletRequest request) throws Exception {
-        String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        String email = CommonUtil.getEmailFromSession(request);
         String tableName = commonUtil.generateTableName(courseCode);
         StudentWorkInfo studentWorkInfo = new StudentWorkInfo();
         studentWorkInfo.setCourseCode(courseCode);
@@ -172,7 +172,7 @@ public class UserController {
     public Object commitJudgementInfo(@RequestParam(value = "judge") String judge,
                                       @RequestParam(value = "courseCode") String courseCode,
                                       HttpServletRequest request) throws Exception {
-        String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        String email = CommonUtil.getEmailFromSession(request);
         if (null != userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, email)).getJoinJudgeTime())
             throw new Exception("您已经参加过互评");
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
@@ -205,7 +205,7 @@ public class UserController {
     public Object commitJudgementInfo(@RequestParam(value = "page", required = false, defaultValue = "1") long page,
                                       @RequestParam(value = "limit", required = false, defaultValue = "1") int limit,
                                       HttpServletRequest request) {
-        String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        String email = CommonUtil.getEmailFromSession(request);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("count", judgementService.selectCountJudge(email));
         jsonObject.put("list", judgementService.selectAllJudgementByEmail((page - 1) * limit, limit, email));
@@ -221,7 +221,7 @@ public class UserController {
     @ResponseBody
     @ApiAnnotation
     public Object selectStudentGrade(HttpServletRequest request) {
-        return userMapper.selectAllWorkInfo(request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString());
+        return userMapper.selectAllWorkInfo(commonUtil.getEmailFromSession(request));
     }
 
     /**
@@ -233,7 +233,7 @@ public class UserController {
     @ResponseBody
     @ApiAnnotation
     public Object selectWhoJudgeMe(@RequestParam(value = "courseCode") String courseCode, HttpServletRequest request) {
-        String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        String email = CommonUtil.getEmailFromSession(request);
         return judgementService.selectJudgementLs(new JudgementLs(courseCode, email));
     }
 

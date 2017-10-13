@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.*;
@@ -308,5 +309,14 @@ public class CommonUtil {
             return userService.selectAllUserRole().stream().anyMatch(a -> email.equals(a.getEmail()));
         else
             return userService.selectAllUserRole().stream().anyMatch(a -> email.equals(a.getEmail()) && a.getId() >= arg[0]);
+    }
+
+    /**
+     * 从session中获取Email
+     * @param request
+     * @return
+     */
+    public static String getEmailFromSession(HttpServletRequest request){
+        return (String)request.getSession().getAttribute(ConstantsUtils.sessionEmail);
     }
 }

@@ -100,7 +100,9 @@ public class MailTests {
         Template t = configuration.getTemplate("mail/test.ftl");
         Writer out = new StringWriter(2048);
         t.process(root, out);
-        System.out.println(out.toString());
+        logger.info(out.toString());
+        out.flush();
+        out.close();
     }
 
 }

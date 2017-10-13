@@ -62,7 +62,7 @@ public class ApiAspect {
         MethodSignature ms = (MethodSignature) joinPoint.getSignature();
         Method method = ms.getMethod();
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String email = (String) request.getSession().getAttribute(ConstantsUtils.sessionEmail);
+        String email = CommonUtil.getEmailFromSession(request);
         String params = request.getQueryString();
         ApiAnnotation apiAnnotation = (ApiAnnotation) method.getAnnotation(ApiAnnotation.class);
         RestApiResponse restApiResponse = new RestApiResponse();
