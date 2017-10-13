@@ -304,7 +304,7 @@ public class CommonUtil {
      * @return
      */
     public boolean isManageRole(String email, int... arg) {
-        if (null == arg)
+        if (arg.length==0)
             return userService.selectAllUserRole().stream().anyMatch(a -> email.equals(a.getEmail()));
         else
             return userService.selectAllUserRole().stream().anyMatch(a -> email.equals(a.getEmail()) && a.getId() >= arg[0]);
