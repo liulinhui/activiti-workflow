@@ -55,6 +55,10 @@
         </if>
     </select>
 
+    <select id="selectCountJudge" parameterType="string" resultType="int">
+        SELECT count(*) FROM judge_judgement_ls WHERE JUDGER_EMAIL=#{JUDGER_EMAIL};
+    </select>
+
     <select id="countAllWorks" resultType="java.lang.Integer" parameterType="java.lang.String">
         SELECT count(*)
         FROM ${tableName}
@@ -69,6 +73,11 @@
     <select id="selectStudentWorkInfoChaosById" parameterType="string" resultType="string">
         SELECT EMAIL_ADDRESS FROM ${tableName}
         WHERE USER_ID = #{userId}
+    </select>
+
+    <select id="selectAllJudgementByEmail" resultType="com.activiti.pojo.user.JudgementLs">
+        SELECT * FROM judge_judgement_ls WHERE JUDGER_EMAIL=#{judgeEmail}
+        LIMIT #{offset}, #{limit};
     </select>
 
 </mapper>

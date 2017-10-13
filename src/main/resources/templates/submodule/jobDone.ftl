@@ -4,16 +4,16 @@
         <div>
             <table class="myJobAnswerDoneTable" lay-filter="myJobAnswerDoneTable">
             </table>
-            <div style="margin-left: 15%;" id="myJobAnswerDonePage"></div>
+            <div style="margin-left: 30%;" id="myJobAnswerDonePage"></div>
         </div>
     </fieldset>
     <br><br>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>已完成的互评任务</legend>
-        <div>
+        <div style="margin-left: 30%;">
             <table class="myJobAssessmentTable">
             </table>
-            <div style="margin-left: 15%;" id="myJobAssessmentPage"></div>
+            <div style="margin-left: 9%;" id="myJobAssessmentPage"></div>
         </div>
     </fieldset>
 </div>
@@ -28,56 +28,69 @@
         var laypage = layui.laypage;
         var layer = layui.layer;
         var $ = layui.jquery;
-        $.ajax({
-            url: './api/user/selectStudentWorkInfo',
-            data: {count: true},
-            dataType: 'json',
-            success: function (data) {
-                laypage.render({
-                    elem: 'myJobAnswerDonePage',
-                    count: data.data.count,
-                    layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
-                    theme: '#FF5722',
-                    jump: function (obj) {
-                        var param = {page: obj.curr, limit: obj.limit};
-                        $.ajax({
-                            url: './api/user/selectStudentWorkInfo',
-                            data: param,
-                            dataType: 'json',
-                            success: function (result) {
-                                table.render({
-                                    elem: '.myJobAnswerDoneTable',
-                                    data: result.data,
-                                    height: 250,
-                                    width: 2000,
-                                    cols: [[ //标题栏
-                                        {field: 'courseCode', title: '课程代码', width: 150},
-                                        {field: 'emailAddress', title: '邮箱', width: 200},
-                                        {field: 'lastCommitTimeString', title: '提交时间', width: 200},
-                                        {field: 'workDetail', title: '提交作业内容', width: 500},
-                                        {
-                                            field: 'originQuestion',
-                                            title: '详细信息',
-                                            width: 300,
-                                            templet: '#my-job-done-answer-detail'
-                                        },
-                                    ]],
-                                    skin: 'row', //表格风格
-                                    even: true,
-                                    page: false //是否显示分页
-                                })
-                            }
-                        })
-                    }
-                });
-            }
-        });
+
+        /**
+         * 已完成的答题任务
+         */
+        function loadMyJobAnswerDoneTable() {
+            $.ajax({
+                type: 'POST',
+                url: './api/user/selectStudentWorkInfo',
+                data: {count: true},
+                dataType: 'json',
+                success: function (data) {
+                    laypage.render({
+                        elem: 'myJobAnswerDonePage',
+                        count: data.data.count,
+                        layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
+                        theme: '#FF5722',
+                        jump: function (obj) {
+                            var param = {page: obj.curr, limit: obj.limit};
+                            $.ajax({
+                                type: 'POST',
+                                url: './api/user/selectStudentWorkInfo',
+                                data: param,
+                                dataType: 'json',
+                                success: function (result) {
+                                    table.render({
+                                        elem: '.myJobAnswerDoneTable',
+                                        data: result.data,
+                                        height: 250,
+                                        width: 2000,
+                                        cols: [[ //标题栏
+                                            {field: 'courseCode', title: '课程代码', width: 150},
+                                            {field: 'emailAddress', title: '邮箱', width: 200},
+                                            {field: 'lastCommitTimeString', title: '提交时间', width: 200},
+                                            {field: 'workDetail', title: '提交作业内容', width: 500},
+                                            {
+                                                field: 'originQuestion',
+                                                title: '详细信息',
+                                                width: 300,
+                                                templet: '#my-job-done-answer-detail'
+                                            }
+                                        ]],
+                                        skin: 'row', //表格风格
+                                        even: true,
+                                        page: false //是否显示分页
+                                    })
+                                }
+                            })
+                        }
+                    });
+                }
+            });
+        }
+        
+        setTimeout(function () {
+            loadMyJobAnswerDoneTable();
+        },500);
 
         //已完成的答题任务监控工具条
         table.on('tool(myJobAnswerDoneTable)', function (obj) {
             var courseCode = obj.data.courseCode;
             if (obj.event === 'origin') {
                 $.ajax({
+                    type: 'POST',
                     url: './api/common/getQAContent',
                     data: {courseCode: courseCode},
                     dataType: 'json',
@@ -102,6 +115,55 @@
                 });
             }
         });
+
+        /**
+         * 加载已完成的互评任务
+         */
+        function loadAssessmentDone() {
+            $.ajax({
+                type: 'POST',
+                url: './api/user/selectAllCommitJudgementInfo',
+                dataType: 'json',
+                success: function (result) {
+                    laypage.render({
+                        elem: 'myJobAssessmentPage',
+                        count: result.data.count,
+                        layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
+                        theme: '#FF5722',
+                        jump: function (obj) {
+                            var param = {page: obj.curr, limit: obj.limit};
+                            $.ajax({
+                                type: 'POST',
+                                url: './api/user/selectAllCommitJudgementInfo',
+                                data: param,
+                                dataType: 'json',
+                                success: function (data) {
+                                    table.render({
+                                        elem: '.myJobAssessmentTable',
+                                        data: data.data.list,
+                                        height: 250,
+                                        width: 660,
+                                        cols: [[ //标题栏
+                                            {field: 'courseCode', title: '课程代码', width: 150},
+                                            {field: 'nonJudgeEmail', title: '邮箱', width: 200},
+                                            {field: 'judgeTimeString', title: '提交时间', width: 200},
+                                            {field: 'grade', title: '评分', width: 100}
+                                        ]],
+                                        skin: 'row', //表格风格
+                                        even: true,
+                                        page: false //是否显示分页
+                                    })
+                                }
+                            })
+                        }
+                    });
+                }
+            })
+        }
+
+        setTimeout(function () {
+            loadAssessmentDone();
+        },1000)
     });
 </script>
 

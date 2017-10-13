@@ -62,4 +62,14 @@ public class JudgementServiceImpl implements JudgementService {
     public String selectStudentWorkInfoChaosById(String userId, String tableName) {
         return judgementMapper.selectStudentWorkInfoChaosById(userId,tableName);
     }
+
+    @Override
+    public int selectCountJudge(String judgeEmail) {
+        return judgementMapper.selectCountJudge(judgeEmail);
+    }
+
+    @Override
+    public List<JudgementLs> selectAllJudgementByEmail(long offset, int limit,String judgeEmail) {
+        return judgementMapper.selectAllJudgementByEmail(offset,limit,judgeEmail);
+    }
 }

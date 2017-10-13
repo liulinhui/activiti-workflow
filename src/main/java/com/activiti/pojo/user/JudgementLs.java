@@ -1,5 +1,7 @@
 package com.activiti.pojo.user;
 
+import com.activiti.common.utils.CommonUtil;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,26 +12,35 @@ import java.util.Date;
 public class JudgementLs implements Serializable {
     private static final long serialVersionUID = 2120869894112984147L;
     private String courseCode;
-    private String judgeEmail;  //评分人的Email
-    private String nonJudgeEmail;  //被评人的Email
+    private String judgerEmail;  //评分人的Email
+    private String nonJudgerEmail;  //被评人的Email
     private Double grade;    //分数
     private Date judgeTime;   //评分时间
     private String judgement;    //评语
+    private String judgeTimeString;
 
     public JudgementLs() {
     }
 
     public JudgementLs(String courseCode, String nonJudgeEmail) {
         this.courseCode = courseCode;
-        this.nonJudgeEmail = nonJudgeEmail;
+        this.nonJudgerEmail = nonJudgeEmail;
     }
 
     public JudgementLs(String courseCode, String judgeEmail, String nonJudgeEmail, Double grade) {
         this.courseCode = courseCode;
-        this.judgeEmail = judgeEmail;
-        this.nonJudgeEmail = nonJudgeEmail;
+        this.judgerEmail = judgeEmail;
+        this.nonJudgerEmail = nonJudgeEmail;
         this.grade = grade;
         this.judgeTime=new Date();
+    }
+
+    public String getJudgeTimeString() {
+        return judgeTimeString;
+    }
+
+    public void setJudgeTimeString(String judgeTimeString) {
+        this.judgeTimeString = judgeTimeString;
     }
 
     public String getCourseCode() {
@@ -41,19 +52,19 @@ public class JudgementLs implements Serializable {
     }
 
     public String getJudgeEmail() {
-        return judgeEmail;
+        return judgerEmail;
     }
 
     public void setJudgeEmail(String judgeEmail) {
-        this.judgeEmail = judgeEmail;
+        this.judgerEmail = judgeEmail;
     }
 
     public String getNonJudgeEmail() {
-        return nonJudgeEmail;
+        return nonJudgerEmail;
     }
 
     public void setNonJudgeEmail(String nonJudgeEmail) {
-        this.nonJudgeEmail = nonJudgeEmail;
+        this.nonJudgerEmail = nonJudgeEmail;
     }
 
     public Double getGrade() {
@@ -70,6 +81,7 @@ public class JudgementLs implements Serializable {
 
     public void setJudgeTime(Date judgeTime) {
         this.judgeTime = judgeTime;
+        this.judgeTimeString= CommonUtil.dateToString(judgeTime);
     }
 
     public String getJudgement() {
@@ -84,8 +96,8 @@ public class JudgementLs implements Serializable {
     public String toString() {
         return "JudgementLs{" +
                 "courseCode='" + courseCode + '\'' +
-                ", judgeEmail='" + judgeEmail + '\'' +
-                ", nonJudgeEmail='" + nonJudgeEmail + '\'' +
+                ", judgeEmail='" + judgerEmail + '\'' +
+                ", nonJudgeEmail='" + nonJudgerEmail + '\'' +
                 ", grade=" + grade +
                 ", judgeTime=" + judgeTime +
                 ", judgement='" + judgement + '\'' +

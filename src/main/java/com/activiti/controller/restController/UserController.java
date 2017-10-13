@@ -162,8 +162,10 @@ public class UserController {
     @ApiAnnotation
     public Object commitJudgementInfo(@RequestParam(value = "judge") String judge,
                                       @RequestParam(value = "courseCode") String courseCode,
-                                      HttpServletRequest request) {
+                                      HttpServletRequest request) throws Exception {
         String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        if (null != userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, email)).getJoinJudgeTime())
+            throw new Exception("您已经参加过互评");
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
         int judgeLimitTimes = scheduleDto.getJudgeTimes();
         JSONObject judgeList = JSON.parseObject(judge);
@@ -184,6 +186,24 @@ public class UserController {
     }
 
     /**
+     * 查询所有的互评
+     *
+     * @return
+     */
+    @RequestMapping("/selectAllCommitJudgementInfo")
+    @ResponseBody
+    @ApiAnnotation
+    public Object commitJudgementInfo(@RequestParam(value = "page", required = false, defaultValue = "1") long page,
+                                      @RequestParam(value = "limit", required = false, defaultValue = "1") int limit,
+                                      HttpServletRequest request) {
+        String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("count", judgementService.selectCountJudge(email));
+        jsonObject.put("list", judgementService.selectAllJudgementByEmail((page - 1) * limit, limit, email));
+        return jsonObject;
+    }
+
+    /**
      * 删除管理员用户
      *
      * @param email
@@ -192,7 +212,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/deleteUserRole")
     @ApiAnnotation
-    public Object deleteUserRole(@RequestParam(value = "email", required = true) String email) {
+    public Object deleteUserRole(@RequestParam(value = "email") String email) {
         return userService.deleteUserRole(email);
     }
 
@@ -207,9 +227,9 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/addUserRole")
     @ApiAnnotation
-    public Object addUserRole(@RequestParam(value = "email", required = true) String email,
-                              @RequestParam(value = "id", required = true) int id,
-                              @RequestParam(value = "remarks", required = true) String remarks) throws Exception {
+    public Object addUserRole(@RequestParam(value = "email") String email,
+                              @RequestParam(value = "id") int id,
+                              @RequestParam(value = "remarks") String remarks) throws Exception {
         if (!commonUtil.emailFormat(email))
             throw new Exception("邮箱格式不正确");
         return userService.insertUserRole(new UserRole(id, email, remarks));

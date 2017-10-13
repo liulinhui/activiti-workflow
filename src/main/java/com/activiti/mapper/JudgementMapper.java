@@ -52,7 +52,7 @@ public interface JudgementMapper {
     StudentWorkInfo selectStudentWorkInfo(StudentWorkInfo studentWorkInfo);
 
     /**
-     * 查询互评流水
+     * 查询指定课程互评流水
      *
      * @param judgementLs
      * @return
@@ -77,10 +77,28 @@ public interface JudgementMapper {
 
     /**
      * 根据id在打乱的表里差Email
+     *
      * @param userId
      * @param tableName
      * @return
      */
     String selectStudentWorkInfoChaosById(@Param("userId") String userId, @Param("tableName") String tableName);
+
+    /**
+     * 查询个人互评总数
+     *
+     * @param judgeEmail
+     * @return
+     */
+    int selectCountJudge(String judgeEmail);
+
+    /**
+     * 查询互评流水，分页使用
+     * @param offset
+     * @param limit
+     * @param judgeEmail
+     * @return
+     */
+    List<JudgementLs> selectAllJudgementByEmail(@Param("offset") long offset, @Param("limit") int limit,@Param("judgeEmail")String judgeEmail);
 
 }

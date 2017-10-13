@@ -70,7 +70,7 @@ public class CommonController {
     @RequestMapping("/selectScheduleTime")
     @ResponseBody
     @ApiAnnotation
-    public Object selectScheduleTime(@RequestParam(value = "courseCode", required = true) String courseCode) {
+    public Object selectScheduleTime(@RequestParam(value = "courseCode") String courseCode) {
         return scheduleService.selectScheduleTime(courseCode);
     }
 
@@ -83,7 +83,7 @@ public class CommonController {
     @RequestMapping("/insertScheduleTime")
     @ResponseBody
     @ApiAnnotation
-    public Object insertScheduleTime(@RequestParam(required = true, value = "data") String param) throws Exception {
+    public Object insertScheduleTime(@RequestParam(value = "data") String param) throws Exception {
         JSONObject jsonObject = JSON.parseObject(param);
         ScheduleDto scheduleDto = jsonObject.toJavaObject(ScheduleDto.class);
         String courseCode = scheduleDto.getCourseCode();
@@ -146,8 +146,8 @@ public class CommonController {
     @RequestMapping("/selectAllScheduleTime")
     @ResponseBody
     @ApiAnnotation
-    public Object selectAllScheduleTime(@RequestParam(value = "page", required = true) long page,
-                                        @RequestParam(value = "limit", required = true) int limit) {
+    public Object selectAllScheduleTime(@RequestParam(value = "page") long page,
+                                        @RequestParam(value = "limit") int limit) {
         List<ScheduleDto> scheduleDtoList = scheduleService.selectAllScheduleTime((page - 1) * limit, limit);
         return scheduleDtoList;
     }
