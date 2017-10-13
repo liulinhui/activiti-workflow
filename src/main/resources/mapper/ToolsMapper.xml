@@ -18,6 +18,7 @@
     <select id="selectInvokeLog" resultType="com.activiti.pojo.tools.InvokeLog">
         SELECT *
         FROM judge_invoke_log
+        ORDER BY TIME DESC
         LIMIT #{offset}, #{limit}
     </select>
 
@@ -48,6 +49,7 @@
     <select id="selectEmailLog" resultType="com.activiti.pojo.tools.EmailLog">
         SELECT *
         FROM judge_email_log
+        ORDER BY SEND_TIME DESC
         LIMIT #{offset}, #{limit}
     </select>
 </mapper>
