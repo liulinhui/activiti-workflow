@@ -46,9 +46,9 @@ public class Listener {
             EmailDto emailDto = JSON.parseObject((String) message, EmailDto.class);
             try {
                 commonUtil.sendEmail(emailDto);
-                toolsMapper.insertEmailLog(new EmailLog(emailDto, "1", sendEmail));
+                toolsMapper.insertEmailLog(new EmailLog(emailDto, "success", sendEmail));
             } catch (Exception e) {
-                toolsMapper.insertEmailLog(new EmailLog(emailDto, "0", sendEmail));
+                toolsMapper.insertEmailLog(new EmailLog(emailDto, "fail", sendEmail));
             }
         }
     }

@@ -37,10 +37,10 @@
                                     height: 650,
                                     width: 3000,
                                     cols: [[ //标题栏
-                                        {field: 'receiveAddress', title: '收件人', width: 150},
-                                        {field: 'sendAddress', title: '发件人', width: 150},
+                                        {field: 'receiveAddress', title: '收件人', width: 200},
+                                        {field: 'sendAddress', title: '发件人', width: 200},
                                         {field: 'subject', title: '主题', width: 150},
-                                        {field: 'content', title: '内容', width: 550},
+                                        {field: 'content', title: '内容', width: 450},
                                         {field: 'rscPath', title: '资源地址', width: 200},
                                         {field: 'rscId', title: '资源id', width: 250},
                                         {field: 'sendTimeString', title: '发送时间', width: 170},

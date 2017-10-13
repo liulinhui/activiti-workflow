@@ -1,9 +1,12 @@
 package com.activiti.controller.restController;
 
 import com.activiti.common.aop.ApiAnnotation;
+import com.activiti.common.kafka.MailProducer;
 import com.activiti.common.utils.CommonUtil;
 import com.activiti.common.utils.ConstantsUtils;
 import com.activiti.mapper.UserMapper;
+import com.activiti.pojo.email.EmailDto;
+import com.activiti.pojo.email.EmailType;
 import com.activiti.pojo.schedule.ScheduleDto;
 import com.activiti.pojo.user.JudgementLs;
 import com.activiti.pojo.user.StudentWorkInfo;
@@ -47,6 +50,8 @@ public class UserController {
     private UserMapper userMapper;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private MailProducer mailProducer;
 
     /*
      *  根据Email获取用户信息
@@ -81,6 +86,7 @@ public class UserController {
         userService.insertUser(user);
         studentWorkInfo.setLastCommitTime(new Date());
         userService.insertUserWork(studentWorkInfo);
+        mailProducer.send(new EmailDto(email, EmailType.simple, "答题成功", courseCode+"这门课程你给出的答案为：" + workDetail));
         return studentWorkInfo;
     }
 
@@ -129,12 +135,12 @@ public class UserController {
         StudentWorkInfo studentWorkInfo = new StudentWorkInfo();
         studentWorkInfo.setCourseCode(courseCode);
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
-        if(commonUtil.compareDate(new Date(),scheduleDto.getJudgeEndTime()) ||commonUtil.compareDate(scheduleDto.getJudgeStartTime(),new Date()))
-            throw  new Exception("该课程不在互评时间段内("+scheduleDto.getJudgeStartTimeString()+"至"+scheduleDto.getJudgeEndTimeString()+")");
+        if (commonUtil.compareDate(new Date(), scheduleDto.getJudgeEndTime()) || commonUtil.compareDate(scheduleDto.getJudgeStartTime(), new Date()))
+            throw new Exception("该课程不在互评时间段内(" + scheduleDto.getJudgeStartTimeString() + "至" + scheduleDto.getJudgeEndTimeString() + ")");
         String githubAddress = scheduleDto.getGithubAddress();
         String content = new String(Base64.decodeBase64(commonService.getQAFromGitHub(githubAddress).get("content").toString().getBytes()), "utf-8");
         JSONObject response = JSONObject.parseObject(content);
-         int studentId = judgementService.selectChaosId(email, tableName);
+        int studentId = judgementService.selectChaosId(email, tableName);
         int countWork = judgementService.countAllWorks(tableName);
         int judgeTimes = scheduleDto.getJudgeTimes();
         List<Integer> initList = new ArrayList<>();
