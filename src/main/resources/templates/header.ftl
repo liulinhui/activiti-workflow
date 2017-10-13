@@ -35,6 +35,7 @@
                         <dd><a id="my-time-conf" href="javascript:;">工作流配置</a></dd>
                         <dd><a id="my-user-role" href="javascript:;">管理员配置</a></dd>
                         <dd><a id="my-log-view" href="javascript:;">日志查看</a></dd>
+                        <dd><a id="my-emailLog-view" href="javascript:;">邮件发送情况</a></dd>
                     </dl>
                 </li>
             </#if>

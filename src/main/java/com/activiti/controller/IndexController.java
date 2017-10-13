@@ -36,6 +36,13 @@ public class IndexController {
     @Autowired
     private ScheduleMapper scheduleMapper;
 
+    /**
+     * 登录页面
+     *
+     * @param request
+     * @param model
+     * @return
+     */
     @RequestMapping("/login")
     public String greeting(HttpServletRequest request, ModelMap model) {
         String email = request.getParameter("email");
@@ -102,14 +109,15 @@ public class IndexController {
     }
 
     /**
-     * 已完成的任务
+     * 成绩查看
      *
      * @param request
      * @return
      */
     @RequestMapping("/gradeInfo")
     public String gradeInfo(HttpServletRequest request) {
-        return "submodule/gradeInfo";
+        return commonUtil.isManageRole(request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString())
+                ? "submodule/gradeInfoAdminView" : "submodule/gradeInfo";
     }
 
     /**
@@ -154,6 +162,17 @@ public class IndexController {
     @RequestMapping("/judgement")
     public String judgement(HttpServletRequest request) {
         return "submodule/judgement";
+    }
+
+    /**
+     * 邮件发送情况页面
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/emailLogView")
+    public String emailLogView(HttpServletRequest request) {
+        return "submodule/emailLog";
     }
 
     /**

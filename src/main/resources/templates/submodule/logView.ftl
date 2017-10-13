@@ -7,15 +7,6 @@
             <div style="margin-left: 15%;" id="invokeLogLayPage"></div>
         </div>
     </fieldset>
-
-    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>通知邮件发送情况</legend>
-        <div>
-            <table class="emailInfoTable">
-            </table>
-            <div id="emailInfoLayPage"></div>
-        </div>
-    </fieldset>
 </div>
 <script>
     layui.use(['table', 'laypage'], function () {
@@ -31,6 +22,8 @@
                     count: data.data.count,
                     layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
                     theme:'#FF5722',
+                    limit:15,
+                    limits:[20, 30, 40, 50],
                     jump: function (obj) {
                         var param = {page: obj.curr, limit: obj.limit};
                         $.ajax({
@@ -41,7 +34,7 @@
                                 table.render({
                                     elem: '.logInfoTable',
                                     data: data.data,
-                                    height: 420,
+                                    height: 650,
                                     width: 3000,
                                     cols: [[ //标题栏
                                         {field: 'uuid', title: '序列号', width: 200},

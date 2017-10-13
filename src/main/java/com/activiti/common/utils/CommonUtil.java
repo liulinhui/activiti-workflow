@@ -294,4 +294,14 @@ public class CommonUtil {
         Collections.sort(doubleList);
         return doubleList.get(doubleList.size() / 2);
     }
+
+    /**
+     * 判断是否为管理员账号
+     *
+     * @param email
+     * @return
+     */
+    public boolean isManageRole(String email) {
+        return ConstantsUtils.defaultManager.equals(email) || userService.selectAllUserRole().stream().anyMatch(a -> email.equals(a.getEmail()));
+    }
 }

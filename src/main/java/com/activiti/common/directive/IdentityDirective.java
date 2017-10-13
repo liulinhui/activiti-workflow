@@ -1,5 +1,6 @@
 package com.activiti.common.directive;
 
+import com.activiti.common.utils.CommonUtil;
 import com.activiti.common.utils.ConstantsUtils;
 import com.activiti.pojo.user.UserRole;
 import com.activiti.service.UserService;
