@@ -4,6 +4,9 @@ import com.activiti.common.mail.MailServiceImpl;
 import com.activiti.pojo.user.User;
 import com.activiti.service.UserService;
 import com.alibaba.fastjson.JSONObject;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -17,9 +20,10 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -32,6 +36,8 @@ public class MailTests {
     private String receiveAddr;
     @Autowired
     private TemplateEngine templateEngine;
+    @Autowired
+    private Configuration configuration;
 
     /**
      * 简单邮件测试
@@ -83,6 +89,18 @@ public class MailTests {
         context.setVariable("name", "beauty");
         String emailContent = templateEngine.process("mail/emailTemplate", context);
         mailService.sendHtmlMail(receiveAddr, "主题：这是美女图片", emailContent);
+    }
+
+    @Test
+    public void sendFreemarkerTemplateMailTest() throws IOException, TemplateException {
+        //建立数据模型
+        Map<String, Object> root = new HashMap<>();
+        root.put("message", "Hello FreeMarker!");
+        //取得模版文件
+        Template t = configuration.getTemplate("mail/test.ftl");
+        Writer out = new StringWriter(2048);
+        t.process(root, out);
+        System.out.println(out.toString());
     }
 
 }
