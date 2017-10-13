@@ -10,6 +10,7 @@ import com.activiti.common.sequence.Sequence;
 import com.activiti.pojo.email.EmailDto;
 import com.activiti.pojo.email.EmailType;
 import com.activiti.pojo.schedule.ScheduleDto;
+import com.activiti.pojo.user.JudgementLs;
 import com.activiti.service.ScheduleService;
 import com.activiti.service.UserService;
 import com.alibaba.fastjson.JSONObject;
@@ -29,9 +30,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URLDecoder;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -234,6 +233,17 @@ public class CommonUtil {
     }
 
     /**
+     * 生成表名
+     *
+     * @param courseCode
+     * @return
+     */
+    public String generateTableName(String courseCode) {
+        return "`" + ConstantsUtils.tablePrefixName + courseCode.toUpperCase() + "`";
+    }
+
+
+    /**
      * 通知参加互评，并且打乱学生提交顺序
      *
      * @param courseCode 课程代码
@@ -248,16 +258,6 @@ public class CommonUtil {
         emailList.forEach(email -> {
             mailProducer.send(new EmailDto(email, EmailType.simple, subject, content));
         });
-    }
-
-    /**
-     * 生成表名
-     *
-     * @param courseCode
-     * @return
-     */
-    public String generateTableName(String courseCode) {
-        return "`" + ConstantsUtils.tablePrefixName + courseCode.toUpperCase() + "`";
     }
 
     /**
@@ -276,5 +276,22 @@ public class CommonUtil {
      */
     public void unAssessmentNotifyJob(String courseCode) {
         logger.info("课程ID=" + courseCode + ">>>>>>>执行定时任务>>>>>>>>>邮件提醒没有参加互评的人以及将它们的流程结束");
+    }
+
+    /**
+     * 计算成绩中位数
+     *
+     * @param num
+     * @param judgementLsList
+     * @return
+     */
+    public double getMiddleNum(double num, List<JudgementLs> judgementLsList) {
+        List<Double> doubleList = new ArrayList<>();
+        doubleList.add(num);
+        judgementLsList.forEach(a -> {
+            doubleList.add(a.getGrade());
+        });
+        Collections.sort(doubleList);
+        return doubleList.get(doubleList.size() / 2);
     }
 }

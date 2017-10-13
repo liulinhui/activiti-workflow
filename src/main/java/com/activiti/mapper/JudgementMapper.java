@@ -75,4 +75,12 @@ public interface JudgementMapper {
      */
     int selectChaosId(@Param("emailAddress") String emailAddress, @Param("tableName") String tableName);
 
+    /**
+     * 根据id在打乱的表里差Email
+     * @param userId
+     * @param tableName
+     * @return
+     */
+    String selectStudentWorkInfoChaosById(@Param("userId") String userId, @Param("tableName") String tableName);
+
 }

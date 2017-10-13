@@ -25,12 +25,12 @@
         VALUES
         <foreach collection="list" item="judgementLs" index="index" separator=",">
             (
-            #{courseCode},
-            #{judgeEmail},
-            #{nonJudgeEmail},
-            #{grade},
-            #{judgeTime},
-            #{judgement}
+            #{judgementLs.courseCode},
+            #{judgementLs.judgeEmail},
+            #{judgementLs.nonJudgeEmail},
+            #{judgementLs.grade},
+            #{judgementLs.judgeTime},
+            #{judgementLs.judgement}
             )
         </foreach>
     </insert>
@@ -64,6 +64,11 @@
         SELECT USER_ID
         FROM ${tableName}
         WHERE EMAIL_ADDRESS = #{emailAddress}
+    </select>
+
+    <select id="selectStudentWorkInfoChaosById" parameterType="string" resultType="string">
+        SELECT EMAIL_ADDRESS FROM ${tableName}
+        WHERE USER_ID = #{userId}
     </select>
 
 </mapper>

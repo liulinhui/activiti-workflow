@@ -57,4 +57,9 @@ public class JudgementServiceImpl implements JudgementService {
     public int selectChaosId(String emailAddress,String tableName) {
         return judgementMapper.selectChaosId(emailAddress,tableName);
     }
+
+    @Override
+    public String selectStudentWorkInfoChaosById(String userId, String tableName) {
+        return judgementMapper.selectStudentWorkInfoChaosById(userId,tableName);
+    }
 }

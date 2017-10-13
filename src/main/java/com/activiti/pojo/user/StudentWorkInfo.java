@@ -32,11 +32,28 @@ public class StudentWorkInfo implements Serializable {
     public StudentWorkInfo() {
     }
 
+    public StudentWorkInfo(String courseCode, String emailAddress, Double grade) {
+        this.courseCode = courseCode;
+        this.emailAddress = emailAddress;
+        this.grade = grade;
+    }
+
+    public StudentWorkInfo(String courseCode, String emailAddress) {
+        this.courseCode = courseCode;
+        this.emailAddress = emailAddress;
+    }
+
     public StudentWorkInfo(String courseCode, String emailAddress, String workDetail, Date lastCommitTime) {
         this.courseCode = courseCode;
         this.emailAddress = emailAddress;
         this.workDetail = workDetail;
         this.lastCommitTime = lastCommitTime;
+    }
+
+    public StudentWorkInfo(String courseCode, String emailAddress, Date joinJudgeTime) {
+        this.courseCode = courseCode;
+        this.emailAddress = emailAddress;
+        this.joinJudgeTime = joinJudgeTime;
     }
 
     public String getCourseCode() {

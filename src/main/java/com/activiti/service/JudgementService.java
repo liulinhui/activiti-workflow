@@ -2,6 +2,7 @@ package com.activiti.service;
 
 import com.activiti.pojo.user.JudgementLs;
 import com.activiti.pojo.user.StudentWorkInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -69,4 +70,12 @@ public interface JudgementService {
      * @return
      */
     int selectChaosId(String emailAddress, String tableName);
+
+    /**
+     * 根据id在打乱的表里差Email
+     * @param userId
+     * @param tableName
+     * @return
+     */
+    String selectStudentWorkInfoChaosById(@Param("userId") String userId, @Param("tableName") String tableName);
 }

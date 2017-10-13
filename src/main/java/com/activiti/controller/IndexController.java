@@ -4,6 +4,7 @@ import com.activiti.common.utils.CommonUtil;
 import com.activiti.common.utils.ConstantsUtils;
 import com.activiti.mapper.ScheduleMapper;
 import com.activiti.pojo.schedule.ScheduleDto;
+import com.activiti.pojo.user.StudentWorkInfo;
 import com.activiti.pojo.user.UserRole;
 import com.activiti.service.ScheduleService;
 import com.activiti.service.UserService;
@@ -118,9 +119,9 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/answer")
-    public String answer(HttpServletRequest request,ModelMap modelMap) {
+    public String answer(HttpServletRequest request, ModelMap modelMap) {
         List<ScheduleDto> scheduleDtoList = scheduleMapper.selectAllOfScheduleTime();
-        modelMap.put("scheduleDtoList",scheduleDtoList);
+        modelMap.put("scheduleDtoList", scheduleDtoList);
         return "submodule/answer";
     }
 
@@ -131,7 +132,16 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/assessment")
-    public String assessment(HttpServletRequest request) {
+    public String assessment(HttpServletRequest request, ModelMap modelMap) {
+        String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        List<ScheduleDto> scheduleDtoList = new ArrayList<>();
+        scheduleMapper.selectAllOfScheduleTime().forEach(scheduleDto -> {
+            String courseCode = scheduleDto.getCourseCode();
+            StudentWorkInfo studentWorkInfo = userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, email));
+            if (null != studentWorkInfo && null == studentWorkInfo.getJoinJudgeTime())
+                scheduleDtoList.add(scheduleDto);
+        });
+        modelMap.put("scheduleDtoList", scheduleDtoList);
         return "submodule/assessment";
     }
 
