@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.*;
@@ -85,7 +86,7 @@ public class CommonUtil {
      *
      * @param emailDto
      */
-    public void sendEmail(EmailDto emailDto) {
+    public void sendEmail(EmailDto emailDto) throws MessagingException {
         switch (emailDto.getType()) {
             case html:
                 mailService.sendHtmlMail(emailDto.getAddress(), emailDto.getSubject(), emailDto.getContent());

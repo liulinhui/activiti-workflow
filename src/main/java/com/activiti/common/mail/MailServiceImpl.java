@@ -46,6 +46,7 @@ public class MailServiceImpl implements MailService {
             logger.info("简单邮件已经发送到:" + desAddr);
         } catch (Exception e) {
             logger.error("发送简单邮件时发生异常！", e);
+            throw e;
         }
     }
 
@@ -57,7 +58,7 @@ public class MailServiceImpl implements MailService {
      * @param content
      */
     @Override
-    public void sendHtmlMail(String desAddr, String subject, String content) {
+    public void sendHtmlMail(String desAddr, String subject, String content) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         try {
             //true表示需要创建一个multipart message
@@ -71,6 +72,7 @@ public class MailServiceImpl implements MailService {
             logger.info("html邮件发送成功");
         } catch (MessagingException e) {
             logger.error("发送html邮件时发生异常！", e);
+            throw e;
         }
     }
 
@@ -83,7 +85,7 @@ public class MailServiceImpl implements MailService {
      * @param filePath
      */
     @Override
-    public void sendAttachmentsMail(String desAddr, String subject, String content, String filePath) {
+    public void sendAttachmentsMail(String desAddr, String subject, String content, String filePath) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -100,6 +102,7 @@ public class MailServiceImpl implements MailService {
             logger.info("带附件的邮件" + subject + "已经发送至:" + desAddr);
         } catch (MessagingException e) {
             logger.error("发送带附件的邮件" + subject + "时发生异常！", e);
+            throw e;
         }
     }
 
@@ -112,7 +115,7 @@ public class MailServiceImpl implements MailService {
      * @param rscId
      */
     @Override
-    public void sendInlineResourceMail(String desAddr, String subject, String content, String rscPath, String rscId) {
+    public void sendInlineResourceMail(String desAddr, String subject, String content, String rscPath, String rscId) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
 
         try {
@@ -129,6 +132,7 @@ public class MailServiceImpl implements MailService {
             logger.info("嵌入静态资源的邮件已经发送。");
         } catch (MessagingException e) {
             logger.error("发送嵌入静态资源的邮件时发生异常！", e);
+            throw e;
         }
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.util.ResourceUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import javax.mail.MessagingException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -44,7 +45,7 @@ public class MailTests {
      * 发送HTML邮件测试
      */
     @Test
-    public void sendHtmlMailTest() {
+    public void sendHtmlMailTest() throws MessagingException {
         String content = "<html>\n" +
                 "<body>\n" +
                 "    <h3>hello world ! 这是一封Html邮件!hahaha" + JSONObject.toJSONString(CommonTestUtil.getUserInfo()) + "</h3>\n" +
@@ -57,7 +58,7 @@ public class MailTests {
      * 发送带附件的邮件测试
      */
     @Test
-    public void sendAttachmentsMailTest() throws FileNotFoundException {
+    public void sendAttachmentsMailTest() throws FileNotFoundException, MessagingException {
         File cfgFile = ResourceUtils.getFile("classpath:mail/attachments/test.txt");
         mailService.sendAttachmentsMail(receiveAddr,
                 "主题：带附件的邮件", JSONObject.toJSONString(CommonTestUtil.getUserInfo()), cfgFile.getAbsolutePath());
@@ -67,7 +68,7 @@ public class MailTests {
      * 发送静态资源测试
      */
     @Test
-    public void sendInlineResourceMailTest() throws FileNotFoundException {
+    public void sendInlineResourceMailTest() throws FileNotFoundException, MessagingException {
         File cfgFile = ResourceUtils.getFile("classpath:mail/static/meinv.jpeg");
         String rscId = "beauty001";
         String content = "<html><body>这是有图片的邮件：<img src=\'cid:" + rscId + "\' ></body></html>";
@@ -76,7 +77,7 @@ public class MailTests {
     }
 
     @Test
-    public void sendTemplateMailTest() {
+    public void sendTemplateMailTest() throws MessagingException {
         //创建邮件正文
         Context context = new Context();
         context.setVariable("name", "beauty");

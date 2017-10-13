@@ -59,7 +59,7 @@
                 success: function (data) {
                     if (!data.success) {
                         layer.open({
-                            title: '在线调试',
+                            title: '提醒',
                             content: data.errorMessage
                         });
                     } else {

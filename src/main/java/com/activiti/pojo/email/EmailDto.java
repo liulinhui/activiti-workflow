@@ -1,10 +1,12 @@
 package com.activiti.pojo.email;
 
+import java.io.Serializable;
+
 /**
  * 邮件封装
  * Created by 12490 on 2017/8/19.
  */
-public class EmailDto {
+public class EmailDto implements Serializable{
     private static final long serialVersionUID = 2120869894112984147L;
     private String address;  //email 地址
     private EmailType type;   //Email类型

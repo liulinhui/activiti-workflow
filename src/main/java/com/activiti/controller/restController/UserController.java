@@ -16,6 +16,7 @@ import com.activiti.service.UserService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;
+import org.joda.time.DateTime;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -122,16 +123,18 @@ public class UserController {
     @RequestMapping("/selectWorkListToJudge")
     @ResponseBody
     @ApiAnnotation
-    public Object selectWorkListToJudge(@RequestParam(value = "courseCode") String courseCode, HttpServletRequest request) throws UnsupportedEncodingException {
+    public Object selectWorkListToJudge(@RequestParam(value = "courseCode") String courseCode, HttpServletRequest request) throws Exception {
         String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
         String tableName = commonUtil.generateTableName(courseCode);
         StudentWorkInfo studentWorkInfo = new StudentWorkInfo();
         studentWorkInfo.setCourseCode(courseCode);
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
+        if(commonUtil.compareDate(new Date(),scheduleDto.getJudgeEndTime()) ||commonUtil.compareDate(scheduleDto.getJudgeStartTime(),new Date()))
+            throw  new Exception("该课程不在互评时间段内("+scheduleDto.getJudgeStartTimeString()+"至"+scheduleDto.getJudgeEndTimeString()+")");
         String githubAddress = scheduleDto.getGithubAddress();
         String content = new String(Base64.decodeBase64(commonService.getQAFromGitHub(githubAddress).get("content").toString().getBytes()), "utf-8");
         JSONObject response = JSONObject.parseObject(content);
-        int studentId = judgementService.selectChaosId(email, tableName);
+         int studentId = judgementService.selectChaosId(email, tableName);
         int countWork = judgementService.countAllWorks(tableName);
         int judgeTimes = scheduleDto.getJudgeTimes();
         List<Integer> initList = new ArrayList<>();

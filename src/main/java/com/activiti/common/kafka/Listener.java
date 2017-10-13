@@ -2,7 +2,9 @@ package com.activiti.common.kafka;
 
 import com.activiti.common.utils.CommonUtil;
 import com.activiti.common.utils.ConstantsUtils;
+import com.activiti.mapper.ToolsMapper;
 import com.activiti.pojo.email.EmailDto;
+import com.activiti.pojo.tools.EmailLog;
 import com.alibaba.fastjson.JSON;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 
+import javax.mail.MessagingException;
 import java.util.Optional;
 
 /**
@@ -22,10 +25,13 @@ public class Listener {
 
     @Autowired
     private CommonUtil commonUtil;
+    @Autowired
+    private ToolsMapper toolsMapper;
 
     /**
      * Kafka消費者发送邮件
-     * @param record  消息
+     *
+     * @param record 消息
      */
     @KafkaListener(topics = {ConstantsUtils.emailTopic})
     public void listen(ConsumerRecord<?, ?> record) {
@@ -33,7 +39,12 @@ public class Listener {
         if (kafkaMessage.isPresent()) {
             Object message = kafkaMessage.get();
             EmailDto emailDto = JSON.parseObject((String) message, EmailDto.class);
-            commonUtil.sendEmail(emailDto);
+            try {
+                commonUtil.sendEmail(emailDto);
+                toolsMapper.insertEmailLog(new EmailLog(emailDto,"1"));
+            } catch (Exception e) {
+                toolsMapper.insertEmailLog(new EmailLog(emailDto,"0"));
+            }
         }
     }
 }
