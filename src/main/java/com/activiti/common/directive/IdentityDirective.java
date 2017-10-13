@@ -17,6 +17,8 @@ import java.util.Map;
 public class IdentityDirective implements TemplateDirectiveModel {
     @Autowired
     private UserService userService;
+    @Autowired
+    private CommonUtil commonUtil;
 
     @Override
     public void execute(Environment environment, Map map, TemplateModel[] templateModels, TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
@@ -24,8 +26,7 @@ public class IdentityDirective implements TemplateDirectiveModel {
         int id = map.get("id") == null ? 0 : Integer.valueOf(map.get("id").toString());
         DefaultObjectWrapperBuilder builder = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_26);
         boolean identity = false;
-        if (ConstantsUtils.defaultManager.equals(email))identity=true;
-        if (userService.selectAllUserRole().stream().anyMatch(a -> email.equals(a.getEmail()) && a.getId() >= id)) {
+        if (commonUtil.isManageRole(email, id)) {
             identity = true;
         }
         environment.setVariable("identity", builder.build().wrap(identity));

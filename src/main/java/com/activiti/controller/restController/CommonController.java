@@ -110,8 +110,7 @@ public class CommonController {
     public Object removeScheduleTime(@RequestParam(value = "courseCode") String courseCode, HttpServletRequest request) throws Exception {
         String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
         boolean identity = false;
-        if (ConstantsUtils.defaultManager.equals(email)) identity = true;
-        if (userService.selectAllUserRole().stream().anyMatch(a -> email.equals(a.getEmail()))) {
+        if (commonUtil.isManageRole(email)) {
             identity = true;
         }
         if (identity) {

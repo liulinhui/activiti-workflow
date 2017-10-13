@@ -12,7 +12,6 @@ public class ConstantsUtils {
 
     public static final String sessionEmail="userEmail";
 
-    public static final String defaultManager="1249055292@qq.com";
 
     //定时任务相关的数据字典
     public static final String NOTIFY_TO_ASSESSMENT="NOTIFY_TO_ASSESSMENT";  //邮件通知互评，打乱学生顺序

@@ -300,9 +300,13 @@ public class CommonUtil {
      * 判断是否为管理员账号
      *
      * @param email
+     * @param arg   参数
      * @return
      */
-    public boolean isManageRole(String email) {
-        return ConstantsUtils.defaultManager.equals(email) || userService.selectAllUserRole().stream().anyMatch(a -> email.equals(a.getEmail()));
+    public boolean isManageRole(String email, int... arg) {
+        if (null == arg)
+            return userService.selectAllUserRole().stream().anyMatch(a -> email.equals(a.getEmail()));
+        else
+            return userService.selectAllUserRole().stream().anyMatch(a -> email.equals(a.getEmail()) && a.getId() >= arg[0]);
     }
 }
