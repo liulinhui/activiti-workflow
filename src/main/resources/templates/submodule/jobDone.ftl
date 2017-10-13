@@ -95,12 +95,19 @@
                     data: {courseCode: courseCode},
                     dataType: 'json',
                     success: function (result) {
-                        var question = result.data;
-                        layer.open({
-                            title: '原题',
-                            shadeClose: true,
-                            content: '<p>' + question + '<p>'
-                        });
+                        if (result.success){
+                            layer.open({
+                                title: '原题',
+                                shadeClose: true,
+                                content: '<p>' + result.data + '<p>'
+                            });
+                        }else {
+                            layer.open({
+                                title: '请求出错',
+                                shadeClose: true,
+                                content: '<p>' + result.errorMessage + '<p>'
+                            });
+                        }
                     }
                 })
             }

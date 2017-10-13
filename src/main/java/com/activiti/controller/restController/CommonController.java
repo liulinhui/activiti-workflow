@@ -54,8 +54,10 @@ public class CommonController {
     @RequestMapping("/getQAContent")
     @ResponseBody
     @ApiAnnotation
-    public Object getQAFromGitHub(@RequestParam(value = "courseCode") String courseCode) throws UnsupportedEncodingException {
-        String githubAddress = scheduleMapper.selectScheduleTime(courseCode).getGithubAddress();
+    public Object getQAFromGitHub(@RequestParam(value = "courseCode") String courseCode) throws Exception {
+        ScheduleDto scheduleDto = scheduleMapper.selectScheduleTime(courseCode);
+        if (null == scheduleDto) throw new Exception("本题目已经被老师撤销了！！！");
+        String githubAddress = scheduleDto.getGithubAddress();
         String content = new String(Base64.decodeBase64(commonService.getQAFromGitHub(githubAddress).get("content").toString().getBytes()), "utf-8");
         JSONObject result = JSONObject.parseObject(content);
         return result.get("question");
