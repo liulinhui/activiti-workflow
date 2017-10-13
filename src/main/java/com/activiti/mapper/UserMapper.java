@@ -17,6 +17,7 @@ public interface UserMapper {
 
     /**
      * 查询学生基础信息
+     *
      * @param emailAddr
      * @return
      */
@@ -24,6 +25,7 @@ public interface UserMapper {
 
     /**
      * 插入学生信息
+     *
      * @param user
      * @return
      */
@@ -31,6 +33,7 @@ public interface UserMapper {
 
     /**
      * 插入学生作业信息
+     *
      * @param studentWorkInfo
      * @return
      */
@@ -38,6 +41,7 @@ public interface UserMapper {
 
     /**
      * 查询学生作业信息
+     *
      * @param studentWorkInfo
      * @return
      */
@@ -45,6 +49,7 @@ public interface UserMapper {
 
     /**
      * 查询学生作业信息
+     *
      * @param email
      * @param offset
      * @param limit
@@ -54,38 +59,44 @@ public interface UserMapper {
 
     /**
      * 学生总数量
+     *
      * @return
      */
     long countStudentWorkInfo(String email);
 
     /**
      * 查询没有分数的学生d的email
+     *
      * @param courseCode
      * @return
      */
-   List<String> selectNoGradeUser(String courseCode);
+    List<String> selectNoGradeUser(String courseCode);
 
     /**
      * 查询没有参加完互评的学生
+     *
      * @param courseCode
      * @return
      */
-   List<String> selectUnFinishJudgeUser(String courseCode);
+    List<String> selectUnFinishJudgeUser(String courseCode);
 
     /**
      * 打乱学生信息表
+     *
      * @return
      */
-    int chaosUserInfo();
+    int chaosUserInfo(@Param("tableName") String tableName, @Param("courseCode") String courseCode);
 
     /**
      * 删除混序学生表
+     *
      * @return
      */
-    int deleteChaosUserInfo();
+    int deleteChaosUserInfo(@Param("tableName") String tableName);
 
     /**
      * 插入用户角色
+     *
      * @param userRole
      * @return
      */
@@ -93,14 +104,23 @@ public interface UserMapper {
 
     /**
      * 查询所有用户角色
+     *
      * @return
      */
     List<UserRole> selectAllUserRole();
 
     /**
      * 删除用户角色
+     *
      * @param email
      * @return
      */
     int deleteUserRole(String email);
+
+    /**
+     * 查询参加了课程的所有学生
+     * @param courseCode
+     * @return
+     */
+    List<String> selectAllStuInCourse(String courseCode);
 }

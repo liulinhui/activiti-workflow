@@ -10,13 +10,13 @@
 
     <insert id="insertUser" parameterType="com.activiti.pojo.user.User">
         INSERT IGNORE INTO judge_stu_info
-        (USER_NAME, EMAIL_ADDRESS, ABILITY_LEVEL)
+        (USER_NAME, EMAIL_ADDRESS, ABILITY_LEVEL,COURSE_CODE)
         VALUES
-            (#{userName}, #{emailAddress}, #{abilityLevel})
+            (#{userName}, #{emailAddress}, #{abilityLevel},#{courseCode})
     </insert>
 
-    <insert id="chaosUserInfo">
-        INSERT INTO judge_chaos_stu_info (
+    <insert id="chaosUserInfo" parameterType="string">
+        INSERT INTO ${tableName} (
             USER_NAME,
             EMAIL_ADDRESS,
             ABILITY_LEVEL
@@ -26,11 +26,12 @@
               ABILITY_LEVEL
           FROM
               judge_stu_info
+              WHERE COURSE_CODE=#{courseCode}
           ORDER BY USER_NAME DESC;
     </insert>
 
-    <delete id="deleteChaosUserInfo">
-        TRUNCATE TABLE judge_chaos_stu_info;
+    <delete id="deleteChaosUserInfo" parameterType="string">
+        DROP TABLE ${tableName};
     </delete>
 
     <insert id="insertUserWork" parameterType="com.activiti.pojo.user.StudentWorkInfo">
@@ -81,5 +82,9 @@
     <delete id="deleteUserRole" parameterType="string">
         DELETE FROM judge_user_role WHERE EMAIL=#{email}
     </delete>
+
+    <select id="selectAllStuInCourse" parameterType="string" resultType="string">
+        SELECT EMAIL_ADDRESS FROM judge_stu_work_info WHERE COURSE_CODE=#{courseCode}
+    </select>
 
 </mapper>

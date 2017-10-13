@@ -38,14 +38,37 @@ public interface ScheduleMapper {
      */
     List<ScheduleDto> selectAllScheduleTime(@Param("offset")long offset, @Param("limit") int limit);
 
+    /**
+     * 删除课程
+     * @param courseCode
+     * @return
+     */
     int deleteCourse(String courseCode);
 
+    /**
+     * 查询所有课程
+     * @return
+     */
     List<ScheduleDto> selectAllOfScheduleTime();
 
+    /**
+     * 计算课程总数
+     * @return
+     */
     long countAllScheduleTime();
 
+    /**
+     * 每个课程新建一张表
+     * @param tableName
+     * @return
+     */
     int createTable(@Param("tableName")String tableName);
 
+    /**
+     * 删除课程相关的表
+     * @param tableName
+     * @return
+     */
     int dropTable(@Param("tableName")String tableName);
 
 }

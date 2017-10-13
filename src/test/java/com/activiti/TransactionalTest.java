@@ -23,7 +23,7 @@ public class TransactionalTest {
     @Test
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
     public void transactionalTest() throws Exception {
-        User user = new User("qwe", "qweqwe", "eqweqw", "rewrwer");
+        User user = new User("qwe", "qweqwe", "eqweqw", "rewrwer","S12345");
         userMapper.insertUser(user);
         throw new Exception();
     }

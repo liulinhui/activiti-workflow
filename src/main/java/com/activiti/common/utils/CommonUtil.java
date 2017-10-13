@@ -11,6 +11,7 @@ import com.activiti.pojo.email.EmailDto;
 import com.activiti.pojo.email.EmailType;
 import com.activiti.pojo.schedule.ScheduleDto;
 import com.activiti.service.ScheduleService;
+import com.activiti.service.UserService;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,7 +50,8 @@ public class CommonUtil {
     private QuartzManager quartzManager;
     @Autowired
     private MailProducer mailProducer;
-
+    @Autowired
+    private UserService userService;
 
 
     /**
@@ -214,7 +217,7 @@ public class CommonUtil {
     }
 
     /**
-     * 添加一个新流程任务
+     * 删除一个新流程任务
      *
      * @param scheduleDto
      */
@@ -237,6 +240,14 @@ public class CommonUtil {
      */
     public void assessmentStartJob(String courseCode) {
         logger.info("课程ID=" + courseCode + ">>>>>>>执行定时任务>>>>>>>>>定时通知参加互评，并且打乱学生提交顺序");
+        String tableName = "`" + ConstantsUtils.tablePrefixName + courseCode + "`";
+        userService.chaosUserInfo(tableName, courseCode);   //打乱学生信息表
+        List<String> emailList = userService.selectAllStuInCourse(courseCode); //查询发邮件的对象
+        String subject = "互评提醒";
+        String content = "课程" + courseCode + "目前已经可以互评了，马上去互评吧！";
+        emailList.forEach(email -> {
+            mailProducer.send(new EmailDto(email, EmailType.simple, subject, content));
+        });
     }
 
     /**

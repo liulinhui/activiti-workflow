@@ -13,20 +13,31 @@ public class User implements Serializable {
     private String userName;
     private String emailAddress;
     private String abilityLevel;
+    private String courseCode;
 
     public User() {
     }
 
-    public User(String userName, String emailAddress) {
+    public User(String userName, String emailAddress,String courseCode) {
         this.userName = userName;
         this.emailAddress = emailAddress;
+        this.courseCode=courseCode;
     }
 
-    public User(String userId, String userName, String emailAddress, String abilityLevel) {
+    public User(String userId, String userName, String emailAddress, String abilityLevel,String courseCode) {
         this.userId = userId;
         this.userName = userName;
         this.emailAddress = emailAddress;
         this.abilityLevel = abilityLevel;
+        this.courseCode=courseCode;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
     }
 
     public String getUserId() {

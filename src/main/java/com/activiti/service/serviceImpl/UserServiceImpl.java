@@ -54,13 +54,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int chaosUserInfo() {
-        return userMapper.chaosUserInfo();
+    public int chaosUserInfo(String tableName,String courseCode) {
+        return userMapper.chaosUserInfo(tableName,courseCode);
     }
 
     @Override
-    public int deleteChaosUserInfo() {
-       return userMapper.deleteChaosUserInfo();
+    public int deleteChaosUserInfo(String tableName) {
+       return userMapper.deleteChaosUserInfo(tableName);
     }
 
     @Override
@@ -76,5 +76,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public int deleteUserRole(String email) {
         return userMapper.deleteUserRole(email);
+    }
+
+    @Override
+    public List<String> selectAllStuInCourse(String courseCode) {
+        return userMapper.selectAllStuInCourse(courseCode);
     }
 }

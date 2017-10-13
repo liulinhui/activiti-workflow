@@ -45,7 +45,7 @@ public class RedisTest {
      */
     @Test
     public void testObj() throws Exception {
-        User user=new User("123", "aa", "243", "aa");
+        User user=new User("123", "aa", "243", "aa","S12345");
         ValueOperations<String, User> operations=redisTemplate.opsForValue();
         operations.set("user", user);
         operations.set("user_expire", user,100, TimeUnit.SECONDS);

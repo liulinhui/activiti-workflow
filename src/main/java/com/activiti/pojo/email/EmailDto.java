@@ -16,6 +16,13 @@ public class EmailDto {
     public EmailDto() {
     }
 
+    /**
+     *
+     * @param address mail 地址
+     * @param type Email类型
+     * @param subject 主题
+     * @param content 内容
+     */
     public EmailDto(String address, EmailType type, String subject, String content) {
         this.address = address;
         this.type = type;

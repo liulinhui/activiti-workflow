@@ -19,20 +19,7 @@ CREATE TABLE IF NOT EXISTS JUDGE_STU_INFO (
   USER_NAME     VARCHAR(20)                 DEFAULT NULL,
   EMAIL_ADDRESS VARCHAR(30) UNIQUE NOT NULL,
   ABILITY_LEVEL VARCHAR(10)                 DEFAULT NULL,
-  INDEX index_email_address (EMAIL_ADDRESS),
-  PRIMARY KEY (USER_ID)
-)
-  ENGINE = MyISAM -- 采用MyISAM防止主键id自增出现断层现象
-  DEFAULT CHARSET = utf8;
-
--- ----------------------------
--- chaos table for user_info to upset the order of user
--- ----------------------------
-CREATE TABLE IF NOT EXISTS JUDGE_CHAOS_STU_INFO (
-  USER_ID       INT(11)            NOT NULL AUTO_INCREMENT,
-  USER_NAME     VARCHAR(20)                 DEFAULT NULL,
-  EMAIL_ADDRESS VARCHAR(30) UNIQUE NOT NULL,
-  ABILITY_LEVEL VARCHAR(10)                 DEFAULT NULL,
+  COURSE_CODE   VARCHAR(50)        NOT NULL,
   INDEX index_email_address (EMAIL_ADDRESS),
   PRIMARY KEY (USER_ID)
 )

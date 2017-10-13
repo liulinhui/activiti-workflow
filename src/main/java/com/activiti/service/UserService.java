@@ -60,13 +60,13 @@ public interface UserService {
      * 打乱学生信息表
      * @return
      */
-    int chaosUserInfo();
+    int chaosUserInfo(String tableName,String courseCode);
 
     /**
      * 删除混序学生表
      * @return
      */
-    int deleteChaosUserInfo();
+    int deleteChaosUserInfo(String tableName);
 
     /**
      * 插入用户角色
@@ -87,4 +87,11 @@ public interface UserService {
      * @return
      */
     int deleteUserRole(String email);
+
+    /**
+     * 查询参加了课程的所有学生
+     * @param courseCode
+     * @return
+     */
+    List<String> selectAllStuInCourse(String courseCode);
 }

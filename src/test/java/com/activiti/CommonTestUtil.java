@@ -12,7 +12,7 @@ import java.util.Random;
 public class CommonTestUtil {
 
     public static User getUserInfo() {
-        return new User("1", "fucker",getRandomString(9), "good");
+        return new User("1", "fucker",getRandomString(9), "good","S12345");
     }
 
     public static String getRandomString(int length) { //length表示生成字符串的长度

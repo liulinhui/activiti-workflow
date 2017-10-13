@@ -68,7 +68,7 @@ public class UserController {
         if (commonUtil.compareDate(new Date(), deadline))
             throw new Exception("提交作业截至时间:" + CommonUtil.dateToString(deadline));
         StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, email, workDetail, new Date());
-        User user = new User(commonUtil.getRandomUserName(), studentWorkInfo.getEmailAddress());
+        User user = new User(commonUtil.getRandomUserName(), email,courseCode);
         userService.insertUser(user);
         studentWorkInfo.setLastCommitTime(new Date());
         userService.insertUserWork(studentWorkInfo);
