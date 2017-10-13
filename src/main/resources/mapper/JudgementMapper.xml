@@ -57,13 +57,12 @@
 
     <select id="countAllWorks" resultType="java.lang.Integer" parameterType="java.lang.String">
         SELECT count(*)
-        FROM judge_stu_work_info
-        WHERE COURSE_CODE = #{courseCode}
+        FROM ${tableName}
     </select>
 
     <select id="selectChaosId" parameterType="java.lang.String" resultType="java.lang.Integer">
         SELECT USER_ID
-        FROM judge_chaos_stu_info
+        FROM ${tableName}
         WHERE EMAIL_ADDRESS = #{emailAddress}
     </select>
 

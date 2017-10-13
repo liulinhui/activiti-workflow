@@ -49,12 +49,12 @@ public class JudgementServiceImpl implements JudgementService {
 
     @Cacheable(value = "ehCache300", keyGenerator = "keyGenerator")
     @Override
-    public int countAllWorks(String courseCode) {
-        return judgementMapper.countAllWorks(courseCode);
+    public int countAllWorks(String tableName) {
+        return judgementMapper.countAllWorks(tableName);
     }
 
     @Override
-    public int selectChaosId(String emailAddress) {
-        return judgementMapper.selectChaosId(emailAddress);
+    public int selectChaosId(String emailAddress,String tableName) {
+        return judgementMapper.selectChaosId(emailAddress,tableName);
     }
 }

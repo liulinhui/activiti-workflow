@@ -3,6 +3,7 @@ package com.activiti.mapper;
 import com.activiti.pojo.user.JudgementLs;
 import com.activiti.pojo.user.StudentWorkInfo;
 import com.activiti.pojo.user.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -60,16 +61,18 @@ public interface JudgementMapper {
 
     /**
      * 查询提交作业的总人数
-     * @param courseCode
+     *
+     * @param tableName
      * @return
      */
-    int countAllWorks(String courseCode);
+    int countAllWorks(@Param("tableName") String tableName);
 
     /**
      * 查询打乱顺序后的学生ID
+     *
      * @param emailAddress
      * @return
      */
-    int selectChaosId(String emailAddress);
+    int selectChaosId(@Param("emailAddress") String emailAddress, @Param("tableName") String tableName);
 
 }

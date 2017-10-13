@@ -57,10 +57,10 @@ public interface JudgementService {
     /**
      * 查询提交作业的总人数
      *
-     * @param courseCode
+     * @param tableName
      * @return
      */
-    int countAllWorks(String courseCode);
+    int countAllWorks(String tableName);
 
     /**
      * 查询打乱顺序后的学生ID
@@ -68,5 +68,5 @@ public interface JudgementService {
      * @param emailAddress
      * @return
      */
-    int selectChaosId(String emailAddress);
+    int selectChaosId(String emailAddress, String tableName);
 }

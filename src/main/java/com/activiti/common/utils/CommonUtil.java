@@ -240,7 +240,7 @@ public class CommonUtil {
      */
     public void assessmentStartJob(String courseCode) {
         logger.info("课程ID=" + courseCode + ">>>>>>>执行定时任务>>>>>>>>>定时通知参加互评，并且打乱学生提交顺序");
-        String tableName = "`" + ConstantsUtils.tablePrefixName + courseCode + "`";
+        String tableName = generateTableName(courseCode);
         userService.chaosUserInfo(tableName, courseCode);   //打乱学生信息表
         List<String> emailList = userService.selectAllStuInCourse(courseCode); //查询发邮件的对象
         String subject = "互评提醒";
@@ -248,6 +248,16 @@ public class CommonUtil {
         emailList.forEach(email -> {
             mailProducer.send(new EmailDto(email, EmailType.simple, subject, content));
         });
+    }
+
+    /**
+     * 生成表名
+     *
+     * @param courseCode
+     * @return
+     */
+    public String generateTableName(String courseCode) {
+        return "`" + ConstantsUtils.tablePrefixName + courseCode.toUpperCase() + "`";
     }
 
     /**

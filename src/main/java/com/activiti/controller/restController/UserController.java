@@ -68,7 +68,7 @@ public class UserController {
         if (commonUtil.compareDate(new Date(), deadline))
             throw new Exception("提交作业截至时间:" + CommonUtil.dateToString(deadline));
         StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, email, workDetail, new Date());
-        User user = new User(commonUtil.getRandomUserName(), email,courseCode);
+        User user = new User(commonUtil.getRandomUserName(), email, courseCode);
         userService.insertUser(user);
         studentWorkInfo.setLastCommitTime(new Date());
         userService.insertUserWork(studentWorkInfo);
@@ -105,14 +105,21 @@ public class UserController {
         }
     }
 
+    /**
+     * 查询需要评论的作业
+     *
+     * @param email
+     * @param courseCode
+     * @return
+     */
     @RequestMapping("/selectWorkListToJudge")
     @ResponseBody
     @ApiAnnotation
-    public Object selectWorkListToJudge(@RequestParam(value = "email", required = true) String email,
-                                        @RequestParam(value = "courseCode", required = true) String courseCode) {
+    public Object selectWorkListToJudge(@RequestParam(value = "email") String email,
+                                        @RequestParam(value = "courseCode") String courseCode) {
         StudentWorkInfo studentWorkInfo = new StudentWorkInfo();
         studentWorkInfo.setCourseCode(courseCode);
-        int studentId = judgementService.selectChaosId(email);
+        int studentId = judgementService.selectChaosId(email, commonUtil.generateTableName(courseCode));
         int countWork = judgementService.countAllWorks(courseCode);
         int judgeTimes = scheduleService.selectScheduleTime(courseCode).getJudgeTimes();
         int[] initIdList = {studentId + 1, studentId + 2, studentId + 3};
