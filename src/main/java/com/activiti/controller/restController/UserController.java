@@ -204,6 +204,31 @@ public class UserController {
     }
 
     /**
+     * 查询学生成绩
+     *
+     * @return
+     */
+    @RequestMapping("/selectStudentGrade")
+    @ResponseBody
+    @ApiAnnotation
+    public Object selectStudentGrade(HttpServletRequest request) {
+        return userMapper.selectAllWorkInfo(request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString());
+    }
+
+    /**
+     * 查询谁给我打了分数
+     *
+     * @return
+     */
+    @RequestMapping("/selectWhoJudgeMe")
+    @ResponseBody
+    @ApiAnnotation
+    public Object selectWhoJudgeMe(@RequestParam(value = "courseCode") String courseCode, HttpServletRequest request) {
+        String email = request.getSession().getAttribute(ConstantsUtils.sessionEmail).toString();
+        return judgementService.selectJudgementLs(new JudgementLs(courseCode, email));
+    }
+
+    /**
      * 删除管理员用户
      *
      * @param email

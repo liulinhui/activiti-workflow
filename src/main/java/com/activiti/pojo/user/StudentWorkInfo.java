@@ -20,6 +20,7 @@ public class StudentWorkInfo implements Serializable {
     private String judgeType;  //teacher：老師评分  student:学生互评
     private int judgeTimes;      //作业被评论次数
     private Date joinJudgeTime;   //参与互评的时间
+    private String joinJudgeTimeString;
 
     public String getLastCommitTimeString() {
         return lastCommitTimeString;
@@ -72,6 +73,14 @@ public class StudentWorkInfo implements Serializable {
         this.emailAddress = emailAddress;
     }
 
+    public String getJoinJudgeTimeString() {
+        return joinJudgeTimeString;
+    }
+
+    public void setJoinJudgeTimeString(String joinJudgeTimeString) {
+        this.joinJudgeTimeString = joinJudgeTimeString;
+    }
+
     public String getWorkDetail() {
         return workDetail;
     }
@@ -119,6 +128,7 @@ public class StudentWorkInfo implements Serializable {
 
     public void setJoinJudgeTime(Date joinJudgeTime) {
         this.joinJudgeTime = joinJudgeTime;
+        this.joinJudgeTimeString=CommonUtil.dateToString(joinJudgeTime);
     }
 
     @Override

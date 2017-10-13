@@ -142,12 +142,12 @@
                                         elem: '.myJobAssessmentTable',
                                         data: data.data.list,
                                         height: 250,
-                                        width: 660,
+                                        width: 700,
                                         cols: [[ //标题栏
                                             {field: 'courseCode', title: '课程代码', width: 150},
-                                            {field: 'nonJudgeEmail', title: '邮箱', width: 200},
+                                            {field: 'nonJudgeEmail', title: '邮箱', width: 250},
                                             {field: 'judgeTimeString', title: '提交时间', width: 200},
-                                            {field: 'grade', title: '评分', width: 100}
+                                            {field: 'grade', title: '评分', width: 95}
                                         ]],
                                         skin: 'row', //表格风格
                                         even: true,

@@ -48,7 +48,7 @@ public interface UserMapper {
     StudentWorkInfo selectStudentWorkInfo(StudentWorkInfo studentWorkInfo);
 
     /**
-     * 查询学生作业信息
+     * 查询学生作业信息(所有课程)
      *
      * @param email
      * @param offset
@@ -58,6 +58,13 @@ public interface UserMapper {
     List<StudentWorkInfo> selectStudentWorkInfoPage(@Param("email") String email, @Param("offset") long offset, @Param("limit") int limit);
 
     /**
+     * 查询所有课程成绩
+     * @param email
+     * @return
+     */
+    List<StudentWorkInfo> selectAllWorkInfo(String email);
+
+    /**
      * 学生总数量
      *
      * @return
@@ -65,7 +72,7 @@ public interface UserMapper {
     long countStudentWorkInfo(String email);
 
     /**
-     * 查询没有分数的学生d的email
+     * 查询没有分数的学生的email
      *
      * @param courseCode
      * @return

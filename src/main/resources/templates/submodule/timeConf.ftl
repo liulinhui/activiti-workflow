@@ -179,7 +179,7 @@
                                                 title: '操作',
                                                 width: 100,
                                                 templet: '#my-time-conf-operation'
-                                            },
+                                            }
                                         ]],
                                         skin: 'row', //表格风格
                                         even: true,
@@ -245,8 +245,7 @@
                     }
                 })
             }
-        })
-        ;
+        });
     })
 </script>
 
