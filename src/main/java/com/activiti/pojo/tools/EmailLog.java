@@ -1,6 +1,7 @@
 package com.activiti.pojo.tools;
 
 
+import com.activiti.common.utils.CommonUtil;
 import com.activiti.pojo.email.EmailDto;
 
 import java.io.Serializable;
@@ -15,9 +16,10 @@ public class EmailLog implements Serializable {
     private String rscPath;      //资源地址
     private String rscId;       //资源id
     private Date sendTime;       //发送时间
+    private String sendTimeString;       //发送时间
     private String status;  //发送状态  0:失败  1:成功
 
-    public EmailLog(EmailDto emailDto, String status) {
+    public EmailLog(EmailDto emailDto, String status, String sendAddress) {
         this.content = emailDto.getContent();
         this.receiveAddress = emailDto.getAddress();
         this.subject = emailDto.getSubject();
@@ -25,10 +27,18 @@ public class EmailLog implements Serializable {
         this.rscPath = emailDto.getRscPath();
         this.status = status;
         this.sendTime = new Date();
-
+        this.sendAddress = sendAddress;
     }
 
     public EmailLog() {
+    }
+
+    public String getSendTimeString() {
+        return sendTimeString;
+    }
+
+    public void setSendTimeString(String sendTimeString) {
+        this.sendTimeString = sendTimeString;
     }
 
     public String getStatus() {
@@ -93,6 +103,7 @@ public class EmailLog implements Serializable {
 
     public void setSendTime(Date sendTime) {
         this.sendTime = sendTime;
+        this.sendTimeString = CommonUtil.dateToString(sendTime);
     }
 
     @Override

@@ -194,4 +194,33 @@ public class CommonController {
         jsonObject.put("count", toolsMapper.countInvokeLog());
         return jsonObject;
     }
+
+    /**
+     * 邮件日志查询
+     *
+     * @param page
+     * @param limit
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/selectEmailLog")
+    @ApiAnnotation(insertLog = false)
+    public Object selectEmailLog(@RequestParam(value = "page") long page,
+                                 @RequestParam(value = "limit") int limit) {
+        return toolsMapper.selectEmailLog((page - 1) * limit, limit);
+    }
+
+    /**
+     * 邮件日志查询总页数
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/countEmailLog")
+    @ApiAnnotation(insertLog = false)
+    public Object countEmailLog() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("count", toolsMapper.countEmailLog());
+        return jsonObject;
+    }
 }
