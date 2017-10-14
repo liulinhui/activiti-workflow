@@ -58,9 +58,7 @@ public class CommonController {
         ScheduleDto scheduleDto = scheduleMapper.selectScheduleTime(courseCode);
         if (null == scheduleDto) throw new Exception("本题目已经被老师撤销了！！！");
         String githubAddress = scheduleDto.getGithubAddress();
-        String content = new String(Base64.decodeBase64(commonService.getQAFromGitHub(githubAddress).get("content").toString().getBytes()), "utf-8");
-        JSONObject result = JSONObject.parseObject(content);
-        return result.get("question");
+        return commonService.getQAFromGitHub(githubAddress).get("question");
     }
 
     /**

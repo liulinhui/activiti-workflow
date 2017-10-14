@@ -142,8 +142,7 @@ public class UserController {
         if (commonUtil.compareDate(new Date(), scheduleDto.getJudgeEndTime()) || commonUtil.compareDate(scheduleDto.getJudgeStartTime(), new Date()))
             throw new Exception("该课程不在互评时间段内(" + scheduleDto.getJudgeStartTimeString() + "至" + scheduleDto.getJudgeEndTimeString() + ")");
         String githubAddress = scheduleDto.getGithubAddress();
-        String content = new String(Base64.decodeBase64(commonService.getQAFromGitHub(githubAddress).get("content").toString().getBytes()), "utf-8");
-        JSONObject response = JSONObject.parseObject(content);
+        JSONObject response = commonService.getQAFromGitHub(githubAddress);
         int studentId = judgementService.selectChaosId(email, tableName);
         int countWork = judgementService.countAllWorks(tableName);
         int judgeTimes = scheduleDto.getJudgeTimes();
