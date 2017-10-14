@@ -11,7 +11,6 @@ import com.activiti.pojo.email.EmailDto;
 import com.activiti.pojo.email.EmailType;
 import com.activiti.pojo.schedule.ScheduleDto;
 import com.activiti.pojo.user.JudgementLs;
-import com.activiti.service.ScheduleService;
 import com.activiti.service.UserService;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpResponse;

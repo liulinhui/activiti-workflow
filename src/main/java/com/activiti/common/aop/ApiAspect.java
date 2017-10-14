@@ -2,7 +2,6 @@ package com.activiti.common.aop;
 
 import com.activiti.common.async.AsyncTasks;
 import com.activiti.common.utils.CommonUtil;
-import com.activiti.common.utils.ConstantsUtils;
 import com.activiti.pojo.restApiDto.RestApiResponse;
 import com.activiti.pojo.tools.InvokeLog;
 import com.alibaba.fastjson.JSON;
@@ -18,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.context.request.ServletWebRequest;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 
 /**

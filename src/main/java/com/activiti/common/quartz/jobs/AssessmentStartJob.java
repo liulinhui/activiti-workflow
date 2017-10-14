@@ -1,12 +1,10 @@
 package com.activiti.common.quartz.jobs;
 
 
-import com.activiti.common.utils.CommonUtil;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.impl.JobDetailImpl;
-import org.quartz.impl.JobExecutionContextImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

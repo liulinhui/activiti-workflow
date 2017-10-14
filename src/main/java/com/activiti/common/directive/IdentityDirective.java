@@ -1,8 +1,6 @@
 package com.activiti.common.directive;
 
 import com.activiti.common.utils.CommonUtil;
-import com.activiti.common.utils.ConstantsUtils;
-import com.activiti.pojo.user.UserRole;
 import com.activiti.service.UserService;
 import freemarker.core.Environment;
 import freemarker.template.*;
@@ -10,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @Component("identityDirective")

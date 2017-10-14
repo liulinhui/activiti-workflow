@@ -1,6 +1,5 @@
 package com.activiti.common.interceptor;
 
-import com.activiti.common.utils.ConstantsUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;

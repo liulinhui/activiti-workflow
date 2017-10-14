@@ -1,7 +1,6 @@
 package com.activiti.service.serviceImpl;
 
 import com.activiti.common.utils.CommonUtil;
-import com.activiti.common.utils.ConstantsUtils;
 import com.activiti.service.CommonService;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;

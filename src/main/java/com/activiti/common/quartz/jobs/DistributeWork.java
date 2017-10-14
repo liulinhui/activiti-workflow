@@ -2,8 +2,6 @@ package com.activiti.common.quartz.jobs;
 
 import com.activiti.common.quartz.QuartzManager;
 import com.activiti.common.utils.CommonUtil;
-import com.activiti.common.utils.ConstantsUtils;
-import com.activiti.common.utils.CronUtils;
 import com.activiti.mapper.ScheduleMapper;
 import com.activiti.pojo.schedule.ScheduleDto;
 import org.joda.time.DateTime;
