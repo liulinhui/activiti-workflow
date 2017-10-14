@@ -200,4 +200,19 @@ public class IndexController {
     public String logView(HttpServletRequest request, ModelMap modelMap) {
         return "submodule/logView";
     }
+
+    /**
+     * 测试页面
+     *
+     * @param modelMap
+     * @return
+     */
+    @RequestMapping("/test")
+    public String test(ModelMap modelMap, HttpServletRequest request) throws Exception {
+        if (!commonUtil.isManageRole(CommonUtil.getEmailFromSession(request))) throw new Exception("只有管理员可以查看");
+        modelMap.put("courseCode", "S12345");
+        modelMap.put("workDetail", "hfsjdfgsdufsujcnjds");
+        modelMap.put("email", "email");
+        return "mail/test";
+    }
 }

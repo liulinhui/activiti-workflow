@@ -17,6 +17,9 @@ import com.activiti.pojo.user.VerifyTask;
 import com.activiti.service.JudgementService;
 import com.activiti.service.UserService;
 import com.alibaba.fastjson.JSONObject;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -30,10 +33,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.ModelMap;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URLDecoder;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -60,6 +66,8 @@ public class CommonUtil {
     private JudgementService judgementService;
     @Autowired
     private VerifyTaskMapper verifyTaskMapper;
+    @Autowired
+    private Configuration configuration;
 
 
     /**
@@ -358,5 +366,27 @@ public class CommonUtil {
      */
     public static String getEmailFromSession(HttpServletRequest request) {
         return (String) request.getSession().getAttribute(ConstantsUtils.sessionEmail);
+    }
+
+    /**
+     * 渲染模板
+     *
+     * @param modelMap
+     * @param template
+     * @return
+     * @throws IOException
+     * @throws TemplateException
+     */
+    public String applyDataToView(ModelMap modelMap, String template) throws IOException, TemplateException {
+        //建立数据模型
+        String content = "";
+        //取得模版文件
+        Template t = configuration.getTemplate(template);
+        Writer out = new StringWriter(2048);
+        t.process(modelMap, out);
+        content = out.toString();
+        out.flush();
+        out.close();
+        return content;
     }
 }

@@ -3,6 +3,7 @@ package com.activiti.controller.restController;
 import com.activiti.common.aop.ApiAnnotation;
 import com.activiti.common.kafka.MailProducer;
 import com.activiti.common.utils.CommonUtil;
+import com.activiti.common.utils.ConstantsUtils;
 import com.activiti.mapper.AdminMapper;
 import com.activiti.mapper.UserMapper;
 import com.activiti.mapper.VerifyTaskMapper;
@@ -18,6 +19,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -92,7 +94,11 @@ public class UserController {
         }
         userService.insertUser(user);
         studentWorkInfo.setLastCommitTime(new Date());
-        mailProducer.send(new EmailDto(email, EmailType.simple, "答题成功", courseCode + "这门课程你给出的答案为：" + workDetail));
+        ModelMap modelMap = new ModelMap();
+        modelMap.put("courseCode", courseCode);
+        modelMap.put("workDetail", workDetail);
+        modelMap.put("email", email);
+        mailProducer.send(new EmailDto(email, EmailType.simple, "答题成功", commonUtil.applyDataToView(modelMap, ConstantsUtils.successAnswerFtl)));
         return studentWorkInfo;
     }
 
