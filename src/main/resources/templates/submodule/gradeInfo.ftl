@@ -1,6 +1,6 @@
 <div class="my-grade-info">
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend class="my-answer-fieldset-courseCode">查看成绩:</legend>
+        <legend>查看成绩:</legend>
     </fieldset>
     <div>
         <table class="myGradeInfoTable" lay-filter="myGradeInfoTable">

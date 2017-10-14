@@ -3,7 +3,7 @@ package com.activiti.controller.restController;
 import com.activiti.common.aop.ApiAnnotation;
 import com.activiti.common.kafka.MailProducer;
 import com.activiti.common.utils.CommonUtil;
-import com.activiti.common.utils.ConstantsUtils;
+import com.activiti.mapper.AdminMapper;
 import com.activiti.mapper.UserMapper;
 import com.activiti.pojo.email.EmailDto;
 import com.activiti.pojo.email.EmailType;
@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -52,6 +51,8 @@ public class UserController {
     private CommonService commonService;
     @Autowired
     private MailProducer mailProducer;
+    @Autowired
+    private AdminMapper adminMapper;
 
     /*
      *  根据Email获取用户信息
@@ -79,6 +80,9 @@ public class UserController {
                              @RequestParam(name = "workDetail") String workDetail, HttpServletRequest request) throws Exception {
         String email = CommonUtil.getEmailFromSession(request);
         Date deadline = scheduleService.selectScheduleTime(courseCode).getJudgeStartTime();
+        if (userService.selectAllUserRole().stream().anyMatch(userRole -> {
+            return email.equals(userRole.getEmail());
+        })) throw new Exception("身为管理员的你不能提交作业！！！");
         if (commonUtil.compareDate(new Date(), deadline))
             throw new Exception("提交作业截至时间:" + CommonUtil.dateToString(deadline));
         StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, email, workDetail, new Date());
@@ -86,7 +90,7 @@ public class UserController {
         userService.insertUser(user);
         studentWorkInfo.setLastCommitTime(new Date());
         userService.insertUserWork(studentWorkInfo);
-        mailProducer.send(new EmailDto(email, EmailType.simple, "答题成功", courseCode+"这门课程你给出的答案为：" + workDetail));
+        mailProducer.send(new EmailDto(email, EmailType.simple, "答题成功", courseCode + "这门课程你给出的答案为：" + workDetail));
         return studentWorkInfo;
     }
 
@@ -221,7 +225,7 @@ public class UserController {
     @ResponseBody
     @ApiAnnotation
     public Object selectStudentGrade(HttpServletRequest request) {
-        return userMapper.selectAllWorkInfo(commonUtil.getEmailFromSession(request));
+        return userMapper.selectAllWorkInfo(CommonUtil.getEmailFromSession(request));
     }
 
     /**
@@ -267,6 +271,33 @@ public class UserController {
         if (!commonUtil.emailFormat(email))
             throw new Exception("邮箱格式不正确");
         return userService.insertUserRole(new UserRole(id, email, remarks));
+    }
+
+    /**
+     * 管理员查看学生成绩
+     *
+     * @param page
+     * @param limit
+     * @param courseCode
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/selectAllGradeInfoByAdmin")
+    @ApiAnnotation
+    public Object selectAllGradeInfoByAdmin(@RequestParam(value = "page", required = false, defaultValue = "1") long page,
+                                            @RequestParam(value = "limit", required = false, defaultValue = "1") int limit,
+                                            @RequestParam(value = "courseCode") String courseCode,
+                                            HttpServletRequest request) throws Exception {
+        ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
+        if (commonUtil.compareDate(scheduleDto.getPublishTime(), new Date()))
+            throw new Exception("当前时间未发布成绩，发布时间为(" + scheduleDto.getPublishTimeString() + ")");
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("count", adminMapper.countAllGradeByCourseCode(courseCode));
+        if (!(page == 1 && limit == 1))
+            jsonObject.put("list", adminMapper.selectAllWorkInfoByCourseCode(courseCode, (page - 1) * limit, limit));
+        return jsonObject;
     }
 }
 

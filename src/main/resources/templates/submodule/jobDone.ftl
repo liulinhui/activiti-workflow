@@ -55,7 +55,7 @@
                                     table.render({
                                         elem: '.myJobAnswerDoneTable',
                                         data: result.data,
-                                        height: 250,
+                                        height: 280,
                                         width: 2000,
                                         cols: [[ //标题栏
                                             {field: 'courseCode', title: '课程代码', width: 150},
@@ -83,7 +83,7 @@
         
         setTimeout(function () {
             loadMyJobAnswerDoneTable();
-        },500);
+        },100);
 
         //已完成的答题任务监控工具条
         table.on('tool(myJobAnswerDoneTable)', function (obj) {
@@ -170,7 +170,7 @@
 
         setTimeout(function () {
             loadAssessmentDone();
-        },1000)
+        },500)
     });
 </script>
 

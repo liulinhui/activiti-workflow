@@ -115,9 +115,14 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/gradeInfo")
-    public String gradeInfo(HttpServletRequest request) {
-        return commonUtil.isManageRole(commonUtil.getEmailFromSession(request))
-                ? "submodule/gradeInfoAdminView" : "submodule/gradeInfo";
+    public String gradeInfo(HttpServletRequest request, ModelMap modelMap) {
+        if (commonUtil.isManageRole(CommonUtil.getEmailFromSession(request))) {
+            List<ScheduleDto> scheduleDtoList = scheduleMapper.selectAllOfScheduleTime();
+            modelMap.put("scheduleDtoList", scheduleDtoList);
+            return "submodule/gradeInfoAdminView";
+        } else {
+            return "submodule/gradeInfo";
+        }
     }
 
     /**
