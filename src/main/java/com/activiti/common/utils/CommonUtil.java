@@ -7,10 +7,14 @@ import com.activiti.common.quartz.jobs.AssessmentStartJob;
 import com.activiti.common.quartz.jobs.PublishGradeEmailNotifyJob;
 import com.activiti.common.quartz.jobs.UnAssessmentNotifyJob;
 import com.activiti.common.sequence.Sequence;
+import com.activiti.mapper.VerifyTaskMapper;
 import com.activiti.pojo.email.EmailDto;
 import com.activiti.pojo.email.EmailType;
 import com.activiti.pojo.schedule.ScheduleDto;
 import com.activiti.pojo.user.JudgementLs;
+import com.activiti.pojo.user.StudentWorkInfo;
+import com.activiti.pojo.user.VerifyTask;
+import com.activiti.service.JudgementService;
 import com.activiti.service.UserService;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpResponse;
@@ -52,6 +56,10 @@ public class CommonUtil {
     private MailProducer mailProducer;
     @Autowired
     private UserService userService;
+    @Autowired
+    private JudgementService judgementService;
+    @Autowired
+    private VerifyTaskMapper verifyTaskMapper;
 
 
     /**
@@ -247,7 +255,7 @@ public class CommonUtil {
     /**
      * 通知参加互评，并且打乱学生提交顺序
      *
-     * @param courseCode 课程代码
+     * @param courseCode 课程代码  TODO 邮件页面编写
      */
     public void assessmentStartJob(String courseCode) {
         logger.info("课程ID=" + courseCode + ">>>>>>>执行定时任务>>>>>>>>>定时通知参加互评，并且打乱学生提交顺序");
@@ -262,21 +270,52 @@ public class CommonUtil {
     }
 
     /**
-     * 邮件通知成绩
+     * 邮件提醒没有参加互评的人以及将它们的流程结束
+     *
+     * @param courseCode 课程代码  TODO 邮件页面编写
+     */
+    public void unAssessmentNotifyJob(String courseCode) {
+        logger.info("课程ID=" + courseCode + ">>>>>>>执行定时任务>>>>>>>>>邮件提醒没有参加互评的人以及将它们的流程结束");
+        //没有参加互评的学生邮件提醒
+        userService.selectUnFinishJudgeUser(courseCode).forEach(studentWorkInfo -> {
+            String subject = "没参加互评成绩归零";
+            String content = "";  //TODO 邮件页面编写
+            judgementService.updateStuGrade(new StudentWorkInfo(courseCode, studentWorkInfo.getEmailAddress(), 0d)); //归零成绩
+            mailProducer.send(new EmailDto(studentWorkInfo.getEmailAddress(), EmailType.simple, subject, content));    //邮件提醒
+        });
+        //没有成绩的学生二次核查成绩,只要被批改次数大于等于三次则计算分数
+        userService.selectNoGradeUser(courseCode).forEach(studentWorkInfo -> {
+            List<JudgementLs> judgementLsList = judgementService.selectJudgementLs(
+                    new JudgementLs(courseCode, studentWorkInfo.getEmailAddress()));
+            if (null != judgementLsList && null != studentWorkInfo.getJoinJudgeTime() && ConstantsUtils.minJudgeTimes >= judgementLsList.size()) {
+                double finalGrade = getMiddleNum(null, judgementLsList);
+                judgementService.updateStuGrade(new StudentWorkInfo(courseCode, studentWorkInfo.getEmailAddress(), finalGrade));  //更新成绩
+            }
+        });
+        //通知老师批改成绩,并插入数据到成绩审核表中
+        List<StudentWorkInfo> studentWorkInfoList = userService.selectNoGradeUser(courseCode);
+        if (null != studentWorkInfoList && studentWorkInfoList.size() > 0) {
+            studentWorkInfoList.forEach(studentWorkInfo -> {
+                verifyTaskMapper.insertTask(new VerifyTask(
+                        studentWorkInfo.getEmailAddress(), studentWorkInfo.getWorkDetail(), studentWorkInfo.getCourseCode(),
+                        judgementService.selectCountJudge(studentWorkInfo.getEmailAddress())
+                ));
+            });
+        }
+    }
+
+    /**
+     * 邮件通知成绩  //todo 邮件页面
      *
      * @param courseCode 课程代码
      */
     public void publishGradeEmailNotifyJob(String courseCode) {
         logger.info("课程ID=" + courseCode + ">>>>>>>执行定时任务定时任务>>>>>>>>>定时邮件通知成绩");
-    }
-
-    /**
-     * 邮件提醒没有参加互评的人以及将它们的流程结束
-     *
-     * @param courseCode 课程代码
-     */
-    public void unAssessmentNotifyJob(String courseCode) {
-        logger.info("课程ID=" + courseCode + ">>>>>>>执行定时任务>>>>>>>>>邮件提醒没有参加互评的人以及将它们的流程结束");
+        String subject = "成绩提醒";
+        userService.selectAllUserWork(courseCode).forEach(studentWorkInfo -> {
+            String content = "";
+            mailProducer.send(new EmailDto(studentWorkInfo.getEmailAddress(), EmailType.simple, subject, content));
+        });
     }
 
     /**
@@ -286,9 +325,10 @@ public class CommonUtil {
      * @param judgementLsList
      * @return
      */
-    public double getMiddleNum(double num, List<JudgementLs> judgementLsList) {
+    public double getMiddleNum(Double num, List<JudgementLs> judgementLsList) {
         List<Double> doubleList = new ArrayList<>();
-        doubleList.add(num);
+        if (null != num)
+            doubleList.add(num);
         judgementLsList.forEach(a -> {
             doubleList.add(a.getGrade());
         });
@@ -304,7 +344,7 @@ public class CommonUtil {
      * @return
      */
     public boolean isManageRole(String email, int... arg) {
-        if (arg.length==0)
+        if (arg.length == 0)
             return userService.selectAllUserRole().stream().anyMatch(a -> email.equals(a.getEmail()));
         else
             return userService.selectAllUserRole().stream().anyMatch(a -> email.equals(a.getEmail()) && a.getId() >= arg[0]);
@@ -312,10 +352,11 @@ public class CommonUtil {
 
     /**
      * 从session中获取Email
+     *
      * @param request
      * @return
      */
-    public static String getEmailFromSession(HttpServletRequest request){
-        return (String)request.getSession().getAttribute(ConstantsUtils.sessionEmail);
+    public static String getEmailFromSession(HttpServletRequest request) {
+        return (String) request.getSession().getAttribute(ConstantsUtils.sessionEmail);
     }
 }

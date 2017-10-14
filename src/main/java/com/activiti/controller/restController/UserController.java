@@ -5,13 +5,11 @@ import com.activiti.common.kafka.MailProducer;
 import com.activiti.common.utils.CommonUtil;
 import com.activiti.mapper.AdminMapper;
 import com.activiti.mapper.UserMapper;
+import com.activiti.mapper.VerifyTaskMapper;
 import com.activiti.pojo.email.EmailDto;
 import com.activiti.pojo.email.EmailType;
 import com.activiti.pojo.schedule.ScheduleDto;
-import com.activiti.pojo.user.JudgementLs;
-import com.activiti.pojo.user.StudentWorkInfo;
-import com.activiti.pojo.user.User;
-import com.activiti.pojo.user.UserRole;
+import com.activiti.pojo.user.*;
 import com.activiti.service.CommonService;
 import com.activiti.service.JudgementService;
 import com.activiti.service.ScheduleService;
@@ -51,6 +49,8 @@ public class UserController {
     private MailProducer mailProducer;
     @Autowired
     private AdminMapper adminMapper;
+    @Autowired
+    private VerifyTaskMapper verifyTaskMapper;
 
     /*
      *  根据Email获取用户信息
@@ -85,9 +85,13 @@ public class UserController {
             throw new Exception("提交作业截至时间:" + CommonUtil.dateToString(deadline));
         StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, email, workDetail, new Date());
         User user = new User(commonUtil.getRandomUserName(), email, courseCode);
+        try {
+            userService.insertUserWork(studentWorkInfo);
+        } catch (Exception e) {
+            throw new Exception("你已经参与过答题了！！");
+        }
         userService.insertUser(user);
         studentWorkInfo.setLastCommitTime(new Date());
-        userService.insertUserWork(studentWorkInfo);
         mailProducer.send(new EmailDto(email, EmailType.simple, "答题成功", courseCode + "这门课程你给出的答案为：" + workDetail));
         return studentWorkInfo;
     }
@@ -294,6 +298,32 @@ public class UserController {
         jsonObject.put("count", adminMapper.countAllGradeByCourseCode(courseCode));
         if (!(page == 1 && limit == 1))
             jsonObject.put("list", adminMapper.selectAllWorkInfoByCourseCode(courseCode, (page - 1) * limit, limit));
+        return jsonObject;
+    }
+
+    /**
+     * 查询管理员审查任务
+     *
+     * @param page
+     * @param limit
+     * @param status
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/selectMyJudgementWait")
+    @ApiAnnotation
+    public Object selectMyJudgementWait(@RequestParam(value = "page", required = false, defaultValue = "1") long page,
+                                        @RequestParam(value = "limit", required = false, defaultValue = "1") int limit,
+                                        @RequestParam(value = "status") String status,
+                                        HttpServletRequest request) throws Exception {
+        if (!commonUtil.isManageRole(CommonUtil.getEmailFromSession(request))) throw new Exception("非管理员不得查看！");
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("count", verifyTaskMapper.countAllTask(status));
+        if (!(page == 1 && limit == 1)) {
+            jsonObject.put("list", verifyTaskMapper.selectAllTask(status, (page - 1) * limit, limit));
+        }
         return jsonObject;
     }
 }

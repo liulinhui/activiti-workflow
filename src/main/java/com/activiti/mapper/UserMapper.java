@@ -77,7 +77,7 @@ public interface UserMapper {
      * @param courseCode
      * @return
      */
-    List<String> selectNoGradeUser(String courseCode);
+    List<StudentWorkInfo> selectNoGradeUser(String courseCode);
 
     /**
      * 查询没有参加完互评的学生
@@ -85,7 +85,15 @@ public interface UserMapper {
      * @param courseCode
      * @return
      */
-    List<String> selectUnFinishJudgeUser(String courseCode);
+    List<StudentWorkInfo> selectUnFinishJudgeUser(String courseCode);
+
+    /**
+     * 查询所有学生成绩
+     *
+     * @param courseCode
+     * @return
+     */
+    List<StudentWorkInfo> selectAllUserWork(String courseCode);
 
     /**
      * 打乱学生信息表

@@ -73,22 +73,6 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">互评结束</label>
-                <div class="layui-input-inline">
-                    <input type="text" lay-verify="required" name="judgeEndTime"
-                           class="layui-input my-time-conf-judgeEndTime"
-                           placeholder="yyyy-MM-dd HH:mm:ss">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">审查开始</label>
-                <div class="layui-input-inline">
-                    <input type="text" lay-verify="required" name="auditStartTime"
-                           class="layui-input my-time-conf-auditStartTime"
-                           placeholder="yyyy-MM-dd HH:mm:ss">
-                </div>
-            </div>
-            <div class="layui-inline">
                 <label class="layui-form-label">审查结束</label>
                 <div class="layui-input-inline">
                     <input type="text" lay-verify="required" name="auditEndTime"
@@ -166,14 +150,12 @@
                                         height: 272,
                                         width: 3000,
                                         cols: [[ //标题栏
-                                            {field: 'courseName', title: '课程名称', width: 100},
-                                            {field: 'courseCode', title: '课程代码', width: 100},
-                                            {field: 'githubAddress', title: 'GitHub地址', width: 600},
-                                            {field: 'judgeStartTimeString', title: '互评开始', width: 160},
-                                            {field: 'judgeEndTimeString', title: '互评结束', width: 160},
-                                            {field: 'auditStartTimeString', title: '审查开始', width: 160},
-                                            {field: 'auditEndTimeString', title: '审查结束', width: 160},
-                                            {field: 'publishTimeString', title: '成绩发布', width: 160},
+                                            {field: 'courseName', title: '课程名称', width: 150},
+                                            {field: 'courseCode', title: '课程代码', width: 150},
+                                            {field: 'githubAddress', title: 'GitHub地址', width: 800},
+                                            {field: 'judgeStartTimeString', title: '互评开始时间', width: 150},
+                                            {field: 'judgeEndTimeString', title: '互评结束时间', width: 150},
+                                            {field: 'publishTimeString', title: '成绩发布时间', width: 200},
                                             {
                                                 field: 'operation',
                                                 title: '操作',

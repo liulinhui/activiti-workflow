@@ -29,37 +29,42 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int insertUser(User user) {
-       return userMapper.insertUser(user);
+        return userMapper.insertUser(user);
     }
 
     @Override
     public int insertUserWork(StudentWorkInfo studentWorkInfo) {
-       return userMapper.insertUserWork(studentWorkInfo);
+        return userMapper.insertUserWork(studentWorkInfo);
     }
 
     @Override
     public StudentWorkInfo selectStudentWorkInfo(StudentWorkInfo studentWorkInfo) {
-       return userMapper.selectStudentWorkInfo(studentWorkInfo);
+        return userMapper.selectStudentWorkInfo(studentWorkInfo);
     }
 
     @Override
-    public List<String> selectNoGradeUser(String courseCode) {
+    public List<StudentWorkInfo> selectNoGradeUser(String courseCode) {
         return userMapper.selectNoGradeUser(courseCode);
     }
 
     @Override
-    public List<String> selectUnFinishJudgeUser(String courseCode) {
+    public List<StudentWorkInfo> selectAllUserWork(String courseCode) {
+        return userMapper.selectAllUserWork(courseCode);
+    }
+
+    @Override
+    public List<StudentWorkInfo> selectUnFinishJudgeUser(String courseCode) {
         return userMapper.selectUnFinishJudgeUser(courseCode);
     }
 
     @Override
-    public int chaosUserInfo(String tableName,String courseCode) {
-        return userMapper.chaosUserInfo(tableName,courseCode);
+    public int chaosUserInfo(String tableName, String courseCode) {
+        return userMapper.chaosUserInfo(tableName, courseCode);
     }
 
     @Override
     public int deleteChaosUserInfo(String tableName) {
-       return userMapper.deleteChaosUserInfo(tableName);
+        return userMapper.deleteChaosUserInfo(tableName);
     }
 
     @Override

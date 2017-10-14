@@ -22,4 +22,6 @@ public class ConstantsUtils {
 
     public static final String tablePrefixName="JUDGE_STU_INFO_";
 
+    public static final int minJudgeTimes=3;  //最低互评次数
+
 }

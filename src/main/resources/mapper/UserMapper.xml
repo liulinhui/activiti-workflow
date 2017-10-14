@@ -10,9 +10,9 @@
 
     <insert id="insertUser" parameterType="com.activiti.pojo.user.User">
         INSERT IGNORE INTO judge_stu_info
-        (USER_NAME, EMAIL_ADDRESS, ABILITY_LEVEL,COURSE_CODE)
+        (USER_NAME, EMAIL_ADDRESS, ABILITY_LEVEL, COURSE_CODE)
         VALUES
-            (#{userName}, #{emailAddress}, #{abilityLevel},#{courseCode})
+            (#{userName}, #{emailAddress}, #{abilityLevel}, #{courseCode})
     </insert>
 
     <insert id="chaosUserInfo" parameterType="string">
@@ -26,7 +26,7 @@
               ABILITY_LEVEL
           FROM
               judge_stu_info
-              WHERE COURSE_CODE=#{courseCode}
+          WHERE COURSE_CODE = #{courseCode}
           ORDER BY USER_NAME DESC;
     </insert>
 
@@ -49,25 +49,33 @@
     </select>
 
     <select id="selectStudentWorkInfoPage" resultType="com.activiti.pojo.user.StudentWorkInfo">
-        SELECT * FROM judge_stu_work_info WHERE EMAIL_ADDRESS=#{email} LIMIT #{offset}, #{limit};
+        SELECT *
+        FROM judge_stu_work_info
+        WHERE EMAIL_ADDRESS = #{email}
+        LIMIT #{offset}, #{limit};
     </select>
 
     <select id="countStudentWorkInfo" parameterType="string" resultType="long">
-        SELECT count(*) FROM judge_stu_work_info WHERE EMAIL_ADDRESS=#{email};
+        SELECT count(*)
+        FROM judge_stu_work_info
+        WHERE EMAIL_ADDRESS = #{email};
     </select>
 
     <select id="selectAllWorkInfo" parameterType="string" resultType="com.activiti.pojo.user.StudentWorkInfo">
-         SELECT * FROM judge_stu_work_info WHERE EMAIL_ADDRESS=#{email} AND GRADE IS NOT NULL;
+        SELECT *
+        FROM judge_stu_work_info
+        WHERE EMAIL_ADDRESS = #{email} AND GRADE IS NOT NULL;
     </select>
 
-    <select id="selectNoGradeUser" parameterType="java.lang.String" resultType="java.lang.String">
-        SELECT EMAIL_ADDRESS
+    <select id="selectNoGradeUser" parameterType="java.lang.String" resultType="com.activiti.pojo.user.StudentWorkInfo">
+        SELECT *
         FROM judge_stu_work_info
         WHERE COURSE_CODE = #{courseCode} AND GRADE = NULL
     </select>
 
-    <select id="selectUnFinishJudgeUser" parameterType="java.lang.String" resultType="java.lang.String">
-        SELECT EMAIL_ADDRESS
+    <select id="selectUnFinishJudgeUser" parameterType="java.lang.String"
+            resultType="com.activiti.pojo.user.StudentWorkInfo">
+        SELECT *
         FROM judge_stu_work_info
         WHERE COURSE_CODE = #{courseCode} AND JOIN_JUDGE_TIME = NULL
     </select>
@@ -75,20 +83,30 @@
     <insert id="insertUserRole" parameterType="com.activiti.pojo.user.UserRole">
         INSERT INTO judge_user_role (ID, EMAIL, REMARKS)
         VALUES (
-        #{id},#{email},#{remarks}
+            #{id}, #{email}, #{remarks}
         )
     </insert>
 
+    <select id="selectAllUserWork" parameterType="java.lang.String" resultType="com.activiti.pojo.user.StudentWorkInfo">
+        SELECT *
+        FROM judge_stu_work_info
+        WHERE COURSE_CODE = #{courseCode}
+    </select>
+
     <select id="selectAllUserRole" resultType="com.activiti.pojo.user.UserRole">
-        SELECT * FROM judge_user_role
+        SELECT *
+        FROM judge_user_role
     </select>
 
     <delete id="deleteUserRole" parameterType="string">
-        DELETE FROM judge_user_role WHERE EMAIL=#{email}
+        DELETE FROM judge_user_role
+        WHERE EMAIL = #{email}
     </delete>
 
     <select id="selectAllStuInCourse" parameterType="string" resultType="string">
-        SELECT EMAIL_ADDRESS FROM judge_stu_work_info WHERE COURSE_CODE=#{courseCode}
+        SELECT EMAIL_ADDRESS
+        FROM judge_stu_work_info
+        WHERE COURSE_CODE = #{courseCode}
     </select>
 
 </mapper>
