@@ -177,6 +177,9 @@ public class UserController {
         if (null != userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, email)).getJoinJudgeTime())
             throw new Exception("您已经参加过互评");
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
+        //校验互评时间段
+        if (commonUtil.compareDate(new Date(), scheduleDto.getJudgeEndTime())) throw new Exception("互评时间已经过去了" +
+                "，时间段为(" + scheduleDto.getJudgeStartTimeString() + "-" + scheduleDto.getJudgeEndTimeString() + ")");
         int judgeLimitTimes = scheduleDto.getJudgeTimes();
         JSONObject judgeList = JSON.parseObject(judge);
         List<JudgementLs> judgementLsList = new ArrayList<>();
@@ -287,9 +290,6 @@ public class UserController {
                                             @RequestParam(value = "limit", required = false, defaultValue = "1") int limit,
                                             @RequestParam(value = "courseCode") String courseCode,
                                             HttpServletRequest request) throws Exception {
-        ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
-        if (commonUtil.compareDate(scheduleDto.getPublishTime(), new Date()))
-            throw new Exception("当前时间未发布成绩，发布时间为(" + scheduleDto.getPublishTimeString() + ")");
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("count", adminMapper.countAllGradeByCourseCode(courseCode));
         if (!(page == 1 && limit == 1))
