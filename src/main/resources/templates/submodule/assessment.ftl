@@ -75,7 +75,7 @@
                             cols: [[ //标题栏
                                 {field: 'courseCode', title: '课程代码', width: 100},
                                 {field: 'emailAddress', title: '邮箱', width: 220},
-                                {field: 'workDetail', title: '回答', width: 1300},
+                                {field: 'workDetail', title: '回答', width: 600},
                                 {field: 'grade', title: '请打分', width: 100, edit: 'text'}
                             ]],
                             skin: 'row', //表格风格
