@@ -25,6 +25,6 @@ public class ConstantsUtils {
     public static final int minJudgeTimes=3;  //最低互评次数
 
     //页面地址
-    public static final String successAnswerFtl="email/successAnswer.ftl";
+    public static final String successAnswerFtl="mail/successAnswer.ftl";
 
 }
