@@ -70,14 +70,14 @@
     <select id="selectNoGradeUser" parameterType="java.lang.String" resultType="com.activiti.pojo.user.StudentWorkInfo">
         SELECT *
         FROM judge_stu_work_info
-        WHERE COURSE_CODE = #{courseCode} AND GRADE = NULL
+        WHERE COURSE_CODE = #{courseCode} AND GRADE IS NULL
     </select>
 
     <select id="selectUnFinishJudgeUser" parameterType="java.lang.String"
             resultType="com.activiti.pojo.user.StudentWorkInfo">
         SELECT *
         FROM judge_stu_work_info
-        WHERE COURSE_CODE = #{courseCode} AND JOIN_JUDGE_TIME = NULL
+        WHERE COURSE_CODE = #{courseCode} AND JOIN_JUDGE_TIME IS NULL
     </select>
 
     <insert id="insertUserRole" parameterType="com.activiti.pojo.user.UserRole">
