@@ -295,7 +295,7 @@ public class CommonUtil {
         userService.selectNoGradeUser(courseCode).forEach(studentWorkInfo -> {
             List<JudgementLs> judgementLsList = judgementService.selectJudgementLs(
                     new JudgementLs(courseCode, studentWorkInfo.getEmailAddress()));
-            if (null != judgementLsList && null != studentWorkInfo.getJoinJudgeTime() && ConstantsUtils.minJudgeTimes >= judgementLsList.size()) {
+            if (null != judgementLsList && null != studentWorkInfo.getJoinJudgeTime() && ConstantsUtils.minJudgeTimes <= judgementLsList.size()) {
                 double finalGrade = getMiddleNum(null, judgementLsList);
                 judgementService.updateStuGrade(new StudentWorkInfo(courseCode, studentWorkInfo.getEmailAddress(), finalGrade));  //更新成绩
             }
