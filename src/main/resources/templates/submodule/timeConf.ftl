@@ -28,8 +28,8 @@
                 <td>assessment:1:6</td>
                 <td>1</td>
                 <td>My Process</td>
-                <td>D:\apache-tomcat-8.0.45\webapps\activiti-explorer\WEB-INF\classes\org\activiti\explorer\conf</td>
-                <td>D:\apache-tomcat-8.0.45\webapps\activiti-explorer\WEB-INF\classes\org\activiti\explorer\conf</td>
+                <td>/apache-tomcat-8.0.45/webapps/activiti-explorer/WEB-INF/classes/org/activiti/explorer/conf</td>
+                <td>/apache-tomcat-8.0.45/webapps/activiti-explorer/WEB-INF/classes/org/activiti/explorer/conf</td>
                 <td>assessment</td>
             </tr>
             </tbody>
