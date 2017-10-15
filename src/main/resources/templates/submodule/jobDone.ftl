@@ -19,7 +19,7 @@
 </div>
 
 <div style="display: none" id="activiti-test">
-    <img src=${request.contextPath}/img/activiti.png>
+    <img src=${request.contextPath}/mooc-workflow/img/activiti.png>
 </div>
 
 <script>
