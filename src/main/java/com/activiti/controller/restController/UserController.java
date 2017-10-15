@@ -98,7 +98,7 @@ public class UserController {
         modelMap.put("courseCode", courseCode);
         modelMap.put("workDetail", workDetail);
         modelMap.put("email", email);
-        mailProducer.send(new EmailDto(email, EmailType.simple, "答题成功", commonUtil.applyDataToView(modelMap, ConstantsUtils.successAnswerFtl)));
+        mailProducer.send(new EmailDto(email, EmailType.html, "答题成功", commonUtil.applyDataToView(modelMap, ConstantsUtils.successAnswerFtl)));
         return studentWorkInfo;
     }
 
