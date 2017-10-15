@@ -8,10 +8,8 @@
     </div>
 
     <div class="my-grade-info-submodule" style="display: none">
-        <div>
             <table class="myGradeJudgeInfoTable">
             </table>
-        </div>
     </div>
 </div>
 
@@ -79,7 +77,7 @@
                             table.render({
                                 elem: '.myGradeJudgeInfoTable',
                                 data: data.data,
-                                height: 150,
+                                height: 200,
                                 width: 700,
                                 cols: [[ //标题栏
                                     {field: 'courseCode', title: '课程代码', width: 150},
