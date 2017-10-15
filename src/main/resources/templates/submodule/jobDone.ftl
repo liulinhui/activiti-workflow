@@ -18,8 +18,8 @@
     </fieldset>
 </div>
 
-<div style="display: none" id="yuner-test">
-    <img src=${request.contextPath}/img/meinv.jpeg>
+<div style="display: none" id="activiti-test">
+    <img src=${request.contextPath}/img/activiti.png>
 </div>
 
 <script>
@@ -114,11 +114,11 @@
             if (obj.event === 'detail') {
                 layer.open({
                     type: 1,
-                    title: false,
-                    closeBtn: 0,
-                    area: ['700px', '1000px'],
+                    title: "流程图",
+                    closeBtn: 1,
+                    area: ['750px', '280px'],
                     shadeClose: true,
-                    content: $('#yuner-test')
+                    content: $('#activiti-test').html()
                 });
             }
         });
