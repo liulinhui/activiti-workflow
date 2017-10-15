@@ -23,10 +23,9 @@
                 </@identity_validate>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a id="my-job-done" href="javascript:;">任务完成情况</a></li>
-            <li class="layui-nav-item"><a id="my-grade-info" href="javascript:;">成绩信息</a></li>
         <@identity_validate userEmail="${userEmail!}" id="1">
             <#if identity?? && identity==true>
+                <li class="layui-nav-item"><a id="my-grade-info" href="javascript:;">成绩信息</a></li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">管理员配置</a>
                     <dl class="layui-nav-child">
@@ -36,6 +35,9 @@
                         <dd><a id="my-emailLog-view" href="javascript:;">邮件发送情况</a></dd>
                     </dl>
                 </li>
+            <#else >
+                <li class="layui-nav-item"><a id="my-job-done" href="javascript:;">任务完成情况</a></li>
+                <li class="layui-nav-item"><a id="my-grade-info" href="javascript:;">成绩信息</a></li>
             </#if>
         </@identity_validate>
         </ul>
