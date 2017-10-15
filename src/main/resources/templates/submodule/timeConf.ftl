@@ -73,10 +73,10 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">审查结束</label>
+                <label class="layui-form-label">互评结束</label>
                 <div class="layui-input-inline">
-                    <input type="text" lay-verify="required" name="auditEndTime"
-                           class="layui-input my-time-conf-auditEndTime"
+                    <input type="text" lay-verify="required" name="judgeEndTime"
+                           class="layui-input my-time-conf-judgeEndTime"
                            placeholder="yyyy-MM-dd HH:mm:ss">
                 </div>
             </div>
