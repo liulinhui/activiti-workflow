@@ -36,8 +36,6 @@ public class CommonController {
     private ScheduleMapper scheduleMapper;
     @Autowired
     private CommonUtil commonUtil;
-    @Autowired
-    private UserService userService;
 
     /**
      * GitHub请求题目和答案
@@ -215,5 +213,29 @@ public class CommonController {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("count", toolsMapper.countEmailLog());
         return jsonObject;
+    }
+
+    /**
+     * 学生提交时间分析
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getStudentCommitTimeAnalysis")
+    @ApiAnnotation(insertLog = false)
+    public Object getStudentCommitTimeAnalysis(@RequestParam("sourceCode") String sourceCode) {
+        return commonService.getStudentCommitTimeAnalysis(sourceCode);
+    }
+
+    /**
+     * 学生成绩分析
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getStudentGradeAnalysis")
+    @ApiAnnotation(insertLog = false)
+    public Object getStudentGradeAnalysis(@RequestParam("sourceCode") String sourceCode) {
+        return commonService.getStudentGradeAnalysis(sourceCode);
     }
 }
