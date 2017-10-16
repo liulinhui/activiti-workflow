@@ -80,14 +80,14 @@
                            placeholder="yyyy-MM-dd HH:mm:ss">
                 </div>
             </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">成绩发布</label>
-                <div class="layui-input-inline">
-                    <input type="text" lay-verify="required" name="publishTime"
-                           class="layui-input my-time-conf-publishTime"
-                           placeholder="yyyy-MM-dd HH:mm:ss">
-                </div>
-            </div>
+            <#--<div class="layui-inline">-->
+                <#--<label class="layui-form-label">成绩发布</label>-->
+                <#--<div class="layui-input-inline">-->
+                    <#--<input type="text" lay-verify="required" name="publishTime"-->
+                           <#--class="layui-input my-time-conf-publishTime"-->
+                           <#--placeholder="yyyy-MM-dd HH:mm:ss">-->
+                <#--</div>-->
+            <#--</div>-->
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
