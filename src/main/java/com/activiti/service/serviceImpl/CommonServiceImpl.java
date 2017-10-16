@@ -49,7 +49,7 @@ public class CommonServiceImpl implements CommonService {
      * @return
      */
     @Override
-    public JSONObject getStudentCommitTimeAnalysis(String courseCode) {
+    public JSONObject getStudentGradeAnalysis(String courseCode) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("list", selectAllStudentWorkInfo(courseCode));
         return jsonObject;
@@ -69,7 +69,7 @@ public class CommonServiceImpl implements CommonService {
      */
     @Override
     @Cacheable(value = "ehCache300", keyGenerator = "keyGenerator")
-    public JSONObject getStudentGradeAnalysis(String courseCode) {
+    public JSONObject getStudentCommitTimeAnalysis(String courseCode) {
         JSONObject jsonObject = new JSONObject();
         JSONObject list = new JSONObject();
         JSONArray dateArray = new JSONArray();

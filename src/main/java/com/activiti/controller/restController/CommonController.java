@@ -222,9 +222,9 @@ public class CommonController {
      */
     @ResponseBody
     @RequestMapping("/getStudentCommitTimeAnalysis")
-    @ApiAnnotation(insertLog = false)
-    public Object getStudentCommitTimeAnalysis(@RequestParam("sourceCode") String sourceCode) {
-        return commonService.getStudentCommitTimeAnalysis(sourceCode);
+    @ApiAnnotation
+    public Object getStudentCommitTimeAnalysis(@RequestParam("courseCode") String courseCode) {
+        return commonService.getStudentCommitTimeAnalysis(courseCode);
     }
 
     /**
@@ -234,8 +234,8 @@ public class CommonController {
      */
     @ResponseBody
     @RequestMapping("/getStudentGradeAnalysis")
-    @ApiAnnotation(insertLog = false)
-    public Object getStudentGradeAnalysis(@RequestParam("sourceCode") String sourceCode) {
-        return commonService.getStudentGradeAnalysis(sourceCode);
+    @ApiAnnotation
+    public Object getStudentGradeAnalysis(@RequestParam("courseCode") String courseCode) {
+        return commonService.getStudentGradeAnalysis(courseCode);
     }
 }
