@@ -180,7 +180,7 @@ public class CommonUtil {
      * @return
      */
     public boolean validateTime(ScheduleDto a) {
-        Date[] dates = {a.getJudgeStartTime(), a.getJudgeEndTime(), a.getPublishTime()};
+        Date[] dates = {a.getJudgeStartTime(), a.getJudgeEndTime()};
         DateTimeComparator comparator = DateTimeComparator.getInstance(DateTimeFieldType.secondOfDay());
         for (int i = dates.length - 1; i > 0; --i) {
             for (int j = 0; j < i; ++j) {
