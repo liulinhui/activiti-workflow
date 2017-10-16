@@ -304,9 +304,10 @@ public class CommonUtil {
         List<StudentWorkInfo> studentWorkInfoList = userService.selectNoGradeUser(courseCode);
         if (null != studentWorkInfoList && studentWorkInfoList.size() > 0) {
             studentWorkInfoList.forEach(studentWorkInfo -> {
+                List<JudgementLs> judgementLsList = judgementService.selectJudgementLs(new JudgementLs(courseCode, studentWorkInfo.getEmailAddress()));
+                int times = judgementLsList == null ? 0 : judgementLsList.size();
                 verifyTaskMapper.insertTask(new VerifyTask(
-                        studentWorkInfo.getEmailAddress(), studentWorkInfo.getWorkDetail(), studentWorkInfo.getCourseCode(),
-                        judgementService.selectCountJudge(studentWorkInfo.getEmailAddress())
+                        studentWorkInfo.getEmailAddress(), studentWorkInfo.getWorkDetail(), studentWorkInfo.getCourseCode(), times
                 ));
             });
         }

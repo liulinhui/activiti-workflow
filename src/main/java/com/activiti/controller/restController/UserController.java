@@ -332,5 +332,19 @@ public class UserController {
         }
         return jsonObject;
     }
+
+    @ResponseBody
+    @RequestMapping("/insertAdminJudgementResult")
+    @ApiAnnotation
+    public Object insertAdminJudgementResult(@RequestParam(value = "email") String email,
+                                             @RequestParam(value = "courseCode") String courseCode,
+                                             @RequestParam(value = "grade") double grade,
+                                             HttpServletRequest request) throws Exception {
+        if (!commonUtil.isManageRole(CommonUtil.getEmailFromSession(request))) throw new Exception("非管理员不得查看！");
+        String judgerEmail = CommonUtil.getEmailFromSession(request);
+        verifyTaskMapper.updateTask(new VerifyTask(email, "done", courseCode, grade, judgerEmail));
+        judgementService.updateStuGrade(new StudentWorkInfo(courseCode, email, grade));  //更新成绩
+        return "更新成绩成功";
+    }
 }
 

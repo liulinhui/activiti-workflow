@@ -2,7 +2,7 @@
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
         <legend>待审核的作业</legend>
         <div>
-            <table class="myJudgementWaitTable">
+            <table class="myJudgementWaitTable" lay-filter="myJudgementWaitTable">
             </table>
             <div id="myJudgementWaitPage"></div>
         </div>
@@ -61,12 +61,12 @@
                                             {field: 'courseCode', title: '课程代码', width: 200},
                                             {field: 'answer', title: '提交作业内容', width: 1000},
                                             {field: 'judgeTimes', title: '被打分次数', width: 100},
-                                            {field: 'grade', title: '成绩', width: 100},
+                                            {field: 'grade', title: '成绩', width: 100, edit: 'text'},
                                             {
-                                                field: 'originQuestion',
+                                                field: 'commit',
                                                 title: '提交',
                                                 width: 300,
-                                                templet: '#my-job-done-answer-detail'
+                                                templet: '#my-judgement-commit'
                                             }
                                         ]],
                                         skin: 'row', //表格风格
@@ -140,9 +140,42 @@
             });
         }
 
+        table.on('tool(myJudgementWaitTable)', function (obj) {
+            var data = obj.data;
+            delete data.answer;
+            if (obj.event === 'commit' && data.grade) {
+                $.ajax({
+                    url: './api/user/insertAdminJudgementResult',
+                    data: data,
+                    dateType: 'json',
+                    success: function (result) {
+                        if (!result.success) {
+                            layer.open({
+                                title: '提交失败',
+                                content: '<p>' + result.errorMessage + '</p>'
+                            })
+                        } else {
+                            loadMyJudgementWaitTable();
+                            setTimeout(function () {
+                                loadMyJudgementDoneTable();
+                            }, 300);
+                            layer.open({
+                                title: '提交成功',
+                                content: '<p>' + JSON.stringify(data) + '</p>'
+                            })
+                        }
+                    }
+                })
+            }
+        });
+
         loadMyJudgementWaitTable();
         setTimeout(function () {
             loadMyJudgementDoneTable();
         }, 300);
     })
+</script>
+
+<script type="text/html" id="my-judgement-commit">
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="commit">提交成绩</a>
 </script>
