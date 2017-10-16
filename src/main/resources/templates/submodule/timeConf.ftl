@@ -154,8 +154,8 @@
                                             {field: 'courseCode', title: '课程代码', width: 150},
                                             {field: 'githubAddress', title: 'GitHub地址', width: 700},
                                             {field: 'judgeStartTimeString', title: '互评开始时间', width: 200},
-                                            {field: 'judgeEndTimeString', title: '互评结束时间', width: 200},
-                                            {field: 'publishTimeString', title: '成绩发布时间', width: 200},
+                                            {field: 'judgeEndTimeString', title: '互评结束时间', width: 200}
+//                                            {field: 'publishTimeString', title: '成绩发布时间', width: 200},
                                             {
                                                 field: 'operation',
                                                 title: '操作',
