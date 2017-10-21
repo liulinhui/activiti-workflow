@@ -90,9 +90,10 @@ public class CommonController {
         String courseCode = scheduleDto.getCourseCode();
         if (null != scheduleService.selectScheduleTime(courseCode)) throw new Exception(courseCode + "该课程已经存在");
         if (null == courseCode) throw new Exception("courseCode字段不能为空");
+//        if (!commonUtil.validateTime(scheduleDto)) throw new Exception("时间段配置错误");
         scheduleMapper.createTable(commonUtil.generateTableName(courseCode));
         scheduleService.insertScheduleTime(scheduleDto);
-        commonUtil.addNewActivitiJob(scheduleDto);
+//        commonUtil.addNewActivitiJob(scheduleDto);
         return "课程部署成功";
     }
 
@@ -113,7 +114,7 @@ public class CommonController {
         }
         if (identity) {
             scheduleMapper.dropTable(commonUtil.generateTableName(courseCode));
-            commonUtil.removeNewActivitiJob(scheduleService.selectScheduleTime(courseCode));
+//            commonUtil.removeNewActivitiJob(scheduleService.selectScheduleTime(courseCode));
             scheduleMapper.deleteCourse(courseCode);
             return "课程移除成功";
         } else {
