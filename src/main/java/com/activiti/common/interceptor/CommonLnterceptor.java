@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class CommonLnterceptor implements HandlerInterceptor {
-    private final Logger logger = LoggerFactory.getLogger(HandlerInterceptor.class);
     private static String env;
 
     public CommonLnterceptor(String env) {

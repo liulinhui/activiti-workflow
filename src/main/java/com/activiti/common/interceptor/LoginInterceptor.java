@@ -12,6 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LoginInterceptor implements HandlerInterceptor {
     private final Logger logger = LoggerFactory.getLogger(HandlerInterceptor.class);
+    private static String env;
+
+    public LoginInterceptor(String env) {
+        this.env = env;
+    }
 
     /**
      * 在请求处理之前进行调用（Controller方法调用之前）
@@ -29,6 +34,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         if ("".equals(email) || null == email) {
             httpServletResponse.sendRedirect("login?redirectUrl=" + httpServletRequest.getServletPath());
             return false;
+        }
+        String uuid =(String) httpServletRequest.getSession().getAttribute(ConstantsUtils.loginAbutmentRedisStore + email);
+        if ("pro".equals(env) && (null == uuid || "".equals(uuid))) {
+           throw new Exception("非法请求！！！！");
         }
         return true;
     }
