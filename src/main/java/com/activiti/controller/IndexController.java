@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -228,5 +229,20 @@ public class IndexController {
         modelMap.put("workDetail", "hfsjdfgsdufsujcnjds");
         modelMap.put("email", "email");
         return "mail/test";
+    }
+
+    /**
+     * 登陆对接
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @return
+     */
+    @RequestMapping("/loginAbutment")
+    public String loginAbutment(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        String loginEmail = httpServletRequest.getParameter("email");
+        String redirectUrl = httpServletRequest.getParameter("redirectUrl");
+        String userType = httpServletRequest.getParameter("userType");  //staff 老师
+        httpServletRequest.getSession().setAttribute(ConstantsUtils.sessionEmail, loginEmail);
+        return "redirect:" + redirectUrl;
     }
 }
