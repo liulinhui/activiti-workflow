@@ -240,7 +240,6 @@ public class IndexController {
      *
      * @param email
      * @param redirectUrl
-     * @param userType
      * @param uuid
      * @param request
      * @return
@@ -248,14 +247,11 @@ public class IndexController {
     @RequestMapping("/loginAbutment")
     public String loginAbutment(@RequestParam("email") String email,
                                 @RequestParam("redirectUrl") String redirectUrl,
-                                @RequestParam("userType") String userType,
                                 @RequestParam("uuid") String uuid,
                                 HttpServletRequest request) {
         if (uuid.equals(redisCommonUtil.get(ConstantsUtils.loginAbutmentRedisStore + email).toString()))
             request.getSession().setAttribute(ConstantsUtils.loginAbutmentRedisStore + email, uuid);
         request.getSession().setAttribute(ConstantsUtils.sessionEmail, email);
-        if ("staff".equals(userType))
-            userService.insertUserRole(new UserRole(1, email, "staff"));
         return "redirect:" + redirectUrl;
     }
 }

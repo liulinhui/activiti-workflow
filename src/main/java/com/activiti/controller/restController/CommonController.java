@@ -7,6 +7,7 @@ import com.activiti.common.utils.ConstantsUtils;
 import com.activiti.mapper.ScheduleMapper;
 import com.activiti.mapper.ToolsMapper;
 import com.activiti.pojo.schedule.ScheduleDto;
+import com.activiti.pojo.user.UserRole;
 import com.activiti.service.CommonService;
 import com.activiti.service.ScheduleService;
 import com.activiti.service.UserService;
@@ -41,6 +42,8 @@ public class CommonController {
     private CommonUtil commonUtil;
     @Autowired
     private RedisCommonUtil redisCommonUtil;
+    @Autowired
+    private UserService userService;
 
     /**
      * GitHub请求题目和答案
@@ -245,15 +248,20 @@ public class CommonController {
     }
 
     /**
+     *
      * @param email
      * @return
      */
     @ResponseBody
     @RequestMapping("/loginAbutment")
     @ApiAnnotation
-    public Object loginAbutment(@RequestParam("email") String email) {
+    public Object loginAbutment(@RequestParam("email") String email,@RequestParam("userType") String userType) {
         String uuid = String.valueOf(commonUtil.getSequenceId());
         redisCommonUtil.put(ConstantsUtils.loginAbutmentRedisStore + email, uuid, 60);
-        return uuid;
+        if ("staff".equals(userType))
+            userService.insertUserRole(new UserRole(1, email, "staff"));
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("uuid",uuid);
+        return jsonObject;
     }
 }
