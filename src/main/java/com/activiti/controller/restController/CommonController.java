@@ -86,10 +86,10 @@ public class CommonController {
     public Object insertScheduleTime(@RequestParam(value = "data") String param) throws Exception {
         JSONObject jsonObject = JSON.parseObject(param);
         ScheduleDto scheduleDto = jsonObject.toJavaObject(ScheduleDto.class);
+        scheduleDto.setGithubAddress(commonUtil.generateGitHubUrl(Integer.valueOf(scheduleDto.getCourseCode())));
         String courseCode = scheduleDto.getCourseCode();
         if (null != scheduleService.selectScheduleTime(courseCode)) throw new Exception(courseCode + "该课程已经存在");
         if (null == courseCode) throw new Exception("courseCode字段不能为空");
-        if (!commonUtil.validateTime(scheduleDto)) throw new Exception("时间段配置错误");
         scheduleMapper.createTable(commonUtil.generateTableName(courseCode));
         scheduleService.insertScheduleTime(scheduleDto);
         commonUtil.addNewActivitiJob(scheduleDto);
@@ -248,7 +248,6 @@ public class CommonController {
     }
 
     /**
-     *
      * @param email
      * @return
      */
@@ -257,14 +256,14 @@ public class CommonController {
     @ApiAnnotation
     public Object loginAbutment(@RequestParam("email") String email,
                                 @RequestParam("userType") String userType,
-                                @RequestParam("password")String password) throws Exception {
-        if (!ConstantsUtils.password.equals(password))throw new Exception("非法登录对接！！！！");
+                                @RequestParam("password") String password) throws Exception {
+        if (!ConstantsUtils.password.equals(password)) throw new Exception("非法登录对接！！！！");
         String uuid = String.valueOf(commonUtil.getSequenceId());
         redisCommonUtil.put(ConstantsUtils.loginAbutmentRedisStore + email, uuid, 60);
         if ("staff".equals(userType))
             userService.insertUserRole(new UserRole(1, email, "staff"));
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("uuid",uuid);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uuid", uuid);
         return jsonObject;
     }
 }

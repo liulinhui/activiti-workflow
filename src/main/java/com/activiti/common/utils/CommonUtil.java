@@ -72,6 +72,16 @@ public class CommonUtil {
 
 
     /**
+     * 根据题号求url
+     * @param qNo
+     * @return
+     */
+    public String generateGitHubUrl(int qNo) {
+        int result = (qNo - 1) / 100 + 1;
+        return "https://api.github.com/repos/chyyuu/os_course_exercise_library/contents/data/json/"+result+"/"+qNo+".json";
+    }
+
+    /**
      * 请求gitlab获取题目与答案
      *
      * @param url
