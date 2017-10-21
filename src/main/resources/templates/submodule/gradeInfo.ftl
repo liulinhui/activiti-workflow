@@ -24,6 +24,7 @@
             $.ajax({
                 url: './api/user/selectStudentGrade',
                 dataType: 'json',
+                type:"POST",
                 success: function (data) {
                     if (!data.success) {
                         layer.open({
@@ -67,6 +68,7 @@
                     url: './api/user/selectWhoJudgeMe',
                     data: {courseCode: courseCode},
                     dataType: 'json',
+                    type:"POST",
                     success: function (data) {
                         if (!data.success) {
                             layer.open({

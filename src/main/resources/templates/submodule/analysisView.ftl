@@ -128,6 +128,7 @@
                 url: url,
                 data: {courseCode: courseCode},
                 dataType: 'json',
+                type:"POST",
                 async: false,
                 success: function (data) {
                     if (!data.success) {

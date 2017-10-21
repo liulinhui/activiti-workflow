@@ -30,6 +30,7 @@
             $.ajax({
                 url: './api/user/selectMyJudgementWait',
                 data: {status: status},
+                type:"POST",
                 jsonType: 'json',
                 success: function (data) {
                     if (!data.success) {
@@ -89,6 +90,7 @@
             $.ajax({
                 url: './api/user/selectMyJudgementWait',
                 data: {status: status},
+                type:"POST",
                 jsonType: 'json',
                 success: function (data) {
                     if (!data.success) {
@@ -141,6 +143,7 @@
                 $.ajax({
                     url: './api/user/insertAdminJudgementResult',
                     data: data,
+                    type:"POST",
                     dateType: 'json',
                     success: function (result) {
                         if (!result.success) {

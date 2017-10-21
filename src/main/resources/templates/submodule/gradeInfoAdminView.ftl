@@ -32,6 +32,7 @@
             $.ajax({
                 url: './api/user/selectAllGradeInfoByAdmin',
                 data: {courseCode: courseCode},
+                type:"POST",
                 dataType: 'json',
                 success: function (data) {
                     if (!data.success) {
@@ -52,6 +53,7 @@
                                 $.ajax({
                                     url: './api/user/selectAllGradeInfoByAdmin',
                                     data: param,
+                                    type:"POST",
                                     dataType: 'json',
                                     success: function (data) {
                                         table.render({
