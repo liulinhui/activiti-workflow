@@ -58,7 +58,7 @@
                                         height: 280,
                                         width: 2000,
                                         cols: [[ //标题栏
-                                            {field: 'courseCode', title: '课程代码', width: 150},
+                                            {field: 'courseCode', title: '题号', width: 150},
                                             {field: 'emailAddress', title: '邮箱', width: 200},
                                             {field: 'lastCommitTimeString', title: '提交时间', width: 200},
                                             {field: 'workDetail', title: '提交作业内容', width: 500},

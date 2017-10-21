@@ -1,6 +1,6 @@
 <div class="gradeInfoAdminView">
     <fieldset class="layui-elem-field" style="margin-top: 30px;">
-        <legend>课程列表:</legend>
+        <legend>题目列表:</legend>
         <div style="    margin: 20px 30px 20px;">
         <#if scheduleDtoList??>
             <#list scheduleDtoList as item>
@@ -60,7 +60,7 @@
                                             height: 400,
                                             width: 3000,
                                             cols: [[ //标题栏
-                                                {field: 'courseCode', title: '课程ID', width: 150},
+                                                {field: 'courseCode', title: '题号', width: 150},
                                                 {field: 'emailAddress', title: '邮箱地址', width: 200},
                                                 {field: 'workDetail', title: '作业详情', width: 860},
                                                 {field: 'lastCommitTimeString', title: '提交时间', width: 200},

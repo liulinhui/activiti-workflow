@@ -1,6 +1,6 @@
 <div class="my-assessment">
     <fieldset class="layui-elem-field" style="margin-top: 30px;">
-        <legend>课程列表:</legend>
+        <legend>题目列表:</legend>
         <div style="margin: 20px 30px 20px;">
         <#if (scheduleDtoList?? && scheduleDtoList?size>0)>
             <#list scheduleDtoList as item>

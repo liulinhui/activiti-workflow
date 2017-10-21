@@ -58,7 +58,7 @@
                                         width: 2000,
                                         cols: [[ //标题栏
                                             {field: 'email', title: '邮箱', width: 150},
-                                            {field: 'courseCode', title: '课程代码', width: 150},
+                                            {field: 'courseCode', title: '题号', width: 150},
                                             {field: 'answer', title: '提交作业内容', width: 700},
                                             {field: 'judgeTimes', title: '被打分次数', width: 100},
                                             {field: 'grade', title: '成绩', width: 100, edit: 'text'},
