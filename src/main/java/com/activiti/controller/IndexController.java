@@ -1,18 +1,22 @@
 package com.activiti.controller;
 
+import com.activiti.common.redis.RedisCommonUtil;
 import com.activiti.common.utils.CommonUtil;
 import com.activiti.common.utils.ConstantsUtils;
 import com.activiti.mapper.ScheduleMapper;
 import com.activiti.pojo.schedule.ScheduleDto;
 import com.activiti.pojo.user.StudentWorkInfo;
+import com.activiti.pojo.user.UserRole;
 import com.activiti.service.ScheduleService;
 import com.activiti.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,9 +35,9 @@ public class IndexController {
     @Autowired
     private UserService userService;
     @Autowired
-    private ScheduleService scheduleService;
-    @Autowired
     private ScheduleMapper scheduleMapper;
+    @Autowired
+    private RedisCommonUtil redisCommonUtil;
 
     /**
      * 登录页面
@@ -233,16 +237,25 @@ public class IndexController {
 
     /**
      * 登陆对接
-     * @param httpServletRequest
-     * @param httpServletResponse
+     *
+     * @param email
+     * @param redirectUrl
+     * @param userType
+     * @param uuid
+     * @param request
      * @return
      */
     @RequestMapping("/loginAbutment")
-    public String loginAbutment(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-        String loginEmail = httpServletRequest.getParameter("email");
-        String redirectUrl = httpServletRequest.getParameter("redirectUrl");
-        String userType = httpServletRequest.getParameter("userType");  //staff 老师
-        httpServletRequest.getSession().setAttribute(ConstantsUtils.sessionEmail, loginEmail);
+    public String loginAbutment(@RequestParam("email") String email,
+                                @RequestParam("redirectUrl") String redirectUrl,
+                                @RequestParam("userType") String userType,
+                                @RequestParam("uuid") String uuid,
+                                HttpServletRequest request) {
+        if (uuid.equals(redisCommonUtil.get(ConstantsUtils.loginAbutmentRedisStore + email).toString()))
+            request.getSession().setAttribute(ConstantsUtils.loginAbutmentRedisStore + email, uuid);
+        request.getSession().setAttribute(ConstantsUtils.sessionEmail, email);
+        if ("staff".equals(userType))
+            userService.insertUserRole(new UserRole(1, email, "staff"));
         return "redirect:" + redirectUrl;
     }
 }

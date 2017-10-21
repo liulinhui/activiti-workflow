@@ -1,5 +1,6 @@
 package com.activiti.common.interceptor;
 
+import com.activiti.common.utils.ConstantsUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -18,7 +19,7 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
         // excludePathPatterns 用户排除拦截
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login", "/error","/loginAbutment");
+                .excludePathPatterns(ConstantsUtils.excludePathPatterns);
         registry.addInterceptor(new CommonLnterceptor(env))
                 .addPathPatterns("/**");
         super.addInterceptors(registry);

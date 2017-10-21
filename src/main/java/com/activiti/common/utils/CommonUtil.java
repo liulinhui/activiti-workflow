@@ -52,8 +52,9 @@ import java.util.regex.Pattern;
 @Component("CommonUtil")
 public class CommonUtil {
     private static final Logger logger = LoggerFactory.getLogger(CommonUtil.class);
-    private static Sequence sequence = new Sequence(0, 0);
 
+    @Autowired
+    private Sequence sequence;
     @Autowired
     private MailService mailService;
     @Autowired

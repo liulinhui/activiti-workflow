@@ -1,7 +1,9 @@
 package com.activiti.controller.restController;
 
 import com.activiti.common.aop.ApiAnnotation;
+import com.activiti.common.redis.RedisCommonUtil;
 import com.activiti.common.utils.CommonUtil;
+import com.activiti.common.utils.ConstantsUtils;
 import com.activiti.mapper.ScheduleMapper;
 import com.activiti.mapper.ToolsMapper;
 import com.activiti.pojo.schedule.ScheduleDto;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -36,6 +39,8 @@ public class CommonController {
     private ScheduleMapper scheduleMapper;
     @Autowired
     private CommonUtil commonUtil;
+    @Autowired
+    private RedisCommonUtil redisCommonUtil;
 
     /**
      * GitHub请求题目和答案
@@ -237,5 +242,18 @@ public class CommonController {
     @ApiAnnotation
     public Object getStudentGradeAnalysis(@RequestParam("courseCode") String courseCode) {
         return commonService.getStudentGradeAnalysis(courseCode);
+    }
+
+    /**
+     * @param email
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/loginAbutment")
+    @ApiAnnotation
+    public Object loginAbutment(@RequestParam("email") String email) {
+        String uuid = String.valueOf(commonUtil.getSequenceId());
+        redisCommonUtil.put(ConstantsUtils.loginAbutmentRedisStore + email, uuid, 60);
+        return uuid;
     }
 }
