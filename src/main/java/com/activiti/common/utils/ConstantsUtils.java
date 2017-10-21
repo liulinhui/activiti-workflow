@@ -36,4 +36,6 @@ public class ConstantsUtils {
 
     public static final String loginAbutmentRedisStore = "loginAbutmentRedisStore__";
 
+    public static final String password="workFlow_921691866422837248";
+
 }

@@ -255,7 +255,10 @@ public class CommonController {
     @ResponseBody
     @RequestMapping("/loginAbutment")
     @ApiAnnotation
-    public Object loginAbutment(@RequestParam("email") String email,@RequestParam("userType") String userType) {
+    public Object loginAbutment(@RequestParam("email") String email,
+                                @RequestParam("userType") String userType,
+                                @RequestParam("password")String password) throws Exception {
+        if (!ConstantsUtils.password.equals(password))throw new Exception("非法登录对接！！！！");
         String uuid = String.valueOf(commonUtil.getSequenceId());
         redisCommonUtil.put(ConstantsUtils.loginAbutmentRedisStore + email, uuid, 60);
         if ("staff".equals(userType))
