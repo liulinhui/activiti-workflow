@@ -48,6 +48,7 @@
             $.ajax({
                 url: './api/common/getQAContent',
                 data: {courseCode: courseCode},
+                type:"POST",
                 dataType: 'json',
                 success: function (data) {
                     $('.my-answer-question').val(data.data);
@@ -70,6 +71,7 @@
                     courseCode: courseCode,
                     workDetail: data.field.answer
                 },
+                type:"POST",
                 dataType: 'json',
                 success: function (result) {
                     if (result.success) {

@@ -55,6 +55,7 @@
             $.ajax({
                 url: './api/user/selectWorkListToJudge',
                 data: {courseCode: courseCode},
+                type:"POST",
                 dataType: 'json',
                 success: function (data) {
                     if (!data.success) {
@@ -119,6 +120,7 @@
                     judge:JSON.stringify(judgeGradeList),
                     courseCode:courseCode
                 },
+                type:"POST",
                 dataType: 'json',
                 success: function (data) {
                     if (!data.success) {
