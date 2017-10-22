@@ -13,7 +13,7 @@
         </div>
     </fieldset>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend class="my-assessment-courseCode">课程ID:<span></span></legend>
+        <legend class="my-assessment-courseCode">题目ID:<span></span></legend>
         <br>
         <br>
         <div class="layui-form-item layui-form-text">

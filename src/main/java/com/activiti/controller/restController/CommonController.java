@@ -91,7 +91,7 @@ public class CommonController {
         if (null != scheduleService.selectScheduleTime(courseCode)) throw new Exception(courseCode + "该课程已经存在");
         if (null == courseCode) throw new Exception("courseCode字段不能为空");
 //        if (!commonUtil.validateTime(scheduleDto)) throw new Exception("时间段配置错误");
-        scheduleMapper.createTable(commonUtil.generateTableName(courseCode));
+//        scheduleMapper.createTable(commonUtil.generateTableName(courseCode));
         scheduleService.insertScheduleTime(scheduleDto);
 //        commonUtil.addNewActivitiJob(scheduleDto);
         return "课程部署成功";
