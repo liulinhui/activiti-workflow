@@ -1,6 +1,7 @@
 package com.activiti.controller.restController;
 
 import com.activiti.common.aop.ApiAnnotation;
+import com.activiti.common.async.AsyncTasks;
 import com.activiti.common.kafka.MailProducer;
 import com.activiti.common.utils.CommonUtil;
 import com.activiti.common.utils.ConstantsUtils;
@@ -53,6 +54,8 @@ public class UserController {
     private AdminMapper adminMapper;
     @Autowired
     private VerifyTaskMapper verifyTaskMapper;
+    @Autowired
+    private AsyncTasks asyncTasks;
 
     /*
      *  根据Email获取用户信息
@@ -79,12 +82,9 @@ public class UserController {
     public Object commitWork(@RequestParam(name = "courseCode") String courseCode,
                              @RequestParam(name = "workDetail") String workDetail, HttpServletRequest request) throws Exception {
         String email = CommonUtil.getEmailFromSession(request);
-        Date deadline = scheduleService.selectScheduleTime(courseCode).getJudgeStartTime();
         if (userService.selectAllUserRole().stream().anyMatch(userRole -> {
             return email.equals(userRole.getEmail());
         })) throw new Exception("身为管理员的你不能提交作业！！！");
-        if (commonUtil.compareDate(new Date(), deadline))
-            throw new Exception("提交作业截至时间:" + CommonUtil.dateToString(deadline));
         StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, email, workDetail, new Date());
         User user = new User(commonUtil.getRandomUserName(), email, courseCode);
         try {
@@ -93,12 +93,15 @@ public class UserController {
             throw new Exception("你已经参与过答题了！！");
         }
         userService.insertUser(user);
-        studentWorkInfo.setLastCommitTime(new Date());
+        ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
+        List<String> emailList = userMapper.selectNonDistributeUser(courseCode);
+        if (null != emailList && emailList.size() > scheduleDto.getDistributeMaxUser())
+            asyncTasks.asyncTask(emailList, "distributeTask");
         ModelMap modelMap = new ModelMap();
         modelMap.put("courseCode", courseCode);
         modelMap.put("workDetail", workDetail);
         modelMap.put("email", email);
-//        mailProducer.send(new EmailDto(email, EmailType.html, "答题成功", commonUtil.applyDataToView(modelMap, ConstantsUtils.successAnswerFtl)));
+        mailProducer.send(new EmailDto(email, EmailType.html, "答题成功", commonUtil.applyDataToView(modelMap, ConstantsUtils.successAnswerFtl)));
         return studentWorkInfo;
     }
 

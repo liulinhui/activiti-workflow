@@ -21,6 +21,7 @@ public class ScheduleDto implements Serializable {
     private Date publishTime;    //发布成绩时间
     private int judgeTimes;    //每个学生需要互评的次数（后期算出）
     private String githubAddress;   //题目地址
+    private int distributeMaxUser;
 
     public ScheduleDto() {
     }
@@ -109,6 +110,14 @@ public class ScheduleDto implements Serializable {
     private String auditStartTimeString;  //学生审查开始时间
     private String auditEndTimeString;   //学生审查结束时间
     private String publishTimeString;    //发布成绩时间
+
+    public int getDistributeMaxUser() {
+        return distributeMaxUser;
+    }
+
+    public void setDistributeMaxUser(int distributeMaxUser) {
+        this.distributeMaxUser = distributeMaxUser;
+    }
 
     public String getStartTimeString() {
         return startTimeString;
