@@ -1,5 +1,6 @@
 package com.activiti.common.utils;
 
+import com.alibaba.fastjson.JSONArray;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -36,8 +37,14 @@ public class ActivitiHelper {
         });
     }
 
-    public void execute(DelegateExecution execution) {
-        String operationType = (String) execution.getVariable("operationType");
-        System.out.println("收到了传来的参数" + operationType);
+    /**
+     * 没有参与互评邮件提醒
+     *
+     * @param execution
+     */
+    public void emailAlert(DelegateExecution execution) {
+        String emailList = (String) execution.getVariable("emailAlertList");
+        JSONArray jsonArray = JSONArray.parseArray(emailList);
+        System.out.println("开始向这些人发邮件" + emailList);
     }
 }
