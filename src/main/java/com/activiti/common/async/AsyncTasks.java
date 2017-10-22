@@ -3,6 +3,7 @@ package com.activiti.common.async;
 import com.activiti.common.utils.ActivitiHelper;
 import com.activiti.mapper.ToolsMapper;
 import com.activiti.pojo.tools.InvokeLog;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,10 @@ public class AsyncTasks {
      * @throws InterruptedException
      */
     @Async("asyncTask")
-    @SuppressWarnings("unchecked")
     public void asyncTask(Object object, String type) throws InterruptedException {
         if ("insertLog".equals(type))
             toolsMapper.insertInvokeLog((InvokeLog) object);
         if ("distributeTask".equals(type))
-            activitiHelper.distributeTask((List<String>)object);
+            activitiHelper.distributeTask((JSONObject)object);
     }
 }
