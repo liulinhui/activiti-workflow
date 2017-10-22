@@ -188,8 +188,8 @@ public class UserController {
             throw new Exception("您已经参加过互评");
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
         //校验互评时间段
-        if (commonUtil.compareDate(new Date(), scheduleDto.getJudgeEndTime())) throw new Exception("互评时间已经过去了" +
-                "，时间段为(" + scheduleDto.getJudgeStartTimeString() + "-" + scheduleDto.getJudgeEndTimeString() + ")");
+//        if (commonUtil.compareDate(new Date(), scheduleDto.getJudgeEndTime())) throw new Exception("互评时间已经过去了" +
+//                "，时间段为(" + scheduleDto.getJudgeStartTimeString() + "-" + scheduleDto.getJudgeEndTimeString() + ")");
         int judgeLimitTimes = scheduleDto.getJudgeTimes();
         JSONObject judgeList = JSON.parseObject(judge);
         List<JudgementLs> judgementLsList = new ArrayList<>();

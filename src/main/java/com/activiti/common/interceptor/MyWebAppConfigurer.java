@@ -20,7 +20,7 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new LoginInterceptor(env))
                 .addPathPatterns("/**")
                 .excludePathPatterns(ConstantsUtils.excludePathPatterns);
-        registry.addInterceptor(new CommonLnterceptor(env))
+        registry.addInterceptor(new CommonInterceptor(env))
                 .addPathPatterns("/**");
         super.addInterceptors(registry);
     }

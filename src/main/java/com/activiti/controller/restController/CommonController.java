@@ -249,6 +249,7 @@ public class CommonController {
     }
 
     /**
+     * 对接
      * @param email
      * @return
      */
