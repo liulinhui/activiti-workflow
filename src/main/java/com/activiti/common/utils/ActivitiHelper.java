@@ -54,13 +54,13 @@ public class ActivitiHelper {
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
         int judgeTimes = scheduleDto.getJudgeTimes();
         int studentId = emailList.indexOf(assignee);
-        int countWork = emailList.size();
+        int countWork = emailList.size() - 1;
         emailList.forEach(email -> {
             JSONArray jsonArray = new JSONArray();
             for (int i = 1; i <= judgeTimes; i++) {
                 int id = studentId + i;
                 int result = id > countWork ? id - countWork : id;
-                jsonArray.add(result);
+                jsonArray.add(emailList.get(result));
             }
             Map<String, Object> variables = new HashMap<>();
             variables.put("courseCode", courseCode);

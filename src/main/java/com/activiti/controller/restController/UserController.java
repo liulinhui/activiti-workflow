@@ -159,14 +159,16 @@ public class UserController {
         StudentWorkInfo studentWorkInfo = userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, email));
         if (null != studentWorkInfo.getJoinJudgeTime())
             throw new Exception("您已经参加过互评");
-        if ("true".equals(studentWorkInfo.getDistributeStatus()) && null == studentWorkInfo.getJoinJudgeTime())
-            throw new Exception("您已经错过了互评机会");
+        if ("false".equals(studentWorkInfo.getDistributeStatus()))
+            throw new Exception("您还不能参加互评");
         JSONObject response = new JSONObject();
         List<StudentWorkInfo> workInfoList = new ArrayList<>();
         JSONArray jsonArray = activitiHelper.selectWorkListToJudge(email, courseCode);
         jsonArray.forEach(index -> {
             workInfoList.add(userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, index.toString())));
         });
+        if ("true".equals(studentWorkInfo.getDistributeStatus()) && null == studentWorkInfo.getJoinJudgeTime() && workInfoList.size() == 0)
+            throw new Exception("您已经错过了互评机会");
         response.put("workList", workInfoList);
         return response;
     }
