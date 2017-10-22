@@ -51,7 +51,8 @@ public class ActivitiHelper {
         String assignee = (String) jsonObject.get("email");
         Collections.shuffle(emailList);
         logger.info("启动作业分配流程");
-        int judgeTimes = scheduleService.selectScheduleTime(courseCode).getJudgeTimes();
+        ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
+        int judgeTimes = scheduleDto.getJudgeTimes();
         int studentId = emailList.indexOf(assignee);
         int countWork = emailList.size();
         emailList.forEach(email -> {
@@ -65,7 +66,7 @@ public class ActivitiHelper {
             variables.put("courseCode", courseCode);
             variables.put("assignee", assignee);
             variables.put("judgeEmailList", jsonArray.toJSONString());
-            variables.put("timeout", "PT10S");
+            variables.put("timeout", scheduleDto.getTimeout());
             String businessKey = "assessment";
             ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("assessmentWorkFlow", businessKey, variables);
             logger.info("用户" + assignee + ">>>>>>>>>>启动流程：" + processInstance.getId());

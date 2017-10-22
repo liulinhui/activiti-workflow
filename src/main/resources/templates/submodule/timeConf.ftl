@@ -25,32 +25,40 @@
                        class="layui-input">
             </div>
         </div>
-        <#--<div class="layui-form-item">-->
-            <#--<div class="layui-inline">-->
-                <#--<label class="layui-form-label">互评开始</label>-->
-                <#--<div class="layui-input-inline">-->
-                    <#--<input type="text" lay-verify="required" name="judgeStartTime"-->
-                           <#--class="layui-input my-time-conf-judgeStartTime"-->
-                           <#--placeholder="yyyy-MM-dd HH:mm:ss">-->
-                <#--</div>-->
-            <#--</div>-->
-            <#--<div class="layui-inline">-->
-                <#--<label class="layui-form-label">互评结束</label>-->
-                <#--<div class="layui-input-inline">-->
-                    <#--<input type="text" lay-verify="required" name="judgeEndTime"-->
-                           <#--class="layui-input my-time-conf-judgeEndTime"-->
-                           <#--placeholder="yyyy-MM-dd HH:mm:ss">-->
-                <#--</div>-->
-            <#--</div>-->
-            <#--<div class="layui-inline">-->
-                <#--<label class="layui-form-label">成绩发布</label>-->
-                <#--<div class="layui-input-inline">-->
-                    <#--<input type="text" lay-verify="required" name="publishTime"-->
-                           <#--class="layui-input my-time-conf-publishTime"-->
-                           <#--placeholder="yyyy-MM-dd HH:mm:ss">-->
-                <#--</div>-->
-            <#--</div>-->
-        <#--</div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">互评超时时间</label>
+            <div class="layui-input-block">
+                <input type="text" name="timeout" lay-verify="required"
+                       placeholder="格式（10秒钟:PT10S , 一天:PT1D  ,一小时:PT1H, 一分钟:PT1M）" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+    <#--<div class="layui-form-item">-->
+    <#--<div class="layui-inline">-->
+    <#--<label class="layui-form-label">互评开始</label>-->
+    <#--<div class="layui-input-inline">-->
+    <#--<input type="text" lay-verify="required" name="judgeStartTime"-->
+    <#--class="layui-input my-time-conf-judgeStartTime"-->
+    <#--placeholder="yyyy-MM-dd HH:mm:ss">-->
+    <#--</div>-->
+    <#--</div>-->
+    <#--<div class="layui-inline">-->
+    <#--<label class="layui-form-label">互评结束</label>-->
+    <#--<div class="layui-input-inline">-->
+    <#--<input type="text" lay-verify="required" name="judgeEndTime"-->
+    <#--class="layui-input my-time-conf-judgeEndTime"-->
+    <#--placeholder="yyyy-MM-dd HH:mm:ss">-->
+    <#--</div>-->
+    <#--</div>-->
+    <#--<div class="layui-inline">-->
+    <#--<label class="layui-form-label">成绩发布</label>-->
+    <#--<div class="layui-input-inline">-->
+    <#--<input type="text" lay-verify="required" name="publishTime"-->
+    <#--class="layui-input my-time-conf-publishTime"-->
+    <#--placeholder="yyyy-MM-dd HH:mm:ss">-->
+    <#--</div>-->
+    <#--</div>-->
+    <#--</div>-->
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit="" lay-filter="my-time-conf-submit">立即提交</button>
@@ -138,10 +146,16 @@
         };
         //监听提交
         form.on('submit(my-time-conf-submit)', function (data) {
+            if (parseInt(data.field.distributeMaxUser) <= 4) {
+                layer.alert("开始互评人数最小5人", {
+                    title: '部署失败'
+                });
+                return false;
+            }
             $.ajax({
                 url: './api/common/insertScheduleTime',
                 data: {data: JSON.stringify(data.field)},
-                type:"POST",
+                type: "POST",
                 dataType: 'json',
                 success: function (result) {
                     if (result.success) {

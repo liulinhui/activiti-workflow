@@ -21,9 +21,18 @@ public class ScheduleDto implements Serializable {
     private Date publishTime;    //发布成绩时间
     private int judgeTimes;    //每个学生需要互评的次数（后期算出）
     private String githubAddress;   //题目地址
-    private int distributeMaxUser;
+    private int distributeMaxUser;  //最大人数开始互拼
+    private String timeout;  //互评超时时间
 
     public ScheduleDto() {
+    }
+
+    public String getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(String timeout) {
+        this.timeout = timeout;
     }
 
     public int getJudgeTimes() {
@@ -56,7 +65,7 @@ public class ScheduleDto implements Serializable {
 
     public void setJudgeStartTime(Date judgeStartTime) {
         this.judgeStartTime = judgeStartTime;
-        this.judgeStartTimeString=CommonUtil.dateToString(judgeStartTime);
+        this.judgeStartTimeString = CommonUtil.dateToString(judgeStartTime);
     }
 
     public Date getJudgeEndTime() {
@@ -65,7 +74,7 @@ public class ScheduleDto implements Serializable {
 
     public void setJudgeEndTime(Date judgeEndTime) {
         this.judgeEndTime = judgeEndTime;
-        this.judgeEndTimeString=CommonUtil.dateToString(judgeEndTime);
+        this.judgeEndTimeString = CommonUtil.dateToString(judgeEndTime);
     }
 
     public Date getAuditStartTime() {
@@ -74,7 +83,7 @@ public class ScheduleDto implements Serializable {
 
     public void setAuditStartTime(Date auditStartTime) {
         this.auditStartTime = auditStartTime;
-        this.auditStartTimeString=CommonUtil.dateToString(auditStartTime);
+        this.auditStartTimeString = CommonUtil.dateToString(auditStartTime);
     }
 
     public Date getAuditEndTime() {
@@ -83,7 +92,7 @@ public class ScheduleDto implements Serializable {
 
     public void setAuditEndTime(Date auditEndTime) {
         this.auditEndTime = auditEndTime;
-        this.auditEndTimeString=CommonUtil.dateToString(auditEndTime);
+        this.auditEndTimeString = CommonUtil.dateToString(auditEndTime);
     }
 
     public Date getPublishTime() {
@@ -92,7 +101,7 @@ public class ScheduleDto implements Serializable {
 
     public void setPublishTime(Date publishTime) {
         this.publishTime = publishTime;
-        this.publishTimeString=CommonUtil.dateToString(publishTime);
+        this.publishTimeString = CommonUtil.dateToString(publishTime);
     }
 
     public String getGithubAddress() {
