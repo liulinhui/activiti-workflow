@@ -21,7 +21,9 @@ public class FlowTakeListener implements ExecutionListener {
     @Override
     public void notify(DelegateExecution delegateExecution) throws Exception {
         JSONArray jsonArray = new JSONArray();
-        taskService.createTaskQuery().processInstanceBusinessKey("assessment").list().forEach(task -> {
+        String businessKey = delegateExecution.getProcessBusinessKey();
+        logger.info("businessKey="+businessKey);
+        taskService.createTaskQuery().processInstanceBusinessKey(businessKey).list().forEach(task -> {
             jsonArray.add(task.getAssignee());
         });
         delegateExecution.setVariable("emailAlertList", jsonArray.toJSONString());

@@ -29,13 +29,15 @@ public class ActivitiTest {
      * 启动流程
      */
     @Test
-    public void start() {
+    public void start() throws InterruptedException {
         Map<String, Object> variables = new HashMap<>();
         variables.put("email", "1249055292@qq.com");
         variables.put("emailList", "emailList");
+        variables.put("timeout", "PT10S");
         String businessKey="assessment";
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("assessmentWorkFlow",businessKey, variables);
         logger.info(">>>>>>>>>>>>>>>>>>>>启动流程：" + processInstance.getId());
+        Thread.sleep(15000);
     }
 
     /**

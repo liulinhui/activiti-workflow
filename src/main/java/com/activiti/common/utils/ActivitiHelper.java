@@ -45,6 +45,8 @@ public class ActivitiHelper {
     public void emailAlert(DelegateExecution execution) {
         String emailList = (String) execution.getVariable("emailAlertList");
         JSONArray jsonArray = JSONArray.parseArray(emailList);
-        System.out.println("开始向这些人发邮件" + emailList);
+        if (null == jsonArray)
+            return;
+        System.out.println("开始向这些人发邮件" + jsonArray);
     }
 }
