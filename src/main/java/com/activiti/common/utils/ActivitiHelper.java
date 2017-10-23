@@ -48,14 +48,13 @@ public class ActivitiHelper {
     public void distributeTask(JSONObject jsonObject) {
         List<String> emailList = (List<String>) jsonObject.get("emailList");
         String courseCode = (String) jsonObject.get("courseCode");
-        String assignee = (String) jsonObject.get("email");
         Collections.shuffle(emailList);
         logger.info("启动作业分配流程");
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
         int judgeTimes = scheduleDto.getJudgeTimes();
-        int studentId = emailList.indexOf(assignee);
         int countWork = emailList.size() - 1;
         emailList.forEach(email -> {
+            int studentId = emailList.indexOf(email);
             JSONArray jsonArray = new JSONArray();
             for (int i = 1; i <= judgeTimes; i++) {
                 int id = studentId + i;
@@ -64,12 +63,12 @@ public class ActivitiHelper {
             }
             Map<String, Object> variables = new HashMap<>();
             variables.put("courseCode", courseCode);
-            variables.put("assignee", assignee);
+            variables.put("assignee", email);
             variables.put("judgeEmailList", jsonArray.toJSONString());
             variables.put("timeout", scheduleDto.getTimeout());
             String businessKey = "assessment";
             ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("assessmentWorkFlow", businessKey, variables);
-            logger.info("用户" + assignee + ">>>>>>>>>>启动流程：" + processInstance.getId());
+            logger.info("用户" + email + ">>>>>>>>>>启动流程：" + processInstance.getId());
             userMapper.updateDistributeStatus(courseCode, email);
             logger.info("更新用户" + email + "分配状态");
         });

@@ -25,7 +25,7 @@ public class FlowTakeListener implements ExecutionListener {
         logger.info("businessKey="+businessKey);
         taskService.createTaskQuery().processInstanceBusinessKey(businessKey).list().forEach(task -> {
             jsonArray.add(task.getAssignee());
-            taskService.complete(task.getId());
+//            taskService.complete(task.getId());
         });
         delegateExecution.setVariable("emailAlertList", jsonArray.toJSONString());
     }

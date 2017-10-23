@@ -34,9 +34,9 @@
     </@identity_validate>
     </ul>
     <ul class="layui-nav layui-layout-right">
-        <#--<li class="layui-nav-item">-->
-            <#--<a href="javascript:;"><img src="${base}/img/beier.png" class="layui-nav-img">${userEmail!"我"}</a>-->
-        <#--</li>-->
+        <li class="layui-nav-item">
+            <a href="javascript:;"><img src="${base}/img/beier.png" class="layui-nav-img">${userEmail!"我"}</a>
+        </li>
         <li class="layui-nav-item"><a href="./logout">退出</a></li>
     </ul>
 </div>
