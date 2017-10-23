@@ -161,7 +161,8 @@ public class UserController {
             throw new Exception("您已经参加过互评");
         if ("false".equals(studentWorkInfo.getDistributeStatus()))
             throw new Exception("您还不能参加互评");
-        JSONObject response = new JSONObject();
+        ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
+        JSONObject response = commonService.getQAFromGitHub(scheduleDto.getGithubAddress());
         List<StudentWorkInfo> workInfoList = new ArrayList<>();
         JSONArray jsonArray = activitiHelper.selectWorkListToJudge(email, courseCode);
         jsonArray.forEach(index -> {
