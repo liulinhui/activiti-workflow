@@ -81,7 +81,7 @@
     </select>
 
     <insert id="insertUserRole" parameterType="com.activiti.pojo.user.UserRole">
-        INSERT INTO judge_user_role (ID, EMAIL, REMARKS)
+        INSERT IGNORE INTO judge_user_role (ID, EMAIL, REMARKS)
         VALUES (
             #{id}, #{email}, #{remarks}
         )
