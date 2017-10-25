@@ -1,6 +1,5 @@
 <div class="layui-header">
-    <div class="layui-logo">学生互评系统</div>
-    <ul class="layui-nav layui-layout-left">
+    <ul class="layui-nav">
         <li class="layui-nav-item">
             <a href="javascript:;">我的任务</a>
             <dl class="layui-nav-child">
