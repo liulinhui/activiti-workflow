@@ -181,6 +181,7 @@
                     detail['grade'] = grade.val();
                     detail['judgement'] = judgement.val();
                     parent.find('.my-assessment-origin').hide();
+                    obj.del();
                 }
             }
         });
