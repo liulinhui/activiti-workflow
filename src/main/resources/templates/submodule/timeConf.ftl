@@ -29,8 +29,15 @@
             <label class="layui-form-label">互评超时时间</label>
             <div class="layui-input-block">
                 <input type="text" name="timeout" lay-verify="required"
-                       placeholder="格式（10秒钟:PT10S , 一天:PT1D  ,一小时:PT1H, 一分钟:PT1M）" autocomplete="off"
+                       placeholder="格式（10秒钟:PT10S , 一天:PT1D  ,一小时:PT1H, 一分钟:PT1M）默认PT7D" autocomplete="off"
                        class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">学生申诉</label>
+            <div class="layui-input-block">
+                <input type="radio" name="isAppeal" value="no" title="不允许" checked="">
+                <input type="radio" name="isAppeal" value="yes" title="允许">
             </div>
         </div>
     <#--<div class="layui-form-item">-->
@@ -123,7 +130,7 @@
                                             {field: 'courseName', title: '题目', width: 150},
                                             {field: 'courseCode', title: '题号', width: 150},
                                             {field: 'githubAddress', title: 'GitHub地址', width: 500},
-//                                            {field: 'judgeStartTimeString', title: '互评开始时间', width: 200},
+                                            {field: 'isAppeal', title: '学生申诉', width: 100},
 //                                            {field: 'judgeEndTimeString', title: '互评结束时间', width: 200},
 //                                            {field: 'publishTimeString', title: '成绩发布时间', width: 200},
                                             {
