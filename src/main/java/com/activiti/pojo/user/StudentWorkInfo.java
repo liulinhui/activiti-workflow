@@ -22,6 +22,7 @@ public class StudentWorkInfo implements Serializable {
     private Date joinJudgeTime;   //参与互评的时间
     private String joinJudgeTimeString;
     private String distributeStatus;  //分配状态  false：未分配  true：已经分配了
+    private String isAppeal;   //是否允许申诉    yes:允许   no:不允许   默认不允许
 
     public String getLastCommitTimeString() {
         return lastCommitTimeString;
@@ -56,6 +57,14 @@ public class StudentWorkInfo implements Serializable {
         this.courseCode = courseCode;
         this.emailAddress = emailAddress;
         this.joinJudgeTime = joinJudgeTime;
+    }
+
+    public String getIsAppeal() {
+        return isAppeal;
+    }
+
+    public void setIsAppeal(String isAppeal) {
+        this.isAppeal = isAppeal;
     }
 
     public String getDistributeStatus() {
