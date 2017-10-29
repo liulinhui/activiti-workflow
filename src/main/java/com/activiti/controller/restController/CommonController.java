@@ -245,6 +245,7 @@ public class CommonController {
 
     /**
      * 对接
+     *
      * @param email
      * @return
      */
@@ -252,11 +253,15 @@ public class CommonController {
     @RequestMapping("/loginAbutment")
     @ApiAnnotation
     public Object loginAbutment(@RequestParam("email") String email,
+                                @RequestParam("userName") String userName,
                                 @RequestParam("userType") String userType,
                                 @RequestParam("password") String password) throws Exception {
         if (!ConstantsUtils.password.equals(password)) throw new Exception("非法登录对接！！！！");
         String uuid = String.valueOf(commonUtil.getSequenceId());
-        redisCommonUtil.put(ConstantsUtils.loginAbutmentRedisStore + email, uuid, 60);
+        JSONObject cache = new JSONObject();
+        cache.put("uuid", uuid);
+        cache.put("userName", userName);
+        redisCommonUtil.put(ConstantsUtils.loginAbutmentRedisStore + email, cache.toJSONString(), 60);
         if ("staff".equals(userType))
             userService.insertUserRole(new UserRole(1, email, "staff"));
         JSONObject jsonObject = new JSONObject();

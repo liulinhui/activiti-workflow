@@ -9,6 +9,8 @@ import com.activiti.pojo.user.StudentWorkInfo;
 import com.activiti.pojo.user.UserRole;
 import com.activiti.service.ScheduleService;
 import com.activiti.service.UserService;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -249,8 +251,14 @@ public class IndexController {
                                 @RequestParam("redirectUrl") String redirectUrl,
                                 @RequestParam("uuid") String uuid,
                                 HttpServletRequest request) {
-        if (uuid.equals(redisCommonUtil.get(ConstantsUtils.loginAbutmentRedisStore + email).toString()))
-            request.getSession().setAttribute(ConstantsUtils.loginAbutmentRedisStore + email, uuid);
+        String cache = redisCommonUtil.get(ConstantsUtils.loginAbutmentRedisStore + email).toString();
+        if (null != cache && !"".equals(cache)) {
+            JSONObject jsonObject = JSON.parseObject(cache);
+            if (uuid.equals(jsonObject.getString("uuid"))) {
+                request.getSession().setAttribute("userName", jsonObject.getString("userName"));
+                request.getSession().setAttribute(ConstantsUtils.loginAbutmentRedisStore + email, uuid);
+            }
+        }
         request.getSession().setAttribute(ConstantsUtils.sessionEmail, email);
         return "redirect:" + redirectUrl;
     }
