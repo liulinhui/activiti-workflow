@@ -70,7 +70,7 @@ public class HttpClientUtil {
         jsonObject.put("ref", "master");
         jsonObject.put("commit_message", "peer_assessment_commit");
         jsonObject.put("branch_name", "master");
-        jsonObject.put("content", content);
+        jsonObject.put("content", content.toJSONString());
         jsonObject.put("file_path", file_path);
         if ("pro".equals(env))
             doPost(uri, jsonObject);
@@ -106,7 +106,7 @@ public class HttpClientUtil {
         jsonObject.put("ref", "master");
         jsonObject.put("commit_message", "peer_assessment_commit");
         jsonObject.put("branch_name", "master");
-        jsonObject.put("content", content);
+        jsonObject.put("content", content.toJSONString());
         jsonObject.put("file_path", file_path);
         if ("pro".equals(env))
             doPost(uri, jsonObject);
