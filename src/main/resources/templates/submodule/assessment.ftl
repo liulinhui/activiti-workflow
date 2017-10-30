@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">输入框</label>
+                <label class="layui-form-label">分数</label>
                 <div class="layui-input-block">
                     <input type="text" required lay-verify="required" placeholder="分数" autocomplete="off"
                            class="layui-input my-assessment-grade">
