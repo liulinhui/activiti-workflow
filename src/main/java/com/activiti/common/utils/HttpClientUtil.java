@@ -155,7 +155,7 @@ public class HttpClientUtil {
      * @param json
      * @return
      */
-    private JSONObject doPost(String url, JSONObject json) {
+    private void doPost(String url, JSONObject json) {
         logger.info("调用gitlab接口" + url + "(POST)parameter======：" + json.toJSONString());
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(url);
@@ -174,7 +174,6 @@ public class HttpClientUtil {
             throw new RuntimeException(e);
         }
         logger.info("调用gitlab接口" + url + "(POST)return message======：" + response);
-        return response;
     }
 
     /**
@@ -184,7 +183,7 @@ public class HttpClientUtil {
      * @param json
      * @return
      */
-    private JSONObject doPut(String url, JSONObject json) {
+    private void doPut(String url, JSONObject json) {
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPut put = new HttpPut(url);
         JSONObject response = null;
@@ -201,6 +200,5 @@ public class HttpClientUtil {
             throw new RuntimeException(e);
         }
         logger.info("调用gitlab接口" + url + "(PUT)返回数据：" + response);
-        return response;
     }
 }

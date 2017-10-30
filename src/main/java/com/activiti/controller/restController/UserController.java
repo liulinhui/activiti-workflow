@@ -177,8 +177,9 @@ public class UserController {
         });
         if ("true".equals(studentWorkInfo.getDistributeStatus()) && null == studentWorkInfo.getJoinJudgeTime() && workInfoList.size() == 0)
             throw new Exception("您已经错过了互评机会");
-        response.put("workList", workInfoList);
-        return response;
+        JSONObject jsonObject=JSON.parseObject(response.toJSONString());
+        jsonObject.put("workList", workInfoList);
+        return jsonObject;
     }
 
     /**
