@@ -217,7 +217,7 @@ public class UserController {
                 object.put("request",request);
                 object.put("judgementLsList",judgementLsList1);
                 try {
-                    asyncTasks.asyncTask(jsonObject,"commitWorkToGitlab");
+                    asyncTasks.asyncTask(object,"updateGradeToGitlab");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -49,7 +49,7 @@ public class HttpClientUtil {
      */
     public void commitWorkToGitlab(StudentWorkInfo studentWorkInfo, HttpServletRequest request) throws UnsupportedEncodingException {
         String userName = (String) request.getSession().getAttribute("userName");
-        String userType = (String) request.getSession().getAttribute("userName");
+        String userType = (String) request.getSession().getAttribute("userType");
         String uri = "http://192.168.1.136/api/v3/projects/287/repository/files";
         String courseCode = studentWorkInfo.getCourseCode();
         String email = studentWorkInfo.getEmailAddress();
@@ -91,7 +91,7 @@ public class HttpClientUtil {
      */
     public void updateGradeToGitlab(StudentWorkInfo studentWorkInfo, List<JudgementLs> judgementLs, HttpServletRequest request) throws UnsupportedEncodingException {
         String userName = (String) request.getSession().getAttribute("userName");
-        String userType = (String) request.getSession().getAttribute("userName");
+        String userType = (String) request.getSession().getAttribute("userType");
         String uri = "http://192.168.1.136/api/v3/projects/287/repository/files";
         String courseCode = studentWorkInfo.getCourseCode();
         String email = studentWorkInfo.getEmailAddress();
