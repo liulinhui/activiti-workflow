@@ -8,8 +8,8 @@
     </div>
 
     <div class="my-grade-info-submodule" style="display: none">
-            <table class="myGradeJudgeInfoTable">
-            </table>
+        <table class="myGradeJudgeInfoTable" ay-filter="myGradeJudgeInfoTable">
+        </table>
     </div>
 </div>
 
@@ -24,7 +24,7 @@
             $.ajax({
                 url: './api/user/selectStudentGrade',
                 dataType: 'json',
-                type:"POST",
+                type: "POST",
                 success: function (data) {
                     if (!data.success) {
                         layer.open({
@@ -68,7 +68,7 @@
                     url: './api/user/selectWhoJudgeMe',
                     data: {courseCode: courseCode},
                     dataType: 'json',
-                    type:"POST",
+                    type: "POST",
                     success: function (data) {
                         if (!data.success) {
                             layer.open({
@@ -80,12 +80,18 @@
                                 elem: '.myGradeJudgeInfoTable',
                                 data: data.data,
                                 height: 200,
-                                width: 700,
+                                width: 800,
                                 cols: [[ //标题栏
                                     {field: 'courseCode', title: '题号', width: 150},
                                     {field: 'judgeEmail', title: '邮箱', width: 250},
                                     {field: 'judgeTimeString', title: '提交时间', width: 200},
-                                    {field: 'grade', title: '评分', width: 95}
+                                    {field: 'grade', title: '评分', width: 95},
+                                    {
+                                        field: 'judgement',
+                                        title: '评语',
+                                        width: 95,
+                                        templet: '#my-grade-info-judgement'
+                                    }
                                 ]],
                                 skin: 'row', //表格风格
                                 even: true,
@@ -93,13 +99,21 @@
                             });
                             layer.open({
                                 anim: 1,
-                                type:1,
-                                title:"互评详情",
+                                type: 1,
+                                title: "互评详情",
                                 closeBtn: 0,
                                 area: ['703px', '237px'],
                                 shadeClose: true,
                                 content: $('.my-grade-info .my-grade-info-submodule').html()
-                            })
+                            });
+                            table.on('tool(myGradeJudgeInfoTable)', function (obj) {
+                                var judgement = obj.data.judgement;
+                                console.log(judgement);
+                                layer.open({
+                                    title: "评语",
+                                    content: judgement
+                                })
+                            });
                         }
                     }
                 })
@@ -113,5 +127,8 @@
 </script>
 
 <script type="text/html" id="my-grade-info-judge">
-    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="moreInfo">查看详情</a>
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="moreInfo">详情</a>
+</script>
+<script type="text/html" id="my-grade-info-judgement">
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="judgement">详情</a>
 </script>
