@@ -13,6 +13,7 @@ import com.activiti.service.ScheduleService;
 import com.activiti.service.UserService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +31,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/common")
 public class CommonController {
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(CommonController.class);
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -262,6 +264,8 @@ public class CommonController {
         cache.put("uuid", uuid);
         cache.put("userName", userName);
         cache.put("userType", userType);
+        cache.put("email", email);
+        logger.info("loginAbutment parameter is>>>>>>>>>>>>" + cache.toJSONString());
         redisCommonUtil.put(ConstantsUtils.loginAbutmentRedisStore + email, cache.toJSONString(), 60);
         if ("staff".equals(userType))
             userService.insertUserRole(new UserRole(1, email, "staff"));
