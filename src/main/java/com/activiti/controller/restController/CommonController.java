@@ -261,6 +261,7 @@ public class CommonController {
         JSONObject cache = new JSONObject();
         cache.put("uuid", uuid);
         cache.put("userName", userName);
+        cache.put("userType", userType);
         redisCommonUtil.put(ConstantsUtils.loginAbutmentRedisStore + email, cache.toJSONString(), 60);
         if ("staff".equals(userType))
             userService.insertUserRole(new UserRole(1, email, "staff"));

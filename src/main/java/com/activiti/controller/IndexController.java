@@ -273,6 +273,7 @@ public class IndexController {
             JSONObject jsonObject = JSON.parseObject(cache);
             if (uuid.equals(jsonObject.getString("uuid"))) {
                 request.getSession().setAttribute("userName", jsonObject.getString("userName"));
+                request.getSession().setAttribute("userType", jsonObject.getString("userType"));
                 request.getSession().setAttribute(ConstantsUtils.loginAbutmentRedisStore + email, uuid);
             }
         }

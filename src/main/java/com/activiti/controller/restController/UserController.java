@@ -117,7 +117,7 @@ public class UserController {
         modelMap.put("email", email);
         mailProducer.send(new EmailDto(email, EmailType.html, "答题成功", commonUtil.applyDataToView(modelMap, ConstantsUtils.successAnswerFtl)));
         try {
-            httpClientUtil.commitWorkToGitlab(studentWorkInfo, (String) request.getSession().getAttribute("userName"));
+            httpClientUtil.commitWorkToGitlab(studentWorkInfo, request);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -216,7 +216,7 @@ public class UserController {
                 judgementLsList1.add(judgementLs);
                 judgementService.updateStuGrade(studentWorkInfo);  //更新成绩
                 try {
-                    httpClientUtil.updateGradeToGitlab(studentWorkInfo, judgementLsList1, (String) request.getSession().getAttribute("userName"));
+                    httpClientUtil.updateGradeToGitlab(studentWorkInfo, judgementLsList1, request);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

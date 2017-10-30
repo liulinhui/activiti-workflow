@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -43,10 +44,12 @@ public class HttpClientUtil {
      * 提交作业到gitlab
      *
      * @param studentWorkInfo
-     * @param userName
+     * @param request
      * @throws UnsupportedEncodingException
      */
-    public void commitWorkToGitlab(StudentWorkInfo studentWorkInfo, String userName) throws UnsupportedEncodingException {
+    public void commitWorkToGitlab(StudentWorkInfo studentWorkInfo, HttpServletRequest request) throws UnsupportedEncodingException {
+        String userName = (String) request.getSession().getAttribute("userName");
+        String userType = (String) request.getSession().getAttribute("userName");
         String uri = "http://192.168.1.136/api/v3/projects/287/repository/files";
         String courseCode = studentWorkInfo.getCourseCode();
         String email = studentWorkInfo.getEmailAddress();
@@ -62,9 +65,10 @@ public class HttpClientUtil {
         answer.add(answerDetail);
         student.put("email", email);
         student.put("username", userName);
+        student.put("is_staff", "staff".equals(userType));
         content.put("student", student);
-        content.put("tried", 2);
-        content.put("maxTry", 0);
+        content.put("tried", 1);
+        content.put("maxTry", 1);
         content.put("answer", answer);
         content.put("question", commonService.getQAFromGitHub(commonUtil.generateGitHubUrl(Integer.valueOf(courseCode))));
         jsonObject.put("private_token", "L7Zxq6V_WXvG36wyrxt6");
@@ -82,10 +86,12 @@ public class HttpClientUtil {
      *
      * @param studentWorkInfo
      * @param judgementLs
-     * @param userName
+     * @param request
      * @throws UnsupportedEncodingException
      */
-    public void updateGradeToGitlab(StudentWorkInfo studentWorkInfo, List<JudgementLs> judgementLs, String userName) throws UnsupportedEncodingException {
+    public void updateGradeToGitlab(StudentWorkInfo studentWorkInfo, List<JudgementLs> judgementLs, HttpServletRequest request) throws UnsupportedEncodingException {
+        String userName = (String) request.getSession().getAttribute("userName");
+        String userType = (String) request.getSession().getAttribute("userName");
         String uri = "http://192.168.1.136/api/v3/projects/287/repository/files";
         String courseCode = studentWorkInfo.getCourseCode();
         String email = studentWorkInfo.getEmailAddress();
@@ -96,6 +102,7 @@ public class HttpClientUtil {
         JSONObject student = new JSONObject();
         student.put("email", email);
         student.put("username", userName);
+        student.put("is_staff", "staff".equals(userType));
         content.put("q_number", Integer.valueOf(studentWorkInfo.getCourseCode()));
         content.put("student", student);
         content.put("student_answer", userService.selectStudentWorkInfo(studentWorkInfo).getWorkDetail());
