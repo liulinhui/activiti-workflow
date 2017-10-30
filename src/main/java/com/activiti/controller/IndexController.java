@@ -148,8 +148,10 @@ public class IndexController {
         List<ScheduleDto> scheduleDtoList = new ArrayList<>();
         if (null != attach && !"".equals(attach)) {
             ScheduleDto scheduleDto = scheduleMapper.selectScheduleTime(attach);
-            if (null == scheduleDto)
+            if (null == scheduleDto){
                 modelMap.put("errorMessage", "题目" + attach + "不存在");
+                scheduleDtoList = scheduleMapper.selectAllOfScheduleTime();
+            }
             else
                 scheduleDtoList.add(scheduleDto);
         } else
