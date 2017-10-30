@@ -162,7 +162,6 @@
             var grade = parent.find('.my-assessment-origin .my-assessment-grade');
             var emailAddress = obj.data.emailAddress;
             var detail = judgeGradeList[emailAddress];
-            console.log(detail);
             if (obj.event === 'answer') {
                 parent.find('.my-assessment-origin').show();
                 answer.val(obj.data.workDetail);
@@ -181,7 +180,6 @@
                     detail['grade'] = grade.val();
                     detail['judgement'] = judgement.val();
                     parent.find('.my-assessment-origin').hide();
-                    obj.del();
                 }
             }
         });
