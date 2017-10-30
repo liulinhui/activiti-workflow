@@ -73,7 +73,7 @@ public class HttpClientUtil {
         content.put("question", commonService.getQAFromGitHub(commonUtil.generateGitHubUrl(Integer.valueOf(courseCode))));
         jsonObject.put("private_token", "L7Zxq6V_WXvG36wyrxt6");
         jsonObject.put("ref", "master");
-        jsonObject.put("commit_message", "peer_assessment_commit");
+        jsonObject.put("commit_message", "commitWorkToGitlab>>>>"+file_path);
         jsonObject.put("branch_name", "master");
         jsonObject.put("content", JsonFormatTool.formatJson(content.toJSONString()));
         jsonObject.put("file_path", file_path);
@@ -112,7 +112,7 @@ public class HttpClientUtil {
         content.put("peer_assessment", judgementLs);
         jsonObject.put("private_token", "L7Zxq6V_WXvG36wyrxt6");
         jsonObject.put("ref", "master");
-        jsonObject.put("commit_message", "peer_assessment_commit");
+        jsonObject.put("commit_message", "updateGradeToGitlab>>>>"+file_path);
         jsonObject.put("branch_name", "master");
         jsonObject.put("content", JsonFormatTool.formatJson(content.toJSONString()));
         jsonObject.put("file_path", file_path);
