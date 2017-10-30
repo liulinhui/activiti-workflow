@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.Date;
 import java.util.List;
@@ -155,10 +156,9 @@ public class HttpClientUtil {
         HttpPost post = new HttpPost(url);
         JSONObject response = null;
         try {
-            StringEntity s = new StringEntity(json.toString());
-            s.setContentType("application/x-www-form-urlencoded");//发送json数据需要设置contentType
-            s.setContentType("application/json");
-            post.setEntity(s);
+            post.addHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
+            post.setHeader("Accept", "application/json");
+            post.setEntity(new StringEntity(json.toJSONString(), Charset.forName("UTF-8")));
             HttpResponse res = client.execute(post);
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 String result = EntityUtils.toString(res.getEntity());// 返回json格式：
@@ -183,9 +183,9 @@ public class HttpClientUtil {
         HttpPut put = new HttpPut(url);
         JSONObject response = null;
         try {
-            StringEntity s = new StringEntity(json.toString());
-            s.setContentType("application/x-www-form-urlencoded");//发送json数据需要设置contentType
-            put.setEntity(s);
+            put.addHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
+            put.setHeader("Accept", "application/json");
+            put.setEntity(new StringEntity(json.toJSONString(), Charset.forName("UTF-8")));
             HttpResponse res = client.execute(put);
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 String result = EntityUtils.toString(res.getEntity());// 返回json格式：
