@@ -180,7 +180,7 @@ public class IndexController {
     }
 
     /**
-     * 成绩审核页面
+     * 成绩批改页面
      *
      * @param request
      * @return
@@ -188,6 +188,17 @@ public class IndexController {
     @RequestMapping("/judgement")
     public String judgement(HttpServletRequest request) {
         return "submodule/judgement";
+    }
+
+    /**
+     * 成绩审核页面
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/verifyTask")
+    public String verifyTask(HttpServletRequest request) {
+        return "submodule/verifyTask";
     }
 
     /**

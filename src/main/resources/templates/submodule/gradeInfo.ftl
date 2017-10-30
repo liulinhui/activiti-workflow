@@ -8,7 +8,7 @@
     </div>
 
     <div class="my-grade-info-submodule" style="display: none">
-        <table class="myGradeJudgeInfoTable" ay-filter="myGradeJudgeInfoTable">
+        <table class="myGradeJudgeInfoTable" lay-filter="myGradeJudgeInfoTable">
         </table>
     </div>
 </div>
@@ -47,8 +47,8 @@
                                 {field: 'joinJudgeTimeString', title: '参与互评时间', width: 160},
                                 {
                                     field: 'operation',
-                                    title: '评阅人',
-                                    width: 150,
+                                    title: '操作',
+                                    width: 200,
                                     templet: '#my-grade-info-judge'
                                 }
                             ]],
@@ -89,13 +89,12 @@
                                     {
                                         field: 'judgement',
                                         title: '评语',
-                                        width: 95,
-                                        templet: '#my-grade-info-judgement'
+                                        width: 95
                                     }
                                 ]],
                                 skin: 'row', //表格风格
                                 even: true,
-                                page: false //是否显示分页
+                                page: false//是否显示分页,
                             });
                             layer.open({
                                 anim: 1,
@@ -106,14 +105,26 @@
                                 shadeClose: true,
                                 content: $('.my-grade-info .my-grade-info-submodule').html()
                             });
-                            table.on('tool(myGradeJudgeInfoTable)', function (obj) {
-                                var judgement = obj.data.judgement;
-                                console.log(judgement);
-                                layer.open({
-                                    title: "评语",
-                                    content: judgement
-                                })
-                            });
+                        }
+                    }
+                })
+            } else if (obj.event === 'teacherVerify') {
+                $.ajax({
+                    url: './api/user/ackTeacherVerify',
+                    dataType: 'json',
+                    type: "POST",
+                    data: {courseCode: courseCode},
+                    success: function (data) {
+                        if (!data.success) {
+                            layer.open({
+                                title: '数据请求失败',
+                                content: '<p>' + data.errorMessage + '</p>'
+                            })
+                        } else {
+                            layer.open({
+                                title: "成功",
+                                content: '<p>' + data.data + '</p>'
+                            })
                         }
                     }
                 })
@@ -127,8 +138,6 @@
 </script>
 
 <script type="text/html" id="my-grade-info-judge">
-    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="moreInfo">详情</a>
-</script>
-<script type="text/html" id="my-grade-info-judgement">
-    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="judgement">详情</a>
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="moreInfo">评阅人</a>
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="teacherVerify">请老师批改</a>
 </script>

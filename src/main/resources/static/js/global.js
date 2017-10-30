@@ -21,6 +21,12 @@ layui.use('element', function () {
         layui_body.html(ajaxGet('./judgement'));
     });
 
+    $('#my-verifyTask').on('click', function () {
+        if ($('.my-verifyTask').length) return false;
+        layui_body.html('');
+        layui_body.html(ajaxGet('./verifyTask'));
+    });
+
     $('#my-time-conf').on('click', function () {
         if ($('.my-time-conf').length) return false;
         layui_body.html('');

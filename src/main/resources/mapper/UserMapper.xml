@@ -121,4 +121,10 @@
         WHERE COURSE_CODE = #{courseCode} AND EMAIL_ADDRESS = #{email}
     </update>
 
+    <update id="askToVerify" parameterType="string">
+        UPDATE judge_stu_work_info
+        SET ASK_TO_VERIFY = 'yes'
+        WHERE COURSE_CODE = #{courseCode} AND EMAIL_ADDRESS = #{email}
+    </update>
+
 </mapper>

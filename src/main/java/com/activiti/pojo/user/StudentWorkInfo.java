@@ -22,6 +22,7 @@ public class StudentWorkInfo implements Serializable {
     private String judgeType;  //teacher：老師评分  student:学生互评
     private int judgeTimes;      //作业被评论次数
     private Date joinJudgeTime;   //参与互评的时间
+    private String askToVerify;  //是否已经请老师批改了作业  yes:是的  no:没有
     private String joinJudgeTimeString;
     private String distributeStatus;  //分配状态  false：未分配  true：已经分配了
 
@@ -42,11 +43,11 @@ public class StudentWorkInfo implements Serializable {
         this.grade = grade;
     }
 
-    public StudentWorkInfo(String courseCode, String emailAddress, Double grade,String judgeType) {
+    public StudentWorkInfo(String courseCode, String emailAddress, Double grade, String judgeType) {
         this.courseCode = courseCode;
         this.emailAddress = emailAddress;
         this.grade = grade;
-        this.judgeType=judgeType;
+        this.judgeType = judgeType;
     }
 
     public StudentWorkInfo(String courseCode, String emailAddress) {
@@ -65,6 +66,14 @@ public class StudentWorkInfo implements Serializable {
         this.courseCode = courseCode;
         this.emailAddress = emailAddress;
         this.joinJudgeTime = joinJudgeTime;
+    }
+
+    public String getAskToVerify() {
+        return askToVerify;
+    }
+
+    public void setAskToVerify(String askToVerify) {
+        this.askToVerify = askToVerify;
     }
 
     public String getUserName() {

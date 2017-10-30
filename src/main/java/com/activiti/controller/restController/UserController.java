@@ -177,7 +177,7 @@ public class UserController {
         });
         if ("true".equals(studentWorkInfo.getDistributeStatus()) && null == studentWorkInfo.getJoinJudgeTime() && workInfoList.size() == 0)
             throw new Exception("您已经错过了互评机会");
-        JSONObject jsonObject=JSON.parseObject(response.toJSONString());
+        JSONObject jsonObject = JSON.parseObject(response.toJSONString());
         jsonObject.put("workList", workInfoList);
         return jsonObject;
     }
@@ -214,7 +214,7 @@ public class UserController {
                 StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, key, finalGrade, "student");
                 judgementLsList1.add(judgementLs);
                 judgementService.updateStuGrade(studentWorkInfo);  //更新成绩
-                studentWorkInfo=judgementService.selectStudentWorkInfo(studentWorkInfo);
+                studentWorkInfo = judgementService.selectStudentWorkInfo(studentWorkInfo);
                 JSONObject object = new JSONObject();
                 object.put("studentWorkInfo", studentWorkInfo);
                 object.put("judgementLsList", judgementLsList1);
@@ -356,6 +356,16 @@ public class UserController {
         return jsonObject;
     }
 
+    /**
+     * 管理员批改成绩
+     *
+     * @param email
+     * @param courseCode
+     * @param grade
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping("/insertAdminJudgementResult")
     @ApiAnnotation
@@ -366,8 +376,71 @@ public class UserController {
         if (!commonUtil.isManageRole(CommonUtil.getEmailFromSession(request))) throw new Exception("非管理员不得查看！");
         String judgerEmail = CommonUtil.getEmailFromSession(request);
         verifyTaskMapper.updateTask(new VerifyTask(email, "done", courseCode, grade, judgerEmail));
-        judgementService.updateStuGrade(new StudentWorkInfo(courseCode, email, grade));  //更新成绩
+        judgementService.updateStuGrade(new StudentWorkInfo(courseCode, email, grade, "teacher"));  //更新成绩
         return "更新成绩成功";
     }
+
+    /**
+     * 申请让老师批改作业
+     *
+     * @param courseCode
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/ackTeacherVerify")
+    @ApiAnnotation
+    public Object ackTeacherVerify(@RequestParam(value = "courseCode") String courseCode, HttpServletRequest request) throws Exception {
+        String email = CommonUtil.getEmailFromSession(request);
+        ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
+        StudentWorkInfo studentWorkInfo = userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, email));
+        if ("".equals(scheduleDto.getIsAppeal())) throw new Exception("该课程不允许成绩审核");
+        if (null == studentWorkInfo.getJoinJudgeTime()) throw new Exception("由于您没有参加互评，所以成绩自动清零");
+        if ("yes".equals(studentWorkInfo.getAskToVerify())) throw new Exception("你已经申请过了");
+        activitiHelper.startTeacherVerify(studentWorkInfo);
+        return "教师将尽快为你重新修批改作业";
+    }
+
+    /**
+     * 查看老师所有需要审核的任务
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/selectAllTeacherTask")
+    @ApiAnnotation
+    public Object selectAllTeacherTask(HttpServletRequest request) throws Exception {
+        JSONArray jsonArray;
+        if (!commonUtil.isManageRole(CommonUtil.getEmailFromSession(request))) throw new Exception("非管理员不可以调用");
+        jsonArray = activitiHelper.selectAllTeacherTask();
+        return jsonArray;
+    }
+
+    /**
+     * 完成老师任务
+     *
+     * @param taskId
+     * @param courseCode
+     * @param emailAddress
+     * @param grade
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/finishTeacherVerifyTask")
+    @ApiAnnotation
+    public Object finishTeacherVerifyTask(@RequestParam(value = "taskId") String taskId,
+                                          @RequestParam(value = "courseCode") String courseCode,
+                                          @RequestParam(value = "emailAddress") String emailAddress,
+                                          @RequestParam(value = "grade") String grade, HttpServletRequest request) throws Exception {
+        StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, emailAddress, Double.valueOf(grade), "teacher");
+        judgementService.updateStuGrade(studentWorkInfo);  //更新成绩
+        activitiHelper.finishTeacherVerifyTask(taskId);
+        return "成功";
+    }
+
 }
 

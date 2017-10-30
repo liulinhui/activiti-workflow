@@ -3,7 +3,9 @@ package com.activiti.common.utils;
 import com.activiti.common.kafka.MailProducer;
 import com.activiti.mapper.UserMapper;
 import com.activiti.pojo.schedule.ScheduleDto;
+import com.activiti.pojo.user.StudentWorkInfo;
 import com.activiti.service.ScheduleService;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.activiti.engine.RuntimeService;
@@ -58,7 +60,7 @@ public class ActivitiHelper {
             JSONArray jsonArray = new JSONArray();
             for (int i = 1; i <= judgeTimes; i++) {
                 int id = studentId + i;
-                int result = id > countWork ? id - countWork-1 : id;
+                int result = id > countWork ? id - countWork - 1 : id;
                 jsonArray.add(emailList.get(result));
             }
             Map<String, Object> variables = new HashMap<>();
@@ -133,5 +135,48 @@ public class ActivitiHelper {
                 taskService.complete(taskId);
             }
         });
+    }
+
+    /**
+     * 启动教师审查流程
+     *
+     * @param studentWorkInfo
+     */
+    public void startTeacherVerify(StudentWorkInfo studentWorkInfo) {
+        String courseCode = studentWorkInfo.getCourseCode();
+        String email = studentWorkInfo.getEmailAddress();
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("studentWorkInfo", ((JSONObject) JSONObject.toJSON(studentWorkInfo)).toJSONString());
+        String businessKey = "verifyTaskBusinessKey";
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("verifyTask", businessKey, variables);
+        logger.info("用户" + email + ">>>>>>>>>>启动教师审核流程：" + processInstance.getId());
+        userMapper.askToVerify(courseCode, email);
+    }
+
+    /**
+     * 查询教师所有任务
+     */
+    public JSONArray selectAllTeacherTask() {
+        List<Task> list = taskService
+                .createTaskQuery()//
+                .taskAssignee("teacher")//个人任务的查询
+                .list();
+        JSONArray jsonArray = new JSONArray();
+        list.forEach(task -> {
+            String taskId = task.getId();
+            JSONObject studentWorkInfo = JSONObject.parseObject(taskService.getVariable(taskId, "studentWorkInfo").toString());
+            studentWorkInfo.put("taskId", taskId);
+            jsonArray.add(studentWorkInfo);
+        });
+        return jsonArray;
+    }
+
+    /**
+     * 结束任务
+     *
+     * @param taskId
+     */
+    public void finishTeacherVerifyTask(String taskId) {
+        taskService.complete(taskId);
     }
 }
