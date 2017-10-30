@@ -62,8 +62,6 @@ public class UserController {
     private AsyncTasks asyncTasks;
     @Autowired
     private ActivitiHelper activitiHelper;
-    @Autowired
-    private HttpClientUtil httpClientUtil;
 
     /*
      *  根据Email获取用户信息
@@ -116,11 +114,10 @@ public class UserController {
         modelMap.put("workDetail", workDetail);
         modelMap.put("email", email);
         mailProducer.send(new EmailDto(email, EmailType.html, "答题成功", commonUtil.applyDataToView(modelMap, ConstantsUtils.successAnswerFtl)));
-        try {
-            httpClientUtil.commitWorkToGitlab(studentWorkInfo, request);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("studentWorkInfo", studentWorkInfo);
+        jsonObject.put("request", request);
+        asyncTasks.asyncTask(jsonObject, "commitWorkToGitlab");
         return studentWorkInfo;
     }
 
@@ -215,9 +212,13 @@ public class UserController {
                 StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, key, finalGrade, "student");
                 judgementLsList1.add(judgementLs);
                 judgementService.updateStuGrade(studentWorkInfo);  //更新成绩
+                JSONObject object=new JSONObject();
+                object.put("studentWorkInfo",studentWorkInfo);
+                object.put("request",request);
+                object.put("judgementLsList",judgementLsList1);
                 try {
-                    httpClientUtil.updateGradeToGitlab(studentWorkInfo, judgementLsList1, request);
-                } catch (Exception e) {
+                    asyncTasks.asyncTask(jsonObject,"commitWorkToGitlab");
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }

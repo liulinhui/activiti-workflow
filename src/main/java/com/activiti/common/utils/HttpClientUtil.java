@@ -157,7 +157,7 @@ public class HttpClientUtil {
      * @param json
      * @return
      */
-    public JSONObject doPost(String url, JSONObject json) {
+    private JSONObject doPost(String url, JSONObject json) {
         logger.info("调用gitlab接口" + url + "(POST)parameter======：" + json.toJSONString());
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(url);
@@ -186,7 +186,7 @@ public class HttpClientUtil {
      * @param json
      * @return
      */
-    public JSONObject doPut(String url, JSONObject json) {
+    private JSONObject doPut(String url, JSONObject json) {
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPut put = new HttpPut(url);
         JSONObject response = null;
