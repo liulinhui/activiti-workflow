@@ -14,6 +14,7 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
 import org.slf4j.LoggerFactory;
@@ -156,8 +157,8 @@ public class HttpClientUtil {
         HttpPost post = new HttpPost(url);
         JSONObject response = null;
         try {
-            post.addHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
-            post.setHeader("Accept", "application/json");
+            post.addHeader(new BasicHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8"));
+            post.setHeader(new BasicHeader("Accept", "application/json;charset=utf-8"));
             post.setEntity(new StringEntity(json.toJSONString(), Charset.forName("UTF-8")));
             HttpResponse res = client.execute(post);
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
@@ -183,8 +184,8 @@ public class HttpClientUtil {
         HttpPut put = new HttpPut(url);
         JSONObject response = null;
         try {
-            put.addHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
-            put.setHeader("Accept", "application/json");
+            put.addHeader(new BasicHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8"));
+            put.setHeader(new BasicHeader("Accept", "application/json;charset=utf-8"));
             put.setEntity(new StringEntity(json.toJSONString(), Charset.forName("UTF-8")));
             HttpResponse res = client.execute(put);
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
