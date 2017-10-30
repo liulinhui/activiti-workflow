@@ -49,7 +49,7 @@ public class AsyncTasks {
         if ("commitWorkToGitlab".equals(type)) {
             JSONObject jsonObject = (JSONObject) object;
             try {
-                httpClientUtil.commitWorkToGitlab((StudentWorkInfo)jsonObject.get("studentWorkInfo"));
+                httpClientUtil.commitWorkToGitlab((StudentWorkInfo) jsonObject.get("studentWorkInfo"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -57,8 +57,12 @@ public class AsyncTasks {
         if ("updateGradeToGitlab".equals(type)) {
             JSONObject jsonObject = (JSONObject) object;
             try {
-                httpClientUtil.updateGradeToGitlab((StudentWorkInfo)jsonObject.get("studentWorkInfo"),
-                        (List<JudgementLs>)jsonObject.get("judgementLsList"));
+                if (null == jsonObject.get("put"))
+                    httpClientUtil.updateGradeToGitlab((StudentWorkInfo) jsonObject.get("studentWorkInfo"),
+                            (List<JudgementLs>) jsonObject.get("judgementLsList"),false);
+                else
+                    httpClientUtil.updateGradeToGitlab((StudentWorkInfo) jsonObject.get("studentWorkInfo"),
+                            (List<JudgementLs>) jsonObject.get("judgementLsList"),true);
             } catch (Exception e) {
                 e.printStackTrace();
             }

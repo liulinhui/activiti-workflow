@@ -450,6 +450,16 @@ public class UserController {
         StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, emailAddress, Double.valueOf(grade), "teacher");
         judgementService.updateStuGrade(studentWorkInfo);  //更新成绩
         activitiHelper.finishTeacherVerifyTask(taskId);
+        studentWorkInfo = judgementService.selectStudentWorkInfo(studentWorkInfo);
+        JSONObject object = new JSONObject();
+        object.put("studentWorkInfo", studentWorkInfo);
+        object.put("put", true);
+        object.put("judgementLsList", judgementService.selectJudgementLs(new JudgementLs(courseCode, emailAddress)));
+        try {
+            asyncTasks.asyncTask(object, "updateGradeToGitlab");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return "成功";
     }
 

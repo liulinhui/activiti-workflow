@@ -87,7 +87,7 @@ public class HttpClientUtil {
      * @param judgementLs
      * @throws UnsupportedEncodingException
      */
-    public void updateGradeToGitlab(StudentWorkInfo studentWorkInfo, List<JudgementLs> judgementLs) throws UnsupportedEncodingException {
+    public void updateGradeToGitlab(StudentWorkInfo studentWorkInfo, List<JudgementLs> judgementLs, boolean put) throws UnsupportedEncodingException {
         String userName = studentWorkInfo.getUserName();
         String userType = studentWorkInfo.getUserType();
         String uri = "http://192.168.1.136/api/v3/projects/287/repository/files";
@@ -114,8 +114,12 @@ public class HttpClientUtil {
         jsonObject.put("branch_name", "master");
         jsonObject.put("content", JsonFormatTool.formatJson(content.toJSONString()));
         jsonObject.put("file_path", file_path);
-        if ("pro".equals(env))
-            doPost(uri, jsonObject);
+        if ("pro".equals(env)) {
+            if (put)
+                doPut(uri, jsonObject);
+            else
+                doPost(uri, jsonObject);
+        }
     }
 
     private String getMD5(String message) {
@@ -190,6 +194,7 @@ public class HttpClientUtil {
         try {
             StringEntity s = new StringEntity(json.toString(), Charset.forName("UTF-8"));
             s.setContentType("application/x-www-form-urlencoded");//发送json数据需要设置contentType
+            s.setContentType("application/json");
             put.setEntity(s);
             HttpResponse res = client.execute(put);
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
