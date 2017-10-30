@@ -266,7 +266,7 @@ public class CommonController {
         cache.put("userType", userType);
         cache.put("email", email);
         logger.info("loginAbutment parameter is>>>>>>>>>>>>" + cache.toJSONString());
-        redisCommonUtil.put(ConstantsUtils.loginAbutmentRedisStore + email, cache.toJSONString(), 60);
+        redisCommonUtil.put(ConstantsUtils.loginAbutmentRedisStore + email, cache.toJSONString(), 10);
         if ("staff".equals(userType))
             userService.insertUserRole(new UserRole(1, email, "staff"));
         JSONObject jsonObject = new JSONObject();
