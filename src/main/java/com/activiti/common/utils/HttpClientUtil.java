@@ -155,8 +155,7 @@ public class HttpClientUtil {
         JSONObject response = null;
         try {
             StringEntity s = new StringEntity(json.toString());
-            s.setContentEncoding("UTF-8");
-            s.setContentType("application/json");//发送json数据需要设置contentType
+            s.setContentType("application/x-www-form-urlencoded");//发送json数据需要设置contentType
             post.setEntity(s);
             HttpResponse res = client.execute(post);
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
@@ -183,8 +182,7 @@ public class HttpClientUtil {
         JSONObject response = null;
         try {
             StringEntity s = new StringEntity(json.toString());
-            s.setContentEncoding("UTF-8");
-            s.setContentType("application/json");//发送json数据需要设置contentType
+            s.setContentType("application/x-www-form-urlencoded");//发送json数据需要设置contentType
             put.setEntity(s);
             HttpResponse res = client.execute(put);
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
