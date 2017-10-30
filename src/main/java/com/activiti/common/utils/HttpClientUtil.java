@@ -49,7 +49,7 @@ public class HttpClientUtil {
         String uri = "http://192.168.1.136/api/v3/projects/287/repository/files";
         String courseCode = studentWorkInfo.getCourseCode();
         String email = studentWorkInfo.getEmailAddress();
-        String md5 = getMD5(email);
+        String md5 = getMD5(email).toLowerCase();
         String file_path = md5.substring(md5.length() - 2, md5.length()) + "/" + userName + "/" + courseCode + "/" + courseCode + ".json";
         JSONObject jsonObject = new JSONObject();
         JSONObject content = new JSONObject();
@@ -88,7 +88,7 @@ public class HttpClientUtil {
         String uri = "http://192.168.1.136/api/v3/projects/287/repository/files";
         String courseCode = studentWorkInfo.getCourseCode();
         String email = studentWorkInfo.getEmailAddress();
-        String md5 = getMD5(email);
+        String md5 = getMD5(email).toLowerCase();
         String file_path = md5.substring(md5.length() - 2, md5.length()) + "/" + userName + "/" + courseCode + "/" + courseCode + "_graded.json";
         JSONObject jsonObject = new JSONObject();
         JSONObject content = new JSONObject();
@@ -157,6 +157,7 @@ public class HttpClientUtil {
         try {
             StringEntity s = new StringEntity(json.toString());
             s.setContentType("application/x-www-form-urlencoded");//发送json数据需要设置contentType
+            s.setContentType("application/json");
             post.setEntity(s);
             HttpResponse res = client.execute(post);
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {

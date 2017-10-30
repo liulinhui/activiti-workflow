@@ -131,6 +131,8 @@
                                             {field: 'courseCode', title: '题号', width: 150},
                                             {field: 'githubAddress', title: 'GitHub地址', width: 500},
                                             {field: 'isAppeal', title: '学生申诉', width: 100},
+                                            {field: 'distributeMaxUser', title: '开始互评人数', width: 150},
+                                            {field: 'timeout', title: '超时时间', width: 100},
 //                                            {field: 'judgeEndTimeString', title: '互评结束时间', width: 200},
 //                                            {field: 'publishTimeString', title: '成绩发布时间', width: 200},
                                             {
