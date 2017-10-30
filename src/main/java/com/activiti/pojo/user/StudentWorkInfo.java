@@ -40,6 +40,13 @@ public class StudentWorkInfo implements Serializable {
         this.grade = grade;
     }
 
+    public StudentWorkInfo(String courseCode, String emailAddress, Double grade,String judgeType) {
+        this.courseCode = courseCode;
+        this.emailAddress = emailAddress;
+        this.grade = grade;
+        this.judgeType=judgeType;
+    }
+
     public StudentWorkInfo(String courseCode, String emailAddress) {
         this.courseCode = courseCode;
         this.emailAddress = emailAddress;

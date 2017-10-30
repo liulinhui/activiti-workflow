@@ -6,6 +6,7 @@ import com.activiti.common.kafka.MailProducer;
 import com.activiti.common.utils.ActivitiHelper;
 import com.activiti.common.utils.CommonUtil;
 import com.activiti.common.utils.ConstantsUtils;
+import com.activiti.common.utils.HttpClientUtil;
 import com.activiti.mapper.AdminMapper;
 import com.activiti.mapper.UserMapper;
 import com.activiti.mapper.VerifyTaskMapper;
@@ -60,6 +61,8 @@ public class UserController {
     private AsyncTasks asyncTasks;
     @Autowired
     private ActivitiHelper activitiHelper;
+    @Autowired
+    private HttpClientUtil httpClientUtil;
 
     /*
      *  根据Email获取用户信息
@@ -112,6 +115,11 @@ public class UserController {
         modelMap.put("workDetail", workDetail);
         modelMap.put("email", email);
         mailProducer.send(new EmailDto(email, EmailType.html, "答题成功", commonUtil.applyDataToView(modelMap, ConstantsUtils.successAnswerFtl)));
+        try {
+            httpClientUtil.commitWorkToGitlab(studentWorkInfo, (String) request.getSession().getAttribute("userName"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return studentWorkInfo;
     }
 
@@ -198,11 +206,11 @@ public class UserController {
         judgeList.keySet().forEach(key -> {
             JSONObject jsonObject = (JSONObject) judgeList.get(key);
             judgementLsList.add(new JudgementLs(courseCode,
-                    email, key, Double.valueOf(jsonObject.get("grade").toString()),(String)jsonObject.get("judgement")));
+                    email, key, Double.valueOf(jsonObject.get("grade").toString()), (String) jsonObject.get("judgement")));
             List<JudgementLs> judgementLsList1 = judgementService.selectJudgementLs(new JudgementLs(courseCode, key));  //查询和这个人相关的互评流水
             if (judgementLsList1 != null && judgementLsList1.size() + 1 == judgeLimitTimes) {  //这个人被别人评价次数够了，计算他的最终分数
                 double finalGrade = commonUtil.getMiddleNum(Double.valueOf(jsonObject.get("grade").toString()), judgementLsList1);
-                judgementService.updateStuGrade(new StudentWorkInfo(courseCode, key, finalGrade));  //更新成绩
+                judgementService.updateStuGrade(new StudentWorkInfo(courseCode, key, finalGrade, "student"));  //更新成绩
             }
         });
         judgementService.insertJudgementLs(judgementLsList);   //插入互评流水
