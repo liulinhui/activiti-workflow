@@ -104,7 +104,7 @@
                             width: 3000,
                             cols: [[ //标题栏
                                 {field: 'courseCode', title: '题目ID', width: 100},
-                                {field: 'emailAddress', title: '邮箱', width: 220},
+                                {field: 'emailAddress', title: '邮箱', width: 250},
                                 {
                                     field: 'operation',
                                     title: '操作',
