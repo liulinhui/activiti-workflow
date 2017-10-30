@@ -65,5 +65,12 @@ layui.use('element', function () {
 
     var ajaxGet = function (url) {
         return $.ajax({url: url, async: false}).responseText;
-    }
+    };
+
+    (function initLoad() {
+        if (initView) {
+            layui_body.html('');
+            layui_body.html(ajaxGet('./' + initView));
+        }
+    })()
 });

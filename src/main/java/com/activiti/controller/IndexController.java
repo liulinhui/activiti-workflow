@@ -75,7 +75,9 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/index")
-    public String index() {
+    public String index(@RequestParam(value = "view", required = false) String view, ModelMap modelMap) {
+        if (null != view && !"".equals(view))
+            modelMap.put("initView", view);
         return "index";
     }
 
