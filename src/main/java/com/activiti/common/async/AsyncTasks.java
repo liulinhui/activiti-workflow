@@ -58,7 +58,7 @@ public class AsyncTasks {
             JSONObject jsonObject = (JSONObject) object;
             try {
                 httpClientUtil.updateGradeToGitlab((StudentWorkInfo)jsonObject.get("studentWorkInfo"),
-                        (List<JudgementLs>)jsonObject.get("judgementLsList"),(HttpServletRequest)jsonObject.get("request"));
+                        (List<JudgementLs>)jsonObject.get("judgementLsList"));
             } catch (Exception e) {
                 e.printStackTrace();
             }

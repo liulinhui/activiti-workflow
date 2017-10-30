@@ -12,6 +12,8 @@ import java.util.Date;
 public class StudentWorkInfo implements Serializable {
     private static final long serialVersionUID = 2120869894112984147L;
     private String courseCode;
+    private String userName;
+    private String userType;
     private String emailAddress;
     private String workDetail;
     private Date lastCommitTime;
@@ -63,6 +65,22 @@ public class StudentWorkInfo implements Serializable {
         this.courseCode = courseCode;
         this.emailAddress = emailAddress;
         this.joinJudgeTime = joinJudgeTime;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public String getDistributeStatus() {

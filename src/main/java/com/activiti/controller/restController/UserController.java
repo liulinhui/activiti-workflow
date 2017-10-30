@@ -92,13 +92,15 @@ public class UserController {
             return email.equals(userRole.getEmail());
         })) throw new Exception("身为管理员的你不能提交作业！！！");
         StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, email, workDetail, new Date());
-        User user = new User(commonUtil.getRandomUserName(), email, courseCode);
+        studentWorkInfo.setUserName((String) request.getSession().getAttribute("userName"));
+        studentWorkInfo.setUserType((String) request.getSession().getAttribute("userType"));
+//        User user = new User(commonUtil.getRandomUserName(), email, courseCode);
         try {
             userService.insertUserWork(studentWorkInfo);
         } catch (Exception e) {
             throw new Exception("你已经参与过答题了！！");
         }
-        userService.insertUser(user);
+//        userService.insertUser(user);
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
         List<String> emailList = userMapper.selectNonDistributeUser(courseCode);
         //如果满了人数默认100人则异步启动流程
@@ -212,12 +214,12 @@ public class UserController {
                 StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, key, finalGrade, "student");
                 judgementLsList1.add(judgementLs);
                 judgementService.updateStuGrade(studentWorkInfo);  //更新成绩
-                JSONObject object=new JSONObject();
-                object.put("studentWorkInfo",studentWorkInfo);
-                object.put("request",request);
-                object.put("judgementLsList",judgementLsList1);
+                studentWorkInfo=judgementService.selectStudentWorkInfo(studentWorkInfo);
+                JSONObject object = new JSONObject();
+                object.put("studentWorkInfo", studentWorkInfo);
+                object.put("judgementLsList", judgementLsList1);
                 try {
-                    asyncTasks.asyncTask(object,"updateGradeToGitlab");
+                    asyncTasks.asyncTask(object, "updateGradeToGitlab");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

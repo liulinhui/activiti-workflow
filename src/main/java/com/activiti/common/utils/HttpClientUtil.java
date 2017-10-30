@@ -73,7 +73,7 @@ public class HttpClientUtil {
         content.put("question", commonService.getQAFromGitHub(commonUtil.generateGitHubUrl(Integer.valueOf(courseCode))));
         jsonObject.put("private_token", "L7Zxq6V_WXvG36wyrxt6");
         jsonObject.put("ref", "master");
-        jsonObject.put("commit_message", "commitWorkToGitlab>>>>"+file_path);
+        jsonObject.put("commit_message", "commitWorkToGitlab>>>>" + file_path);
         jsonObject.put("branch_name", "master");
         jsonObject.put("content", JsonFormatTool.formatJson(content.toJSONString()));
         jsonObject.put("file_path", file_path);
@@ -86,12 +86,11 @@ public class HttpClientUtil {
      *
      * @param studentWorkInfo
      * @param judgementLs
-     * @param request
      * @throws UnsupportedEncodingException
      */
-    public void updateGradeToGitlab(StudentWorkInfo studentWorkInfo, List<JudgementLs> judgementLs, HttpServletRequest request) throws UnsupportedEncodingException {
-        String userName = (String) request.getSession().getAttribute("userName");
-        String userType = (String) request.getSession().getAttribute("userType");
+    public void updateGradeToGitlab(StudentWorkInfo studentWorkInfo, List<JudgementLs> judgementLs) throws UnsupportedEncodingException {
+        String userName = studentWorkInfo.getUserName();
+        String userType = studentWorkInfo.getUserType();
         String uri = "http://192.168.1.136/api/v3/projects/287/repository/files";
         String courseCode = studentWorkInfo.getCourseCode();
         String email = studentWorkInfo.getEmailAddress();
@@ -112,7 +111,7 @@ public class HttpClientUtil {
         content.put("peer_assessment", judgementLs);
         jsonObject.put("private_token", "L7Zxq6V_WXvG36wyrxt6");
         jsonObject.put("ref", "master");
-        jsonObject.put("commit_message", "updateGradeToGitlab>>>>"+file_path);
+        jsonObject.put("commit_message", "updateGradeToGitlab>>>>" + file_path);
         jsonObject.put("branch_name", "master");
         jsonObject.put("content", JsonFormatTool.formatJson(content.toJSONString()));
         jsonObject.put("file_path", file_path);
