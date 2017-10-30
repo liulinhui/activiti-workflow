@@ -146,9 +146,13 @@ public class IndexController {
     public String answer(@RequestParam(value = "attach", required = false) String attach,
                          HttpServletRequest request, ModelMap modelMap) {
         List<ScheduleDto> scheduleDtoList = new ArrayList<>();
-        if (null != attach && !"".equals(attach))
-            scheduleDtoList.add(scheduleMapper.selectScheduleTime(attach));
-        else
+        if (null != attach && !"".equals(attach)) {
+            ScheduleDto scheduleDto = scheduleMapper.selectScheduleTime(attach);
+            if (null == scheduleDto)
+                modelMap.put("errorMessage", "题目" + attach + "不存在");
+            else
+                scheduleDtoList.add(scheduleDto);
+        } else
             scheduleDtoList = scheduleMapper.selectAllOfScheduleTime();
         modelMap.put("scheduleDtoList", scheduleDtoList);
         return "submodule/answer";
