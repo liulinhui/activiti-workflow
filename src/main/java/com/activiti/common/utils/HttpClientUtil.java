@@ -106,7 +106,7 @@ public class HttpClientUtil {
         content.put("student_answer", userService.selectStudentWorkInfo(studentWorkInfo).getWorkDetail());
         content.put("standard_answer", commonService.getQAFromGitHub(commonUtil.generateGitHubUrl(Integer.valueOf(courseCode))));
         content.put("score", studentWorkInfo.getGrade());
-        content.put("graded_by", "student");
+        content.put("graded_by", studentWorkInfo.getJudgeType());
         content.put("peer_assessment", judgementLs);
         jsonObject.put("private_token", "L7Zxq6V_WXvG36wyrxt6");
         jsonObject.put("ref", "master");
