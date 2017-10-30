@@ -35,7 +35,7 @@
          * @param param  数据
          * @param courseCode  数据
          */
-        var drawCommitTimeView = function (id, param,courseCode) {
+        var drawCommitTimeView = function (id, param, courseCode) {
             // 基于准备好的dom，初始化echarts实例
             var myChart = echarts.init(document.getElementById(id));
             var date = param.date;
@@ -49,7 +49,7 @@
                 },
                 title: {
                     left: 'center',
-                    text: '学生提交时间段折线图('+courseCode+')'
+                    text: '学生提交时间段折线图(' + courseCode + ')'
                 },
                 toolbox: {
                     feature: {
@@ -117,18 +117,75 @@
         };
 
         /**
+         * 画成绩分布图
+         * */
+        var drawCommitGradeView = function (id, param, courseCode) {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById(id));
+            option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        crossStyle: {
+                            color: '#999'
+                        }
+                    }
+                },
+                title: {
+                    left: 'center',
+                    text: '学生成绩分布(' + courseCode + ')'
+                },
+                toolbox: {
+                    feature: {
+                        dataView: {show: true, readOnly: false},
+                        magicType: {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'],
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: '学生数',
+                        min: 0,
+                        max: 250,
+                        interval: 30
+                    }
+                ],
+                series: [
+                    {
+                        name: '学生数',
+                        type: 'bar',
+                        data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0]
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        };
+
+        /**
          *  ajax 请求
-         * @param url
-         * @param courseCode
-         * @param id
-         * @param cb
+         * @param url 请求URL
+         * @param courseCode  课程代码
+         * @param id  dom元素id
+         * @param cb  回掉函数
          */
         var ajaxGetData = function (url, courseCode, id, cb) {
             $.ajax({
                 url: url,
                 data: {courseCode: courseCode},
                 dataType: 'json',
-                type:"POST",
+                type: "POST",
                 async: false,
                 success: function (data) {
                     if (!data.success) {
@@ -137,7 +194,7 @@
                             content: '<p>' + data.errorMessage + '</p>'
                         })
                     } else {
-                        cb(id, data.data,courseCode)
+                        cb(id, data.data, courseCode)
                     }
                 }
             })
@@ -152,6 +209,15 @@
             ajaxGetData(url, courseCode, id, drawCommitTimeView)
         };
 
+        /**
+         * 画学生成绩分布图
+         * @param courseCode
+         */
+        var commitGradePainting = function (courseCode) {
+            var id = 'student-commit-grade-analysis', url = './api/common/getStudentCommitTimeAnalysis';
+            ajaxGetData(url, courseCode, id, drawCommitGradeView)
+        };
+
 
         /**
          * 点击事件
@@ -159,6 +225,7 @@
         $('.my-analysisView .my-analysis-courseBtn').on('click', function () {
             var courseCode = $(this).attr('courseCode');
             commitTimePainting(courseCode);
+            commitGradePainting(courseCode);
         });
 
         function moNi() {

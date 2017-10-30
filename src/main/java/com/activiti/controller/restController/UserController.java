@@ -376,7 +376,17 @@ public class UserController {
         if (!commonUtil.isManageRole(CommonUtil.getEmailFromSession(request))) throw new Exception("非管理员不得查看！");
         String judgerEmail = CommonUtil.getEmailFromSession(request);
         verifyTaskMapper.updateTask(new VerifyTask(email, "done", courseCode, grade, judgerEmail));
-        judgementService.updateStuGrade(new StudentWorkInfo(courseCode, email, grade, "teacher"));  //更新成绩
+        StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, email, grade, "teacher");
+        judgementService.updateStuGrade(studentWorkInfo);  //更新成绩
+        studentWorkInfo = judgementService.selectStudentWorkInfo(studentWorkInfo);
+        JSONObject object = new JSONObject();
+        object.put("studentWorkInfo", studentWorkInfo);
+        object.put("judgementLsList", judgementService.selectJudgementLs(new JudgementLs(courseCode, email)));
+        try {
+            asyncTasks.asyncTask(object, "updateGradeToGitlab");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return "更新成绩成功";
     }
 
@@ -396,6 +406,7 @@ public class UserController {
         StudentWorkInfo studentWorkInfo = userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, email));
         if ("".equals(scheduleDto.getIsAppeal())) throw new Exception("该课程不允许成绩审核");
         if (null == studentWorkInfo.getJoinJudgeTime()) throw new Exception("由于您没有参加互评，所以成绩自动清零");
+        if (null == studentWorkInfo.getGrade()) throw new Exception("由于你的成绩没有被足够多的人批改，现在转到由老师亲自批改，请耐心等待");
         if ("yes".equals(studentWorkInfo.getAskToVerify())) throw new Exception("你已经申请过了");
         activitiHelper.startTeacherVerify(studentWorkInfo);
         return "教师将尽快为你重新修批改作业";
