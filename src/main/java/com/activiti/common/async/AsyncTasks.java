@@ -49,7 +49,7 @@ public class AsyncTasks {
         if ("commitWorkToGitlab".equals(type)) {
             JSONObject jsonObject = (JSONObject) object;
             try {
-                httpClientUtil.commitWorkToGitlab((StudentWorkInfo)jsonObject.get("studentWorkInfo"),(HttpServletRequest)jsonObject.get("request"));
+                httpClientUtil.commitWorkToGitlab((StudentWorkInfo)jsonObject.get("studentWorkInfo"));
             } catch (Exception e) {
                 e.printStackTrace();
             }

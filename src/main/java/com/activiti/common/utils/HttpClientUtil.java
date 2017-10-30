@@ -44,12 +44,11 @@ public class HttpClientUtil {
      * 提交作业到gitlab
      *
      * @param studentWorkInfo
-     * @param request
      * @throws UnsupportedEncodingException
      */
-    public void commitWorkToGitlab(StudentWorkInfo studentWorkInfo, HttpServletRequest request) throws UnsupportedEncodingException {
-        String userName = (String) request.getSession().getAttribute("userName");
-        String userType = (String) request.getSession().getAttribute("userType");
+    public void commitWorkToGitlab(StudentWorkInfo studentWorkInfo) throws UnsupportedEncodingException {
+        String userName = studentWorkInfo.getUserName();
+        String userType = studentWorkInfo.getUserType();
         String uri = "http://192.168.1.136/api/v3/projects/287/repository/files";
         String courseCode = studentWorkInfo.getCourseCode();
         String email = studentWorkInfo.getEmailAddress();

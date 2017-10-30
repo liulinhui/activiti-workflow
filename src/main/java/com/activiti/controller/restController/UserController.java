@@ -118,7 +118,6 @@ public class UserController {
         mailProducer.send(new EmailDto(email, EmailType.html, "答题成功", commonUtil.applyDataToView(modelMap, ConstantsUtils.successAnswerFtl)));
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("studentWorkInfo", studentWorkInfo);
-        jsonObject.put("request", request);
         asyncTasks.asyncTask(jsonObject, "commitWorkToGitlab");
         return studentWorkInfo;
     }
