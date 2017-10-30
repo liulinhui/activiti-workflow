@@ -58,7 +58,7 @@ public class ActivitiHelper {
             JSONArray jsonArray = new JSONArray();
             for (int i = 1; i <= judgeTimes; i++) {
                 int id = studentId + i;
-                int result = id > countWork ? id - countWork : id;
+                int result = id > countWork ? id - countWork-1 : id;
                 jsonArray.add(emailList.get(result));
             }
             Map<String, Object> variables = new HashMap<>();
