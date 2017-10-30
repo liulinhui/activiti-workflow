@@ -10,6 +10,7 @@ import com.activiti.pojo.user.UserRole;
 import com.activiti.service.ScheduleService;
 import com.activiti.service.UserService;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,9 +76,12 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/index")
-    public String index(@RequestParam(value = "view", required = false) String view, ModelMap modelMap) {
-        if (null != view && !"".equals(view))
+    public String index(@RequestParam(value = "view", required = false) String view,
+                        @RequestParam(value = "attach", required = false) String attach, ModelMap modelMap) {
+        if (null != view && !"".equals(view)) {
             modelMap.put("initView", view);
+            modelMap.put("initViewAttach", attach);
+        }
         return "index";
     }
 
@@ -139,8 +143,13 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/answer")
-    public String answer(HttpServletRequest request, ModelMap modelMap) {
-        List<ScheduleDto> scheduleDtoList = scheduleMapper.selectAllOfScheduleTime();
+    public String answer(@RequestParam(value = "attach", required = false) String attach,
+                         HttpServletRequest request, ModelMap modelMap) {
+        List<ScheduleDto> scheduleDtoList = new ArrayList<>();
+        if (null != attach && !"".equals(attach))
+            scheduleDtoList.add(scheduleMapper.selectScheduleTime(attach));
+        else
+            scheduleDtoList = scheduleMapper.selectAllOfScheduleTime();
         modelMap.put("scheduleDtoList", scheduleDtoList);
         return "submodule/answer";
     }

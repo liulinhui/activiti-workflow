@@ -70,7 +70,10 @@ layui.use('element', function () {
     (function initLoad() {
         if (initView) {
             layui_body.html('');
-            layui_body.html(ajaxGet('./' + initView));
+            if (initViewAttach)
+                layui_body.html(ajaxGet('./' + initView+'?attach='+initViewAttach));
+            else
+                layui_body.html(ajaxGet('./' + initView));
         }
     })()
 });

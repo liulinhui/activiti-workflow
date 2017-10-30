@@ -7,7 +7,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <script>
-        var initView = '${initView!""}';
+        var initView = '${initView!""}', initViewAttach = '${initViewAttach!""}';
     </script>
 <#include "header.ftl">
     <div class="layui-body" style="left: 0;">
