@@ -239,6 +239,18 @@ public class CommonController {
      * @return
      */
     @ResponseBody
+    @RequestMapping("/getStudentCommitGradeAnalysis")
+    @ApiAnnotation
+    public Object getStudentCommitGradeAnalysis(@RequestParam("courseCode") String courseCode) {
+        return commonService.getStudentCommitGradeAnalysis(courseCode);
+    }
+
+    /**
+     * 学生成绩分析
+     *
+     * @return
+     */
+    @ResponseBody
     @RequestMapping("/getStudentGradeAnalysis")
     @ApiAnnotation
     public Object getStudentGradeAnalysis(@RequestParam("courseCode") String courseCode) {

@@ -121,52 +121,74 @@
          * */
         var drawCommitGradeView = function (id, param, courseCode) {
             // 基于准备好的dom，初始化echarts实例
+            var finalData = [];
             var myChart = echarts.init(document.getElementById(id));
+            for (var t in  param){
+                finalData.push({value: param[t], name: t+'分'})
+            }
             option = {
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'cross',
-                        crossStyle: {
-                            color: '#999'
-                        }
-                    }
-                },
+                backgroundColor: '#2c343c',
+
                 title: {
+                    text: '学生成绩分布饼图('+courseCode+')',
                     left: 'center',
-                    text: '学生成绩分布(' + courseCode + ')'
-                },
-                toolbox: {
-                    feature: {
-                        dataView: {show: true, readOnly: false},
-                        magicType: {show: true, type: ['line', 'bar']},
-                        restore: {show: true},
-                        saveAsImage: {show: true}
+                    top: 20,
+                    textStyle: {
+                        color: '#ccc'
                     }
                 },
-                xAxis: [
-                    {
-                        type: 'category',
-                        data: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'],
-                        axisPointer: {
-                            type: 'shadow'
-                        }
+
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+
+                visualMap: {
+                    show: false,
+                    min: 80,
+                    max: 600,
+                    inRange: {
+                        colorLightness: [0, 1]
                     }
-                ],
-                yAxis: [
-                    {
-                        type: 'value',
-                        name: '学生数',
-                        min: 0,
-                        max: 250,
-                        interval: 30
-                    }
-                ],
+                },
                 series: [
                     {
-                        name: '学生数',
-                        type: 'bar',
-                        data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0]
+                        name: '成绩分布',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '50%'],
+                        data:finalData.sort(function (a, b) { return a.value - b.value; }),
+                        roseType: 'radius',
+                        label: {
+                            normal: {
+                                textStyle: {
+                                    color: 'rgba(255, 255, 255, 0.3)'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                lineStyle: {
+                                    color: 'rgba(255, 255, 255, 0.3)'
+                                },
+                                smooth: 0.2,
+                                length: 10,
+                                length2: 20
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: '#c23531',
+                                shadowBlur: 200,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        },
+
+                        animationType: 'scale',
+                        animationEasing: 'elasticOut',
+                        animationDelay: function (idx) {
+                            return Math.random() * 200;
+                        }
                     }
                 ]
             };
@@ -214,7 +236,7 @@
          * @param courseCode
          */
         var commitGradePainting = function (courseCode) {
-            var id = 'student-commit-grade-analysis', url = './api/common/getStudentCommitTimeAnalysis';
+            var id = 'student-commit-grade-analysis', url = './api/common/getStudentCommitGradeAnalysis';
             ajaxGetData(url, courseCode, id, drawCommitGradeView)
         };
 
