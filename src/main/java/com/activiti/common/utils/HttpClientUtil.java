@@ -1,7 +1,9 @@
 package com.activiti.common.utils;
 
+import com.activiti.pojo.user.JudgementLs;
 import com.activiti.pojo.user.StudentWorkInfo;
 import com.activiti.service.CommonService;
+import com.activiti.service.UserService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -14,6 +16,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -21,16 +24,19 @@ import org.springframework.stereotype.Component;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class HttpClientUtil {
-
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
     @Autowired
     private CommonService commonService;
     @Autowired
     private CommonUtil commonUtil;
     @Value("${spring.profiles.active}")
     private String env;
+    @Autowired
+    private UserService userService;
 
     /**
      * 提交作业到gitlab
@@ -60,6 +66,42 @@ public class HttpClientUtil {
         content.put("maxTry", 0);
         content.put("answer", answer);
         content.put("question", commonService.getQAFromGitHub(commonUtil.generateGitHubUrl(Integer.valueOf(courseCode))));
+        jsonObject.put("private_token", "L7Zxq6V_WXvG36wyrxt6");
+        jsonObject.put("ref", "master");
+        jsonObject.put("commit_message", "peer_assessment_commit");
+        jsonObject.put("branch_name", "master");
+        jsonObject.put("content", content);
+        jsonObject.put("file_path", file_path);
+        if ("pro".equals(env))
+            doPost(uri, jsonObject);
+    }
+
+    /**
+     * 向gitlab提交成绩
+     *
+     * @param studentWorkInfo
+     * @param judgementLs
+     * @param userName
+     * @throws UnsupportedEncodingException
+     */
+    public void updateGradeToGitlab(StudentWorkInfo studentWorkInfo, List<JudgementLs> judgementLs, String userName) throws UnsupportedEncodingException {
+        String uri = "http://192.168.1.136/api/v3/projects/287/repository/files";
+        String courseCode = studentWorkInfo.getCourseCode();
+        String email = studentWorkInfo.getEmailAddress();
+        String md5 = getMD5(email);
+        String file_path = "teacher/answer/" + md5.substring(md5.length() - 2, md5.length()) + "/" + userName + "/" + courseCode + "/" + courseCode + "_graded.json";
+        JSONObject jsonObject = new JSONObject();
+        JSONObject content = new JSONObject();
+        JSONObject student = new JSONObject();
+        student.put("email", email);
+        student.put("username", userName);
+        content.put("q_number", Integer.valueOf(studentWorkInfo.getCourseCode()));
+        content.put("student", student);
+        content.put("student_answer", userService.selectStudentWorkInfo(studentWorkInfo).getWorkDetail());
+        content.put("standard_answer", commonService.getQAFromGitHub(commonUtil.generateGitHubUrl(Integer.valueOf(courseCode))));
+        content.put("score", studentWorkInfo.getGrade());
+        content.put("graded_by", "student");
+        content.put("peer_assessment", judgementLs);
         jsonObject.put("private_token", "L7Zxq6V_WXvG36wyrxt6");
         jsonObject.put("ref", "master");
         jsonObject.put("commit_message", "peer_assessment_commit");
@@ -124,6 +166,7 @@ public class HttpClientUtil {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        logger.info("调用gitlab接口" + url + "(POST)返回数据：" + response);
         return response;
     }
 
@@ -151,6 +194,7 @@ public class HttpClientUtil {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        logger.info("调用gitlab接口" + url + "(PUT)返回数据：" + response);
         return response;
     }
 }

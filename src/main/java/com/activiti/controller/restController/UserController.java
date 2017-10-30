@@ -27,6 +27,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -205,12 +206,20 @@ public class UserController {
         List<JudgementLs> judgementLsList = new ArrayList<>();
         judgeList.keySet().forEach(key -> {
             JSONObject jsonObject = (JSONObject) judgeList.get(key);
-            judgementLsList.add(new JudgementLs(courseCode,
-                    email, key, Double.valueOf(jsonObject.get("grade").toString()), (String) jsonObject.get("judgement")));
+            JudgementLs judgementLs = new JudgementLs(courseCode,
+                    email, key, Double.valueOf(jsonObject.get("grade").toString()), (String) jsonObject.get("judgement"));
+            judgementLsList.add(judgementLs);
             List<JudgementLs> judgementLsList1 = judgementService.selectJudgementLs(new JudgementLs(courseCode, key));  //查询和这个人相关的互评流水
             if (judgementLsList1 != null && judgementLsList1.size() + 1 == judgeLimitTimes) {  //这个人被别人评价次数够了，计算他的最终分数
                 double finalGrade = commonUtil.getMiddleNum(Double.valueOf(jsonObject.get("grade").toString()), judgementLsList1);
-                judgementService.updateStuGrade(new StudentWorkInfo(courseCode, key, finalGrade, "student"));  //更新成绩
+                StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, key, finalGrade, "student");
+                judgementLsList1.add(judgementLs);
+                judgementService.updateStuGrade(studentWorkInfo);  //更新成绩
+                try {
+                    httpClientUtil.updateGradeToGitlab(studentWorkInfo, judgementLsList1, (String) request.getSession().getAttribute("userName"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         judgementService.insertJudgementLs(judgementLsList);   //插入互评流水
