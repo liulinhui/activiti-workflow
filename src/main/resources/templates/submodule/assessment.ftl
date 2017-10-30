@@ -108,7 +108,7 @@
                                 {
                                     field: 'operation',
                                     title: '操作',
-                                    width: 150,
+                                    width: 200,
                                     templet: '#my-assessment-operation'
                                 }
                             ]],
