@@ -357,9 +357,9 @@ public class CommonUtil {
         double finalGrade;
         if (doubleList.size() % 2 == 0) {
             int a = doubleList.size() / 2;
-            finalGrade = (doubleList.get(a) + doubleList.get(a + 1)) / 2.0;
+            finalGrade = (doubleList.get(a) + doubleList.get(a - 1)) / 2.0;
         } else {
-            int a = (doubleList.size() / 2) + 1;
+            int a = (doubleList.size() / 2);
             finalGrade = doubleList.get(a);
         }
         return finalGrade;
