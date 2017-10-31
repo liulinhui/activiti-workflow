@@ -1,7 +1,7 @@
 <div class="my-time-conf">
 <#--课程配置-->
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>课程配置</legend>
+        <legend>题目配置</legend>
     </fieldset>
     <div class="layui-form">
         <div class="layui-form-item">
@@ -76,7 +76,7 @@
     <br>
     <br>
     <fieldset class="layui-elem-field" style="margin-top: 30px;">
-        <legend>已配置的课程</legend>
+        <legend>已配置的题目</legend>
         <div style="height:auto">
             <table class="my-time-conf-table" lay-data="{height:100}" lay-filter="my-time-conf-table">
             </table>
