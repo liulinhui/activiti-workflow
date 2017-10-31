@@ -44,7 +44,6 @@
                                 {field: 'lastCommitTimeString', title: '提交时间', width: 160},
                                 {field: 'grade', title: '成绩', width: 100},
                                 {field: 'joinJudgeTimeString', title: '参与互评时间', width: 160},
-                                {field: 'joinJudgeTimeString', title: '参与互评时间', width: 160},
                                 {
                                     field: 'operation',
                                     title: '操作',

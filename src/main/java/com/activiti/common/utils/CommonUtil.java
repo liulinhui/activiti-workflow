@@ -73,12 +73,13 @@ public class CommonUtil {
 
     /**
      * 根据题号求url
+     *
      * @param qNo
      * @return
      */
     public String generateGitHubUrl(int qNo) {
         int result = (qNo - 1) / 100 + 1;
-        return "https://api.github.com/repos/chyyuu/os_course_exercise_library/contents/data/json/"+result+"/"+qNo+".json";
+        return "https://api.github.com/repos/chyyuu/os_course_exercise_library/contents/data/json/" + result + "/" + qNo + ".json";
     }
 
     /**
@@ -353,7 +354,15 @@ public class CommonUtil {
             doubleList.add(a.getGrade());
         });
         Collections.sort(doubleList);
-        return doubleList.get(doubleList.size() / 2);
+        double finalGrade;
+        if (doubleList.size() % 2 == 0) {
+            int a = doubleList.size() / 2;
+            finalGrade = (doubleList.get(a) + doubleList.get(a + 1)) / 2.0;
+        } else {
+            int a = (doubleList.size() / 2) + 1;
+            finalGrade = doubleList.get(a);
+        }
+        return finalGrade;
     }
 
     /**
