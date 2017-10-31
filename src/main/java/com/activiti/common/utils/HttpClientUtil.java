@@ -123,7 +123,7 @@ public class HttpClientUtil {
         }
     }
 
-    private String getMD5(String message) {
+    public String getMD5(String message) {
         String md5 = "";
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");  // 创建一个md5算法对象
