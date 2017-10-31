@@ -53,22 +53,25 @@ public class ActivitiHelper {
         Collections.shuffle(emailList);
         logger.info("启动作业分配流程");
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
-        int judgeTimes = scheduleDto.getJudgeTimes();
-        int countWork = emailList.size() - 1;
+        int judgeTimes = scheduleDto.getJudgeTimes();//每份作业被批改次数（默认为4）
+        int countWork = emailList.size();
+        //为每一个人分配要批改的作业
         emailList.forEach(email -> {
             int studentId = emailList.indexOf(email);
             JSONArray jsonArray = new JSONArray();
             for (int i = 1; i <= judgeTimes; i++) {
                 int id = studentId + i;
-                int result = id > countWork ? id - countWork - 1 : id;
+                int result = id >= countWork ? id - countWork : id;
                 jsonArray.add(emailList.get(result));
             }
+            //设置流程变量
             Map<String, Object> variables = new HashMap<>();
             variables.put("courseCode", courseCode);
             variables.put("assignee", email);
             variables.put("judgeEmailList", jsonArray.toJSONString());
             variables.put("timeout", scheduleDto.getTimeout());
             String businessKey = "assessment";
+            //启动流程
             ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("assessmentWorkFlow", businessKey, variables);
             logger.info("用户" + email + ">>>>>>>>>>启动流程：" + processInstance.getId());
             userMapper.updateDistributeStatus(courseCode, email);
