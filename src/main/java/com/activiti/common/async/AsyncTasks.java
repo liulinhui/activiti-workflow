@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.groups.ConvertGroup;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -55,14 +56,26 @@ public class AsyncTasks {
             }
         }
         if ("updateGradeToGitlab".equals(type)) {
+            List<JSONObject> jsonObjectList = (List<JSONObject>) object;
+            for (JSONObject jsonObject : jsonObjectList) {
+                try {
+                    httpClientUtil.updateGradeToGitlab((StudentWorkInfo) jsonObject.get("studentWorkInfo"),
+                            (List<JudgementLs>) jsonObject.get("judgementLsList"), false);
+                    Thread.sleep(5000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if ("teacherUpdateGradeToGitlab".equals(type)) {
             JSONObject jsonObject = (JSONObject) object;
             try {
-                if (null == jsonObject.get("put"))
+                if (null == jsonObject.get("put")) {
                     httpClientUtil.updateGradeToGitlab((StudentWorkInfo) jsonObject.get("studentWorkInfo"),
-                            (List<JudgementLs>) jsonObject.get("judgementLsList"),false);
-                else
+                            (List<JudgementLs>) jsonObject.get("judgementLsList"), false);
+                } else
                     httpClientUtil.updateGradeToGitlab((StudentWorkInfo) jsonObject.get("studentWorkInfo"),
-                            (List<JudgementLs>) jsonObject.get("judgementLsList"),true);
+                            (List<JudgementLs>) jsonObject.get("judgementLsList"), true);
             } catch (Exception e) {
                 e.printStackTrace();
             }

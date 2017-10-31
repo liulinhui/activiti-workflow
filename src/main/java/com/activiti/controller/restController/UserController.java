@@ -203,6 +203,7 @@ public class UserController {
         int judgeLimitTimes = scheduleDto.getJudgeTimes();
         JSONObject judgeList = JSON.parseObject(judge);
         List<JudgementLs> judgementLsList = new ArrayList<>();
+        List<JSONObject>jsonObjectList=new ArrayList<>();
         judgeList.keySet().forEach(key -> {
             JSONObject jsonObject = (JSONObject) judgeList.get(key);
             JudgementLs judgementLs = new JudgementLs(courseCode,
@@ -218,13 +219,14 @@ public class UserController {
                 JSONObject object = new JSONObject();
                 object.put("studentWorkInfo", studentWorkInfo);
                 object.put("judgementLsList", judgementLsList1);
-                try {
-                    asyncTasks.asyncTask(object, "updateGradeToGitlab");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                jsonObjectList.add(object);
             }
         });
+        try {
+            asyncTasks.asyncTask(jsonObjectList, "updateGradeToGitlab");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         judgementService.insertJudgementLs(judgementLsList);   //插入互评流水
         judgementService.updateStuJudgeTime(new StudentWorkInfo(courseCode, email, new Date()));  //更新这名用户参与互评的时间
         activitiHelper.completeTask(email, courseCode);
@@ -383,7 +385,7 @@ public class UserController {
         object.put("studentWorkInfo", studentWorkInfo);
         object.put("judgementLsList", judgementService.selectJudgementLs(new JudgementLs(courseCode, email)));
         try {
-            asyncTasks.asyncTask(object, "updateGradeToGitlab");
+            asyncTasks.asyncTask(object, "teacherUpdateGradeToGitlab");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -456,7 +458,7 @@ public class UserController {
         object.put("put", true);
         object.put("judgementLsList", judgementService.selectJudgementLs(new JudgementLs(courseCode, emailAddress)));
         try {
-            asyncTasks.asyncTask(object, "updateGradeToGitlab");
+            asyncTasks.asyncTask(object, "teacherUpdateGradeToGitlab");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
