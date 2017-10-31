@@ -2,6 +2,7 @@ package com.activiti.common.utils;
 
 import com.activiti.common.kafka.MailProducer;
 import com.activiti.mapper.UserMapper;
+import com.activiti.pojo.email.EmailDto;
 import com.activiti.pojo.schedule.ScheduleDto;
 import com.activiti.pojo.user.StudentWorkInfo;
 import com.activiti.service.ScheduleService;

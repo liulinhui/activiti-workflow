@@ -45,8 +45,10 @@ public class AsyncTasks {
     public void asyncTask(Object object, String type) throws InterruptedException {
         if ("insertLog".equals(type))
             toolsMapper.insertInvokeLog((InvokeLog) object);
+        //分配作业
         if ("distributeTask".equals(type))
             activitiHelper.distributeTask((JSONObject) object);
+        //提交作业到gitlab
         if ("commitWorkToGitlab".equals(type)) {
             JSONObject jsonObject = (JSONObject) object;
             try {
@@ -55,6 +57,7 @@ public class AsyncTasks {
                 e.printStackTrace();
             }
         }
+        //提交成绩到gitlab
         if ("updateGradeToGitlab".equals(type)) {
             List<JSONObject> jsonObjectList = (List<JSONObject>) object;
             for (JSONObject jsonObject : jsonObjectList) {
@@ -67,6 +70,7 @@ public class AsyncTasks {
                 }
             }
         }
+        //提交老师修改的成绩到gitlab
         if ("teacherUpdateGradeToGitlab".equals(type)) {
             JSONObject jsonObject = (JSONObject) object;
             try {

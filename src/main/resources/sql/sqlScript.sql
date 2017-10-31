@@ -13,6 +13,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for user
+-- 己废除
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS JUDGE_STU_INFO (
   USER_ID       INT(11)     NOT NULL AUTO_INCREMENT,
@@ -28,6 +29,7 @@ CREATE TABLE IF NOT EXISTS JUDGE_STU_INFO (
 
 -- ----------------------------
 -- Table structure for scheduleTime
+-- 题目与工作流配置表
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS JUDGE_SCHEDULE_TIME (
   COURSE_NAME         VARCHAR(50)  NOT NULL,
@@ -50,6 +52,7 @@ CREATE TABLE IF NOT EXISTS JUDGE_SCHEDULE_TIME (
 
 -- ----------------------------
 -- Table for record student`s workInfo
+-- 学生作业表
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS JUDGE_STU_WORK_INFO (
   COURSE_CODE       VARCHAR(20)   NOT NULL,
@@ -72,6 +75,7 @@ CREATE TABLE IF NOT EXISTS JUDGE_STU_WORK_INFO (
 
 -- ----------------------------
 -- Table for record judgement_ls
+-- 互评流水表
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS JUDGE_JUDGEMENT_LS (
   COURSE_CODE      VARCHAR(20) NOT NULL,
@@ -88,6 +92,7 @@ CREATE TABLE IF NOT EXISTS JUDGE_JUDGEMENT_LS (
 
 -- ----------------------------
 -- Table for record JUDGE_USER_ROLE
+-- 管理员用户表
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS JUDGE_USER_ROLE (
   ID      INT(8)      NOT NULL,
@@ -101,6 +106,7 @@ CREATE TABLE IF NOT EXISTS JUDGE_USER_ROLE (
 
 -- ----------------------------
 -- Table for record JUDGE_INVOKE_LOG
+-- 接口调用日志表
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS JUDGE_INVOKE_LOG (
   UUID        BIGINT,
@@ -117,6 +123,7 @@ CREATE TABLE IF NOT EXISTS JUDGE_INVOKE_LOG (
 
 -- ----------------------------
 -- Table for record JUDGE_EMAIL_LOG
+-- 邮件日志表
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS JUDGE_EMAIL_LOG (
   RECEIVE_ADDRESS VARCHAR(50),
@@ -134,7 +141,8 @@ CREATE TABLE IF NOT EXISTS JUDGE_EMAIL_LOG (
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
--- Table for record JUDGE_EMAIL_LOG
+-- Table for  JUDGE_VERIFY_TASK
+-- 教师批改作业表
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS JUDGE_VERIFY_TASK (
   EMAIL        VARCHAR(50),

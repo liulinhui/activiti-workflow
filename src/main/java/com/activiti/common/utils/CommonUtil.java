@@ -132,7 +132,7 @@ public class CommonUtil {
     }
 
     /**
-     * 生成随机数
+     * 生成随机数（己废除）
      *
      * @param length 表示生成字符串的长度
      * @return

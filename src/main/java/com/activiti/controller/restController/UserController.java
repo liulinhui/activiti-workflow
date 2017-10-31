@@ -102,6 +102,7 @@ public class UserController {
         }
 //        userService.insertUser(user);
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
+        //查表judge_stu_work_info，获得当前还没有进入互评流程的人
         List<String> emailList = userMapper.selectNonDistributeUser(courseCode);
         //如果满了人数默认100人则异步启动流程
         if (null != emailList && emailList.size() >= scheduleDto.getDistributeMaxUser()) {
@@ -172,6 +173,7 @@ public class UserController {
         JSONObject response = commonService.getQAFromGitHub(scheduleDto.getGithubAddress());
         List<StudentWorkInfo> workInfoList = new ArrayList<>();
         JSONArray jsonArray = activitiHelper.selectWorkListToJudge(email, courseCode);
+        //到数据库表中查詢需要评论的作業信息
         jsonArray.forEach(index -> {
             workInfoList.add(userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, index.toString())));
         });
@@ -222,6 +224,7 @@ public class UserController {
                 jsonObjectList.add(object);
             }
         });
+        //提交成绩到gitlab
         try {
             asyncTasks.asyncTask(jsonObjectList, "updateGradeToGitlab");
         } catch (InterruptedException e) {
