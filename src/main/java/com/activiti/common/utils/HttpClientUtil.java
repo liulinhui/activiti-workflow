@@ -114,6 +114,7 @@ public class HttpClientUtil {
         jsonObject.put("branch_name", "master");
         jsonObject.put("content", JsonFormatTool.formatJson(content.toJSONString()));
         jsonObject.put("file_path", file_path);
+        logger.info(">>>>>>>>>>>>>>>>>>>>>>===============================begin updateGradeToGitlab+++++++++++++++++++++++++++++++");
         if ("pro".equals(env)) {
             if (put)
                 doPut(uri, jsonObject);

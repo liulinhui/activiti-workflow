@@ -61,7 +61,7 @@ public class AsyncTasks {
                 try {
                     httpClientUtil.updateGradeToGitlab((StudentWorkInfo) jsonObject.get("studentWorkInfo"),
                             (List<JudgementLs>) jsonObject.get("judgementLsList"), false);
-                    Thread.sleep(5000);
+                    Thread.sleep(8000);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
