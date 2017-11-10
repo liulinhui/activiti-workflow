@@ -34,6 +34,22 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">最小间隔时间</label>
+            <div class="layui-input-block">
+                <input type="text" name="assessmentMinTimeSlot" lay-verify="required"
+                       placeholder="格式（10秒钟:PT10S , 一天:PT1D  ,一小时:PT1H, 一分钟:PT1M）默认PT7D" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">最大间隔时间</label>
+            <div class="layui-input-block">
+                <input type="text" name="assessmentMaxTimeSlot" lay-verify="required"
+                       placeholder="格式（10秒钟:PT10S , 一天:PT1D  ,一小时:PT1H, 一分钟:PT1M）默认PT7D" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">学生申诉</label>
             <div class="layui-input-block">
                 <input type="radio" name="isAppeal" value="no" title="不允许" checked="">
@@ -133,6 +149,8 @@
                                             {field: 'isAppeal', title: '学生申诉', width: 100},
                                             {field: 'distributeMaxUser', title: '开始互评人数', width: 150},
                                             {field: 'timeout', title: '超时时间', width: 100},
+                                            {field: 'assessmentMinTimeSlot', title: '最小间隔时间', width: 150},
+                                            {field: 'assessmentMaxTimeSlot', title: '最大间隔时间', width: 150},
 //                                            {field: 'judgeEndTimeString', title: '互评结束时间', width: 200},
 //                                            {field: 'publishTimeString', title: '成绩发布时间', width: 200},
                                             {

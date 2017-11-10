@@ -380,6 +380,18 @@ public class CommonUtil {
     }
 
     /**
+     * 获取数字
+     * @param string
+     * @return
+     */
+    public int getNumFromString(String string) {
+        Pattern p = Pattern.compile("[^0-9]");
+        Matcher m = p.matcher(string);
+        String result = m.replaceAll("");
+        return Integer.valueOf(result);
+    }
+
+    /**
      * 从session中获取Email
      *
      * @param request

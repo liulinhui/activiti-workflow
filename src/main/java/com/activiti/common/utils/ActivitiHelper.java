@@ -14,15 +14,18 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Minutes;
+import org.joda.time.Seconds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 相关操作
@@ -39,6 +42,8 @@ public class ActivitiHelper {
     private ScheduleService scheduleService;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private CommonUtil commonUtil;
     @Autowired
     private MailProducer mailProducer;
 
@@ -155,6 +160,44 @@ public class ActivitiHelper {
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("verifyTask", businessKey, variables);
         logger.info("用户" + email + ">>>>>>>>>>启动教师审核流程：" + processInstance.getId());
         userMapper.askToVerify(courseCode, email);
+    }
+
+    /**
+     * 判断状态  0：直接结束  1：子流程执行  2：老师批改
+     *
+     * @param execution
+     */
+    public void activitiCondition(DelegateExecution execution) {
+        String courseCode = (String) execution.getVariable("courseCode");
+        int conditionType = 0;
+        List<StudentWorkInfo> studentWorkInfoList = userMapper.selectAllNonDistributeUser(courseCode);
+        ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
+        if (null != studentWorkInfoList && studentWorkInfoList.size() > 0) {
+            DateTime last = new DateTime(studentWorkInfoList.get(0).getLastCommitTime());
+            DateTime first = new DateTime(studentWorkInfoList.get(studentWorkInfoList.size() - 1).getLastCommitTime());
+            int minTime = commonUtil.getNumFromString(scheduleDto.getAssessmentMinTimeSlot());
+            int maxTime = commonUtil.getNumFromString(scheduleDto.getAssessmentMaxTimeSlot());
+            int diff = 0;
+            if (scheduleDto.getAssessmentMinTimeSlot().contains("M") && scheduleDto.getAssessmentMaxTimeSlot().contains("M"))
+                diff = Minutes.minutesBetween(first, last).getMinutes();
+            if (scheduleDto.getAssessmentMinTimeSlot().contains("D") && scheduleDto.getAssessmentMaxTimeSlot().contains("D"))
+                diff = Days.daysBetween(first, last).getDays();
+            if (scheduleDto.getAssessmentMinTimeSlot().contains("S") && scheduleDto.getAssessmentMaxTimeSlot().contains("S"))
+                diff = Seconds.secondsBetween(first, last).getSeconds();
+            if (diff > minTime) {
+                if (studentWorkInfoList.size() >= scheduleDto.getDistributeMaxUser()) {
+                    List<String> assigneeList = new ArrayList<>();
+                    studentWorkInfoList.forEach(studentWorkInfo -> {
+                        assigneeList.add(studentWorkInfo.getEmailAddress());
+                    });
+                    execution.setVariable("assigneeList", assigneeList);
+                    conditionType = 1;
+                } else if (diff > maxTime)
+                    conditionType = 2;
+            }
+        }
+        logger.info("题目" + courseCode + "的conditionType=" + conditionType);
+        execution.setVariable("conditionType", conditionType);
     }
 
     /**
