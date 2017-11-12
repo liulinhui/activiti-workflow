@@ -1,6 +1,7 @@
 package com.activiti.common.utils;
 
 import com.activiti.common.kafka.MailProducer;
+import com.activiti.common.redis.RedisCommonUtil;
 import com.activiti.mapper.UserMapper;
 import com.activiti.pojo.email.EmailDto;
 import com.activiti.pojo.schedule.ScheduleDto;
@@ -45,6 +46,8 @@ public class ActivitiHelper {
     @Autowired
     private CommonUtil commonUtil;
     @Autowired
+    private RedisCommonUtil redisCommonUtil;
+    @Autowired
     private MailProducer mailProducer;
 
     /**
@@ -86,26 +89,62 @@ public class ActivitiHelper {
     }
 
     /**
+     * 作业分配任务
+     *
+     * @param execution
+     */
+    public void beginDistributeTask(DelegateExecution execution) {
+        String courseCode = execution.getVariable("courseCode").toString();
+        JSONArray emailList = JSONArray.parseArray(execution.getVariable("assigneeJSONArray").toString());
+        ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
+        int judgeTimes = scheduleDto.getJudgeTimes();//每份作业被批改次数（默认为4）
+        int countWork = emailList.size();
+        emailList.forEach(email -> {
+            int studentId = emailList.indexOf(email);
+            JSONArray jsonArray = new JSONArray();
+            for (int i = 1; i <= judgeTimes; i++) {
+                int id = studentId + i;
+                int result = id >= countWork ? id - countWork : id;
+                jsonArray.add(emailList.get(result));
+            }
+            redisCommonUtil.put(ConstantsUtils.beginDistributeTask + courseCode + email.toString(), jsonArray.toString(), ConstantsUtils.beginDistributeTaskExpire);
+            userMapper.updateDistributeStatus(courseCode, email.toString());
+            logger.info("更新用户" + email + "分配状态");
+        });
+    }
+
+    /**
      * 查询需要评论的作业
      *
      * @param assignee
      * @param courseCode
      * @return
      */
-    public JSONArray selectWorkListToJudge(String assignee, String courseCode) {
+    public JSONArray selectWorkListToJudge(String assignee, String courseCode, String... newFunc) {
         List<Task> list = taskService
                 .createTaskQuery()//
                 .taskAssignee(assignee)//个人任务的查询
                 .list();
         JSONArray jsonArray = new JSONArray();
-        list.forEach(task -> {
-            String taskId = task.getId();
-            if (courseCode.equals(taskService.getVariable(taskId, "courseCode"))) {
-                JSONArray.parseArray(taskService.getVariable(taskId, "judgeEmailList").toString()).forEach(a -> {
-                    jsonArray.add(a.toString());
-                });
-            }
-        });
+        if (null == newFunc) {
+            list.forEach(task -> {
+                String taskId = task.getId();
+                if (courseCode.equals(taskService.getVariable(taskId, "courseCode"))) {
+                    JSONArray.parseArray(taskService.getVariable(taskId, "judgeEmailList").toString()).forEach(a -> {
+                        jsonArray.add(a.toString());
+                    });
+                }
+            });
+        } else {
+            list.forEach(task -> {
+                String taskId = task.getId();
+                if (courseCode.equals(taskService.getVariable(taskId, "courseCode"))) {
+                    JSONArray.parseArray(redisCommonUtil.get(ConstantsUtils.beginDistributeTask + courseCode + assignee).toString()).forEach(a -> {
+                        jsonArray.add(a.toString());
+                    });
+                }
+            });
+        }
         if (taskService.createTaskQuery().taskAssignee(assignee).list() == null || taskService.createTaskQuery().taskAssignee(assignee).list().size() == 0) {
             logger.info(">>>>>>>>>>>>>>>>>>>>我已经没有任务了");
         }
@@ -163,6 +202,20 @@ public class ActivitiHelper {
     }
 
     /**
+     * 启动流程
+     *
+     * @param courseCode
+     */
+    public void startAnswerToAssessmentNoJudge(String courseCode, ScheduleDto scheduleDto) {
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("courseCode", courseCode);
+        String businessKey = "assessment";
+        if ("no".equals(scheduleDto.getIsAppeal()))
+            runtimeService.startProcessInstanceByKey("answerToAssessmentNojudge", businessKey, variables);
+        else runtimeService.startProcessInstanceByKey("answerToAssessment", businessKey, variables);
+    }
+
+    /**
      * 判断状态  0：直接结束  1：子流程执行  2：老师批改
      *
      * @param execution
@@ -184,20 +237,34 @@ public class ActivitiHelper {
                 diff = Days.daysBetween(first, last).getDays();
             if (scheduleDto.getAssessmentMinTimeSlot().contains("S") && scheduleDto.getAssessmentMaxTimeSlot().contains("S"))
                 diff = Seconds.secondsBetween(first, last).getSeconds();
-            if (diff > minTime) {
-                if (studentWorkInfoList.size() >= scheduleDto.getDistributeMaxUser()) {
-                    List<String> assigneeList = new ArrayList<>();
+            if (diff >= minTime) {
+                if (diff > maxTime) {
+                    JSONArray jsonArray = new JSONArray();
                     studentWorkInfoList.forEach(studentWorkInfo -> {
-                        assigneeList.add(studentWorkInfo.getEmailAddress());
+                        jsonArray.add(studentWorkInfo);
+                        userMapper.updateDistributeStatus(courseCode, studentWorkInfo.getEmailAddress());
                     });
-                    execution.setVariable("assigneeList", assigneeList);
-                    conditionType = 1;
-                } else if (diff > maxTime)
+                    execution.setVariable("studentWorkInfoList", (jsonArray.toJSONString()));
                     conditionType = 2;
+                } else {
+                    if (studentWorkInfoList.size() >= scheduleDto.getDistributeMaxUser()) {
+                        List<String> assigneeList = new ArrayList<>();
+                        JSONArray jsonArray = new JSONArray();
+                        studentWorkInfoList.forEach(studentWorkInfo -> {
+                            assigneeList.add(studentWorkInfo.getEmailAddress());
+                            jsonArray.add(studentWorkInfo.getEmailAddress());
+                        });
+                        execution.setVariable("assigneeList", assigneeList);
+                        execution.setVariable("assigneeJSONArray", jsonArray.toJSONString());
+                        conditionType = 1;
+                    }
+                }
             }
         }
         logger.info("题目" + courseCode + "的conditionType=" + conditionType);
         execution.setVariable("conditionType", conditionType);
+        execution.setVariable("courseCode", courseCode);
+        execution.setVariable("timeout", scheduleDto.getTimeout());
     }
 
     /**
@@ -211,9 +278,20 @@ public class ActivitiHelper {
         JSONArray jsonArray = new JSONArray();
         list.forEach(task -> {
             String taskId = task.getId();
-            JSONObject studentWorkInfo = JSONObject.parseObject(taskService.getVariable(taskId, "studentWorkInfo").toString());
-            studentWorkInfo.put("taskId", taskId);
-            jsonArray.add(studentWorkInfo);
+            Object object = taskService.getVariable(taskId, "studentWorkInfo");
+            if (null != object) {
+                JSONObject studentWorkInfo = JSONObject.parseObject(taskService.getVariable(taskId, "studentWorkInfo").toString());
+                studentWorkInfo.put("taskId", taskId);
+                jsonArray.add(studentWorkInfo);
+            }
+            Object studentWorkInfoList = taskService.getVariable(taskId, "studentWorkInfoList");
+            if (null != studentWorkInfoList) {
+                JSONArray.parseArray(studentWorkInfoList.toString()).forEach(a -> {
+                    JSONObject studentWorkInfo = (JSONObject) JSON.toJSON(a);
+                    studentWorkInfo.put("taskId", taskId);
+                    jsonArray.add(studentWorkInfo);
+                });
+            }
         });
         return jsonArray;
     }

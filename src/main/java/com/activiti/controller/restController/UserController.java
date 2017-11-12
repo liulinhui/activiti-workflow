@@ -100,23 +100,23 @@ public class UserController {
         } catch (Exception e) {
             throw new Exception("你已经参与过答题了！！");
         }
-//        userService.insertUser(user);
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
-        //查表judge_stu_work_info，获得当前还没有进入互评流程的人
-        List<String> emailList = userMapper.selectNonDistributeUser(courseCode);
-        //如果满了人数默认100人则异步启动流程
-        if (null != emailList && emailList.size() >= scheduleDto.getDistributeMaxUser()) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("emailList", emailList);
-            jsonObject.put("courseCode", courseCode);
-            jsonObject.put("email", email);
-            asyncTasks.asyncTask(jsonObject, "distributeTask");
-        }
+//        //查表judge_stu_work_info，获得当前还没有进入互评流程的人
+//        List<String> emailList = userMapper.selectNonDistributeUser(courseCode);
+//        //如果满了人数默认100人则异步启动流程
+//        if (null != emailList && emailList.size() >= scheduleDto.getDistributeMaxUser()) {
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("emailList", emailList);
+//            jsonObject.put("courseCode", courseCode);
+//            jsonObject.put("email", email);
+//            asyncTasks.asyncTask(jsonObject, "distributeTask");
+//        }
         ModelMap modelMap = new ModelMap();
         modelMap.put("courseCode", courseCode);
         modelMap.put("workDetail", workDetail);
         modelMap.put("email", email);
         mailProducer.send(new EmailDto(email, EmailType.html, "答题成功", commonUtil.applyDataToView(modelMap, ConstantsUtils.successAnswerFtl)));
+        activitiHelper.startAnswerToAssessmentNoJudge(courseCode,scheduleDto);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("studentWorkInfo", studentWorkInfo);
         asyncTasks.asyncTask(jsonObject, "commitWorkToGitlab");
@@ -172,7 +172,7 @@ public class UserController {
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
         JSONObject response = commonService.getQAFromGitHub(scheduleDto.getGithubAddress());
         List<StudentWorkInfo> workInfoList = new ArrayList<>();
-        JSONArray jsonArray = activitiHelper.selectWorkListToJudge(email, courseCode);
+        JSONArray jsonArray = activitiHelper.selectWorkListToJudge(email, courseCode,"new");
         //到数据库表中查詢需要评论的作業信息
         jsonArray.forEach(index -> {
             workInfoList.add(userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, index.toString())));
