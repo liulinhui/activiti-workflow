@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1510319678191" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/processdef" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1510374205703" name="" targetNamespace="http://www.activiti.org/processdef" typeLanguage="http://www.w3.org/2001/XMLSchema">
   <process id="answerToAssessmentNojudge" isClosed="false" isExecutable="true" name="answerToAssessmentNojudge" processType="None">
     <startEvent id="answer" name="start"/>
-    <serviceTask activiti:exclusive="true" id="activitiCondition" name="activitiCondition"/>
+    <serviceTask activiti:exclusive="true" activiti:expression="${activitiHelper.activitiCondition(execution)}" id="activitiCondition" name="activitiCondition"/>
     <sequenceFlow id="_4" sourceRef="answer" targetRef="activitiCondition"/>
     <endEvent id="_5" name="end"/>
-    <subProcess activiti:assignee="${assigneeList}" id="_7" name="assessmentSubprocess" triggeredByEvent="false">
+    <subProcess activiti:assignee="${assignee}" activiti:exclusive="true" id="_7" name="assessmentSubprocess" triggeredByEvent="false">
+      <multiInstanceLoopCharacteristics isSequential="true"/>
       <startEvent id="_15" name="begin distribute task"/>
       <userTask activiti:assignee="#{assignee}" activiti:exclusive="true" id="_16" name="begin assessed"/>
       <serviceTask activiti:exclusive="true" activiti:expression="${activitiHelper.emailAlert(execution)}" id="_21" name="emailAlertService"/>
       <endEvent id="_23" name="end assessed"/>
       <sequenceFlow id="_30" sourceRef="_16" targetRef="_23"/>
-      <sequenceFlow id="_31" sourceRef="_21" targetRef="_23"/>
       <boundaryEvent attachedToRef="_16" cancelActivity="true" id="_47" name="timeout1">
         <timerEventDefinition id="_47_ED_1">
-          <timeDuration>${timeout1}</timeDuration>
+          <timeDuration><![CDATA[${timeout1}]]></timeDuration>
         </timerEventDefinition>
       </boundaryEvent>
       <sequenceFlow id="_49" sourceRef="_15" targetRef="_16"/>
       <sequenceFlow id="_2" sourceRef="_47" targetRef="_21"/>
-      <multiInstanceLoopCharacteristics isSequential="true">
-        <loopDataInputRef>assigneeList</loopDataInputRef>
-        <inputDataItem name="assignee" />
-      </multiInstanceLoopCharacteristics>
+      <serviceTask activiti:exclusive="true" id="_6" name="sendToTeacher"/>
+      <sequenceFlow id="_8" sourceRef="_21" targetRef="_6"/>
+      <sequenceFlow id="_9" sourceRef="_6" targetRef="_23"/>
     </subProcess>
     <exclusiveGateway gatewayDirection="Unspecified" id="conditionGate" name="condition"/>
     <sequenceFlow id="_10" sourceRef="activitiCondition" targetRef="conditionGate"/>
@@ -115,6 +114,12 @@
           <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" id="Shape-_6">
+        <omgdc:Bounds height="55.0" width="85.0" x="730.0" y="480.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_47" id="Shape-_47">
         <omgdc:Bounds height="32.0" width="32.0" x="640.0" y="385.0"/>
         <bpmndi:BPMNLabel>
@@ -170,9 +175,16 @@
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_31" id="BPMNEdge__31" sourceElement="_21" targetElement="_23">
+      <bpmndi:BPMNEdge bpmnElement="_8" id="BPMNEdge__8" sourceElement="_21" targetElement="_6">
         <omgdi:waypoint x="685.0" y="507.5"/>
-        <omgdi:waypoint x="750.0" y="401.0"/>
+        <omgdi:waypoint x="730.0" y="507.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="_6" targetElement="_23">
+        <omgdi:waypoint x="766.0" y="480.0"/>
+        <omgdi:waypoint x="766.0" y="417.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
