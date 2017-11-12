@@ -6,7 +6,7 @@
     <sequenceFlow id="_4" sourceRef="answer" targetRef="activitiCondition"/>
     <endEvent id="_5" name="end"/>
     <subProcess activiti:assignee="${assignee}" id="_7" name="assessmentSubprocess" triggeredByEvent="false">
-      <multiInstanceLoopCharacteristics isSequential="true">
+      <multiInstanceLoopCharacteristics isSequential="false">
         <loopDataInputRef>assigneeList</loopDataInputRef>
         <inputDataItem name="assignee"/>
       </multiInstanceLoopCharacteristics>
