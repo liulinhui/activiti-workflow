@@ -168,6 +168,14 @@ public class ActivitiHelper {
     }
 
     /**
+     *
+     */
+    public void emailAlertForTeacherVerify(DelegateExecution execution){
+        String studentAddress = (String) execution.getVariable("studentAddress");
+        logger.info("开始向这些人发邮件" + studentAddress);
+    }
+
+    /**
      * 结束流程
      *
      * @param assignee
