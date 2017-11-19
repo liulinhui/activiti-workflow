@@ -381,6 +381,7 @@ public class CommonUtil {
 
     /**
      * 获取数字
+     *
      * @param string
      * @return
      */
@@ -389,6 +390,17 @@ public class CommonUtil {
         Matcher m = p.matcher(string);
         String result = m.replaceAll("");
         return Integer.valueOf(result);
+    }
+
+    public void validateTimeRegexp(ScheduleDto scheduleDto) throws Exception {
+        scheduleDto.setAssessmentMaxTimeSlot(scheduleDto.getAssessmentMaxTimeSlot().trim());
+        scheduleDto.setAssessmentMinTimeSlot(scheduleDto.getAssessmentMinTimeSlot().trim());
+        scheduleDto.setTimeout(scheduleDto.getTimeout().trim());
+        String pattern = "PT(\\d+)[SMHD]";
+        String rightString = "正确示例：10秒钟:PT10S , 一天:PT1D  ,一小时:PT1H, 一分钟:PT1M";
+        if (!scheduleDto.getAssessmentMinTimeSlot().matches(pattern)) throw new Exception("最小间隔时间格式不正确," + rightString);
+        if (!scheduleDto.getAssessmentMaxTimeSlot().matches(pattern)) throw new Exception("最大间隔时间格式不正确," + rightString);
+        if (!scheduleDto.getTimeout().matches(pattern)) throw new Exception("互评超时时间格式不正确," + rightString);
     }
 
     /**

@@ -93,6 +93,7 @@ public class CommonController {
         ScheduleDto scheduleDto = jsonObject.toJavaObject(ScheduleDto.class);
         scheduleDto.setGithubAddress(commonUtil.generateGitHubUrl(Integer.valueOf(scheduleDto.getCourseCode())));
         String courseCode = scheduleDto.getCourseCode();
+        commonUtil.validateTimeRegexp(scheduleDto);
         if (null != scheduleService.selectScheduleTime(courseCode)) throw new Exception(courseCode + "该课程已经存在");
         if (null == courseCode) throw new Exception("courseCode字段不能为空");
         scheduleService.insertScheduleTime(scheduleDto);

@@ -4,6 +4,7 @@ import com.activiti.common.kafka.MailProducer;
 import com.activiti.common.redis.RedisCommonUtil;
 import com.activiti.mapper.UserMapper;
 import com.activiti.pojo.email.EmailDto;
+import com.activiti.pojo.email.EmailType;
 import com.activiti.pojo.schedule.ScheduleDto;
 import com.activiti.pojo.user.StudentWorkInfo;
 import com.activiti.service.ScheduleService;
@@ -163,16 +164,16 @@ public class ActivitiHelper {
             return;
         logger.info("开始向这些人发邮件" + jsonArray);
         jsonArray.forEach(email -> {
-
+            mailProducer.send(new EmailDto(email.toString(), EmailType.simple,
+                    "未参与互评任务", "由于您没有参加互评,该题目分数为0"));
         });
     }
 
     /**
      *
      */
-    public void emailAlertForTeacherVerify(DelegateExecution execution){
-        String studentAddress = (String) execution.getVariable("studentAddress");
-        logger.info("开始向这些人发邮件" + studentAddress);
+    public void emailAlertForTeacherVerify(DelegateExecution execution) {
+        logger.info("开始向老师发邮件人发邮件");
     }
 
     /**
@@ -214,13 +215,13 @@ public class ActivitiHelper {
      *
      * @param courseCode
      */
-    public void startAnswerToAssessmentNoJudge(String courseCode, ScheduleDto scheduleDto) {
+    public void startAnswerToAssessment(String courseCode, ScheduleDto scheduleDto) {
         Map<String, Object> variables = new HashMap<>();
         variables.put("courseCode", courseCode);
         String businessKey = "assessment";
         if ("no".equals(scheduleDto.getIsAppeal()))
             runtimeService.startProcessInstanceByKey("answerToAssessmentNojudge", businessKey, variables);
-        else runtimeService.startProcessInstanceByKey("answerToAssessment", businessKey, variables);
+        else runtimeService.startProcessInstanceByKey("answerToAssessmentNojudge", businessKey, variables);
     }
 
     /**
