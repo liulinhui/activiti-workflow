@@ -291,4 +291,20 @@ public class CommonController {
         jsonObject.put("uuid", uuid);
         return jsonObject;
     }
+
+    /**
+     * 查询课程是否可以申诉
+     *
+     * @param courseCode
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/isCourseAppeal")
+    @ApiAnnotation
+    public Object isCourseAppeal(@RequestParam("courseCode") String courseCode) {
+        ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("isAppeal", scheduleDto.getIsAppeal());
+        return jsonObject;
+    }
 }
