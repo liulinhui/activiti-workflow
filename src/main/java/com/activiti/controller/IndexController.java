@@ -1,6 +1,7 @@
 package com.activiti.controller;
 
 import com.activiti.common.redis.RedisCommonUtil;
+import com.activiti.common.utils.ActivitiHelper;
 import com.activiti.common.utils.CommonUtil;
 import com.activiti.common.utils.ConstantsUtils;
 import com.activiti.mapper.ScheduleMapper;
@@ -41,6 +42,8 @@ public class IndexController {
     private ScheduleMapper scheduleMapper;
     @Autowired
     private RedisCommonUtil redisCommonUtil;
+    @Autowired
+    private ActivitiHelper activitiHelper;
 
     /**
      * 登录页面
@@ -172,8 +175,11 @@ public class IndexController {
         scheduleMapper.selectAllOfScheduleTime().forEach(scheduleDto -> {
             String courseCode = scheduleDto.getCourseCode();
             StudentWorkInfo studentWorkInfo = userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, email));
-            if (null != studentWorkInfo && null == studentWorkInfo.getJoinJudgeTime())
-                scheduleDtoList.add(scheduleDto);
+            if (null != studentWorkInfo && null == studentWorkInfo.getJoinJudgeTime()) {
+                JSONArray jsonArray = activitiHelper.selectWorkListToJudge(email, courseCode, "new");
+                if (null != jsonArray && jsonArray.size() > 0)
+                    scheduleDtoList.add(scheduleDto);
+            }
         });
         modelMap.put("scheduleDtoList", scheduleDtoList);
         return "submodule/assessment";

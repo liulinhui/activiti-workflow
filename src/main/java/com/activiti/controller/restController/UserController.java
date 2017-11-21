@@ -410,6 +410,7 @@ public class UserController {
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
         StudentWorkInfo studentWorkInfo = userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, email));
         if ("no".equals(scheduleDto.getIsAppeal())) throw new Exception("该课程不允许成绩审核");
+        if ("teacher".equals(studentWorkInfo.getJudgeType()))throw new Exception("您的成绩已经是老师批改的了");
         if (null == studentWorkInfo.getJoinJudgeTime()) throw new Exception("由于您没有参加互评，不能参与成绩审核");
         if (null == studentWorkInfo.getGrade()) throw new Exception("由于你的成绩没有被足够多的人批改，现在转到由老师亲自批改，请耐心等待");
         if ("yes".equals(studentWorkInfo.getAskToVerify())) throw new Exception("你已经申请过了");

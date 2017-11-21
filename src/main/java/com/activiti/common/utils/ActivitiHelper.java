@@ -252,6 +252,7 @@ public class ActivitiHelper {
                     studentWorkInfoList.forEach(studentWorkInfo -> {
                         jsonArray.add(studentWorkInfo);
                         userMapper.updateDistributeStatus(courseCode, studentWorkInfo.getEmailAddress());
+                        startTeacherVerify(studentWorkInfo);
                     });
                     execution.setVariable("studentWorkInfoList", (jsonArray.toJSONString()));
                     conditionType = 2;
@@ -295,11 +296,12 @@ public class ActivitiHelper {
             }
             Object studentWorkInfoList = taskService.getVariable(taskId, "studentWorkInfoList");
             if (null != studentWorkInfoList) {
-                JSONArray.parseArray(studentWorkInfoList.toString()).forEach(a -> {
-                    JSONObject studentWorkInfo = (JSONObject) JSON.toJSON(a);
-                    studentWorkInfo.put("taskId", taskId);
-                    jsonArray.add(studentWorkInfo);
-                });
+//                JSONArray.parseArray(studentWorkInfoList.toString()).forEach(a -> {
+//                    JSONObject studentWorkInfo = (JSONObject) JSON.toJSON(a);
+//                    studentWorkInfo.put("taskId", taskId);
+//                    jsonArray.add(studentWorkInfo);
+//                });
+                taskService.complete(taskId);
             }
         });
         return jsonArray;

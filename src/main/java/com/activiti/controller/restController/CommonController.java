@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.UUID;
 
@@ -305,6 +306,23 @@ public class CommonController {
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("isAppeal", scheduleDto.getIsAppeal());
+        return jsonObject;
+    }
+
+    /**
+     * 题目详情
+     *
+     * @param courseCode
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    @ResponseBody
+    @RequestMapping("/selectCourseDetails")
+    @ApiAnnotation
+    public Object selectCourseDetails(@RequestParam("courseCode") String courseCode) throws UnsupportedEncodingException {
+        ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("details", commonService.getQAFromGitHub(scheduleDto.getGithubAddress()));
         return jsonObject;
     }
 }

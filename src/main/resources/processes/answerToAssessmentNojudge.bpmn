@@ -22,7 +22,11 @@
         </timerEventDefinition>
       </boundaryEvent>
       <sequenceFlow id="_49" sourceRef="_15" targetRef="_16"/>
-      <sequenceFlow id="_2" sourceRef="_47" targetRef="_21"/>
+      <sequenceFlow id="_2" sourceRef="_47" targetRef="_21">
+        <extensionElements>  
+          <activiti:executionListener event="take" delegateExpression="${flowTakeListener}"></activiti:executionListener>  
+        </extensionElements> 
+      </sequenceFlow>
     </subProcess>
     <exclusiveGateway gatewayDirection="Unspecified" id="conditionGate" name="condition"/>
     <sequenceFlow id="_10" sourceRef="activitiCondition" targetRef="conditionGate"/>
