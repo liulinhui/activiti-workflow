@@ -32,7 +32,7 @@ public class SlotHelp implements ApplicationContextAware {
     private UserMapper userMapper;
     @Autowired
     private ActivitiHelper activitiHelper;
-    private static final String cron = "0 0 0 * * ? *";  //每天执行一次
+    private static final String cron = "0 0 0 * * *";  //每天执行一次
 
 
     @Override
