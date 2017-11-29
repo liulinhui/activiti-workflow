@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/processdef" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1510500672672" name="" targetNamespace="http://www.activiti.org/processdef" typeLanguage="http://www.w3.org/2001/XMLSchema">
-  <process id="answerToAssessment" isClosed="false" isExecutable="true" name="answerToAssessment" processType="None">
+  <process id="answerToAssessment" isClosed="false" isExecutable="true" name="允许学生申诉" processType="None">
     <startEvent id="answer" name="start"/>
     <serviceTask activiti:exclusive="true" activiti:expression="${activitiHelper.activitiCondition(execution)}" id="activitiCondition" name="activitiCondition"/>
     <sequenceFlow id="_4" sourceRef="answer" targetRef="activitiCondition"/>

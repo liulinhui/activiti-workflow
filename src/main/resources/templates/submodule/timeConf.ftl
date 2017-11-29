@@ -1,9 +1,17 @@
 <div class="my-time-conf">
 <#--课程配置-->
-    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>题目配置</legend>
+    <fieldset class="layui-elem-field" style="margin-top: 30px;">
+        <legend>已经部署的流程</legend>
+        <div style="height:auto">
+            <table class="my-time-process-table" lay-data="{height:100}" lay-filter="my-time-process-table">
+            </table>
+            <div id="my-time-process-LayPage"></div>
+        </div>
     </fieldset>
-    <div class="layui-form">
+    <div class="layui-form" style="display: none">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>配置流程为：<span class="process-key" process-key=""></span>的题目</legend>
+        </fieldset>
         <div class="layui-form-item">
             <label class="layui-form-label">题目</label>
             <div class="layui-input-block">
@@ -49,37 +57,11 @@
                        class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">学生申诉</label>
-            <div class="layui-input-block">
-                <input type="radio" name="isAppeal" value="no" title="不允许" checked="">
-                <input type="radio" name="isAppeal" value="yes" title="允许">
-            </div>
-        </div>
     <#--<div class="layui-form-item">-->
-    <#--<div class="layui-inline">-->
-    <#--<label class="layui-form-label">互评开始</label>-->
-    <#--<div class="layui-input-inline">-->
-    <#--<input type="text" lay-verify="required" name="judgeStartTime"-->
-    <#--class="layui-input my-time-conf-judgeStartTime"-->
-    <#--placeholder="yyyy-MM-dd HH:mm:ss">-->
-    <#--</div>-->
-    <#--</div>-->
-    <#--<div class="layui-inline">-->
-    <#--<label class="layui-form-label">互评结束</label>-->
-    <#--<div class="layui-input-inline">-->
-    <#--<input type="text" lay-verify="required" name="judgeEndTime"-->
-    <#--class="layui-input my-time-conf-judgeEndTime"-->
-    <#--placeholder="yyyy-MM-dd HH:mm:ss">-->
-    <#--</div>-->
-    <#--</div>-->
-    <#--<div class="layui-inline">-->
-    <#--<label class="layui-form-label">成绩发布</label>-->
-    <#--<div class="layui-input-inline">-->
-    <#--<input type="text" lay-verify="required" name="publishTime"-->
-    <#--class="layui-input my-time-conf-publishTime"-->
-    <#--placeholder="yyyy-MM-dd HH:mm:ss">-->
-    <#--</div>-->
+    <#--<label class="layui-form-label">学生申诉</label>-->
+    <#--<div class="layui-input-block">-->
+    <#--<input type="radio" name="isAppeal" value="no" title="不允许" checked="">-->
+    <#--<input type="radio" name="isAppeal" value="yes" title="允许">-->
     <#--</div>-->
     <#--</div>-->
         <div class="layui-form-item">
@@ -99,7 +81,13 @@
             <div id="my-time-conf-LayPage"></div>
         </div>
     </fieldset>
+    <div style="display: none" id="my-time-conf-judgement">
+        <img src=${request.contextPath}/mooc-workflow/img/judgement.png>
+    </div>
 
+    <div style="display: none" id="my-time-conf-noJudgement">
+        <img src=${request.contextPath}/mooc-workflow/img/nojudgement.png>
+    </div>
 </div>
 
 <script>
@@ -170,6 +158,61 @@
                     });
                 }
             });
+
+
+            $.ajax({
+                url: './api/common/getProcessLists?page=1&limit=10',
+                dataType: 'json',
+                success: function (data) {
+                    laypage.render({
+                        elem: 'my-time-process-LayPage',
+                        count: data.data.total,
+                        theme: '#FF5722',
+                        limit: 5,
+                        limits: [5, 10, 15],
+                        layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
+                        jump: function (obj) {
+                            var param = {page: obj.curr, limit: obj.limit};
+                            $.ajax({
+                                url: './api/common/getProcessLists',
+                                data: param,
+                                dataType: 'json',
+                                success: function (data) {
+                                    table.render({
+                                        elem: '.my-time-process-table',
+                                        data: data.data.data,
+                                        height: 150,
+//                                        width: 900,
+                                        cols: [[ //标题栏
+                                            {field: 'deploymentId', title: 'deploymentId', width: 100},
+                                            {field: 'id', title: 'id', width: 250},
+                                            {field: 'name', title: 'name', width: 220},
+                                            {field: 'key', title: 'key', width: 220},
+                                            {field: 'resourceName', title: 'resourceName', width: 450},
+                                            {field: 'diagramResourceName', title: 'diagramResourceName', width: 450},
+                                            {
+                                                field: 'choose',
+                                                title: '操作',
+                                                width: 100,
+                                                templet: '#my-time-process-choose'
+                                            },
+                                            {
+                                                field: 'picture',
+                                                title: '流程图',
+                                                width: 100,
+                                                templet: '#my-time-process-picture'
+                                            }
+                                        ]],
+                                        skin: 'row', //表格风格
+                                        even: true,
+                                        page: false //是否显示分页
+                                    })
+                                }
+                            })
+                        }
+                    });
+                }
+            });
         };
         //监听提交
         form.on('submit(my-time-conf-submit)', function (data) {
@@ -179,6 +222,7 @@
                 });
                 return false;
             }
+            data.field.isAppeal = $('.layui-form .process-key').attr('process-key') === 'answerToAssessment' ? 'yes' : 'no';
             $.ajax({
                 url: './api/common/insertScheduleTime',
                 data: {data: JSON.stringify(data.field)},
@@ -190,6 +234,8 @@
                             title: '部署成功'
                         });
                         loadTable();
+                        $('.layui-form').hide();
+                        $('.layui-form input').val('');
                     }
                     else
                         layer.alert(JSON.stringify(result), {
@@ -232,9 +278,34 @@
                 })
             }
         });
+
+        table.on('tool(my-time-process-table)', function (obj) {
+            if (obj.event === 'choose') {
+                $('.layui-form .process-key').html(obj.data.name).attr('process-key', obj.data.key);
+                $('.layui-form').show();
+            }
+            if (obj.event === 'picture') {
+                var content = obj.data.key === 'answerToAssessment' ? $('#my-time-conf-judgement').html() : $('#my-time-conf-noJudgement').html();
+                var area= obj.data.key !== 'answerToAssessment'?['1500px', '650px']:['1300px', '870px'];
+                layer.open({
+                    type: 1,
+                    title: "流程图",
+                    closeBtn: 1,
+                    area: area,
+                    shadeClose: true,
+                    content: content
+                });
+            }
+        });
     })
 </script>
 
 <script type="text/html" id="my-time-conf-operation">
     <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="delete">删除</a>
+</script>
+<script type="text/html" id="my-time-process-choose">
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="choose">选择</a>
+</script>
+<script type="text/html" id="my-time-process-picture">
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="picture">查看</a>
 </script>
