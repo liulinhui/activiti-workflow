@@ -116,7 +116,7 @@ public class UserController {
         modelMap.put("workDetail", workDetail);
         modelMap.put("email", email);
         mailProducer.send(new EmailDto(email, EmailType.html, "答题成功", commonUtil.applyDataToView(modelMap, ConstantsUtils.successAnswerFtl)));
-        activitiHelper.startAnswerToAssessment(courseCode,scheduleDto);
+        activitiHelper.startAnswerToAssessment(courseCode, scheduleDto);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("studentWorkInfo", studentWorkInfo);
         asyncTasks.asyncTask(jsonObject, "commitWorkToGitlab");
@@ -171,11 +171,14 @@ public class UserController {
             throw new Exception("您还不能参加互评");
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
         JSONObject response = commonService.getQAFromGitHub(scheduleDto.getGithubAddress());
-        List<StudentWorkInfo> workInfoList = new ArrayList<>();
-        JSONArray jsonArray = activitiHelper.selectWorkListToJudge(email, courseCode,"new");
+        List<JSONObject> workInfoList = new ArrayList<>();
+        JSONArray jsonArray = activitiHelper.selectWorkListToJudge(email, courseCode, "new");
         //到数据库表中查詢需要评论的作業信息
         jsonArray.forEach(index -> {
-            workInfoList.add(userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, index.toString())));
+            StudentWorkInfo info=userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, index.toString()));
+            JSONObject jsonObject = (JSONObject) JSONObject.toJSON(info);
+            jsonObject.put("emailAddress_fake","*****"+info.getEmailAddress().substring(4,info.getEmailAddress().length()-1));
+            workInfoList.add(jsonObject);
         });
         if ("true".equals(studentWorkInfo.getDistributeStatus()) && null == studentWorkInfo.getJoinJudgeTime() && workInfoList.size() == 0)
             throw new Exception("您已经错过了互评机会");
@@ -205,7 +208,7 @@ public class UserController {
         int judgeLimitTimes = scheduleDto.getJudgeTimes();
         JSONObject judgeList = JSON.parseObject(judge);
         List<JudgementLs> judgementLsList = new ArrayList<>();
-        List<JSONObject>jsonObjectList=new ArrayList<>();
+        List<JSONObject> jsonObjectList = new ArrayList<>();
         judgeList.keySet().forEach(key -> {
             JSONObject jsonObject = (JSONObject) judgeList.get(key);
             JudgementLs judgementLs = new JudgementLs(courseCode,
@@ -410,7 +413,7 @@ public class UserController {
         ScheduleDto scheduleDto = scheduleService.selectScheduleTime(courseCode);
         StudentWorkInfo studentWorkInfo = userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, email));
         if ("no".equals(scheduleDto.getIsAppeal())) throw new Exception("该课程不允许成绩审核");
-        if ("teacher".equals(studentWorkInfo.getJudgeType()))throw new Exception("您的成绩已经是老师批改的了");
+        if ("teacher".equals(studentWorkInfo.getJudgeType())) throw new Exception("您的成绩已经是老师批改的了");
         if (null == studentWorkInfo.getJoinJudgeTime()) throw new Exception("由于您没有参加互评，不能参与成绩审核");
         if (null == studentWorkInfo.getGrade()) throw new Exception("由于你的成绩没有被足够多的人批改，现在转到由老师亲自批改，请耐心等待");
         if ("yes".equals(studentWorkInfo.getAskToVerify())) throw new Exception("你已经申请过了");
