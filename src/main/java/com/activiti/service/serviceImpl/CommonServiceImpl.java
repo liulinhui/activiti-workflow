@@ -14,6 +14,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -74,14 +75,17 @@ public class CommonServiceImpl implements CommonService {
         JSONObject list = new JSONObject();
         JSONArray dateArray = new JSONArray();
         JSONArray dataArray = new JSONArray();
-        selectAllStudentWorkInfo(courseCode).forEach(analysis -> {
+        List<Analysis> analysisList=selectAllStudentWorkInfo(courseCode);
+        List<String>list1=new LinkedList<>();
+        analysisList.forEach(analysis -> {
             String date = new DateTime(analysis.getLastCommitTime()).toString("yyyy/MM/dd");
+            list1.add(date);
             if (list.containsKey(date))
                 list.put(date, (int) list.get(date) + 1);
             else
                 list.put(date, 1);
         });
-        list.keySet().forEach(key -> {
+        list1.forEach(key -> {
             dateArray.add(key);
             dataArray.add(list.get(key));
         });

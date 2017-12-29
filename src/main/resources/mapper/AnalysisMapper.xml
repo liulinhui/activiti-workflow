@@ -3,7 +3,7 @@
 <mapper namespace="com.activiti.mapper.AnalysisMapper">
 
     <select id="selectAllStudentWorkInfo" parameterType="string" resultType="com.activiti.pojo.tools.Analysis">
-        SELECT LAST_COMMIT_TIME,GRADE FROM judge_stu_work_info WHERE COURSE_CODE=#{courseCode}
+        SELECT LAST_COMMIT_TIME,GRADE FROM judge_stu_work_info WHERE COURSE_CODE=#{courseCode} order by LAST_COMMIT_TIME asc
     </select>
 
 </mapper>

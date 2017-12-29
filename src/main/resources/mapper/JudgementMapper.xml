@@ -8,6 +8,13 @@
         )
     </insert>
 
+    <insert id="test" parameterType="com.activiti.pojo.user.StudentWorkInfo">
+        INSERT INTO judge_stu_work_info (COURSE_CODE, EMAIL_ADDRESS, WORK_DETAIL, LAST_COMMIT_TIME,GRADE)
+        VALUES (
+        #{courseCode}, #{emailAddress}, #{workDetail}, #{lastCommitTime},#{grade}
+        )
+    </insert>
+
     <update id="updateStuGrade" parameterType="com.activiti.pojo.user.StudentWorkInfo">
         UPDATE judge_stu_work_info
         SET GRADE = #{grade}, JUDGE_TYPE = #{judgeType}

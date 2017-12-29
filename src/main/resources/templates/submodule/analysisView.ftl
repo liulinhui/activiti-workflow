@@ -95,17 +95,17 @@
                         sampling: 'average',
                         itemStyle: {
                             normal: {
-                                color: 'rgb(255, 70, 131)'
+                                color: '#1E9FFF'
                             }
                         },
                         areaStyle: {
                             normal: {
                                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                                     offset: 0,
-                                    color: 'rgb(255, 158, 68)'
+                                    color: '#1E9FFF'
                                 }, {
                                     offset: 1,
-                                    color: 'rgb(255, 70, 131)'
+                                    color: '#1E9FFF'
                                 }])
                             }
                         },
@@ -127,14 +127,14 @@
                 finalData.push({value: param[t], name: t+'分'})
             }
             option = {
-                backgroundColor: '#2c343c',
+                backgroundColor: '#fff',
 
                 title: {
                     text: '学生成绩分布饼图('+courseCode+')',
                     left: 'center',
                     top: 20,
                     textStyle: {
-                        color: '#ccc'
+                        color: '#131313'
                     }
                 },
 
@@ -162,14 +162,14 @@
                         label: {
                             normal: {
                                 textStyle: {
-                                    color: 'rgba(255, 255, 255, 0.3)'
+                                    color: '#131313'
                                 }
                             }
                         },
                         labelLine: {
                             normal: {
                                 lineStyle: {
-                                    color: 'rgba(255, 255, 255, 0.3)'
+                                    color: '#131313'
                                 },
                                 smooth: 0.2,
                                 length: 10,
@@ -178,9 +178,9 @@
                         },
                         itemStyle: {
                             normal: {
-                                color: '#c23531',
+                                color: '#1E9FFF',
                                 shadowBlur: 200,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                shadowColor: '#fff'
                             }
                         },
 

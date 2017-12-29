@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface JudgementMapper {
 
+    int test(StudentWorkInfo studentWorkInfo);
+
     /**
      * 提交作业
      *
