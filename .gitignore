@@ -19,6 +19,7 @@ target/
 nbproject/private/
 build/
 nbbuild/
-dist/
 nbdist/
 .nb-gradle/
+node_modules/
+src/test/pressTest/commitTest/package-lock.json
