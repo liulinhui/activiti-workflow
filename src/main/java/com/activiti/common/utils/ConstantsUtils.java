@@ -31,7 +31,8 @@ public class ConstantsUtils {
             "/login",
             "/error",
             "/loginAbutment",
-            "/api/common/loginAbutment"
+            "/api/common/loginAbutment",
+            "/api/user/commitWork"
     };
 
     public static final String loginAbutmentRedisStore = "loginAbutmentRedisStore__";

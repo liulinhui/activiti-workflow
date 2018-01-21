@@ -79,21 +79,23 @@ public class UserController {
      *
      * @param courseCode
      * @param workDetail
-     * @param request
      * @return
      */
     @RequestMapping("/commitWork")
     @ResponseBody
     @ApiAnnotation
     public Object commitWork(@RequestParam(name = "courseCode") String courseCode,
-                             @RequestParam(name = "workDetail") String workDetail, HttpServletRequest request) throws Exception {
-        String email = CommonUtil.getEmailFromSession(request);
+                             @RequestParam(name = "workDetail") String workDetail,
+                             @RequestParam(name = "email") String email,
+                             @RequestParam(name = "userName") String userName,
+                             @RequestParam(name = "userType") String userType
+    ) throws Exception {
         if (userService.selectAllUserRole().stream().anyMatch(userRole -> {
             return email.equals(userRole.getEmail());
         })) throw new Exception("身为管理员的你不能提交作业！！！");
         StudentWorkInfo studentWorkInfo = new StudentWorkInfo(courseCode, email, workDetail, new Date());
-        studentWorkInfo.setUserName((String) request.getSession().getAttribute("userName"));
-        studentWorkInfo.setUserType((String) request.getSession().getAttribute("userType"));
+        studentWorkInfo.setUserName(userName);
+        studentWorkInfo.setUserType(userType);
 //        User user = new User(commonUtil.getRandomUserName(), email, courseCode);
         try {
             userService.insertUserWork(studentWorkInfo);
@@ -175,9 +177,9 @@ public class UserController {
         JSONArray jsonArray = activitiHelper.selectWorkListToJudge(email, courseCode, "new");
         //到数据库表中查詢需要评论的作業信息
         jsonArray.forEach(index -> {
-            StudentWorkInfo info=userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, index.toString()));
+            StudentWorkInfo info = userService.selectStudentWorkInfo(new StudentWorkInfo(courseCode, index.toString()));
             JSONObject jsonObject = (JSONObject) JSONObject.toJSON(info);
-            jsonObject.put("emailAddress_fake","*****"+info.getEmailAddress().substring(4,info.getEmailAddress().length()-1));
+            jsonObject.put("emailAddress_fake", "*****" + info.getEmailAddress().substring(4, info.getEmailAddress().length() - 1));
             workInfoList.add(jsonObject);
         });
         if ("true".equals(studentWorkInfo.getDistributeStatus()) && null == studentWorkInfo.getJoinJudgeTime() && workInfoList.size() == 0)
