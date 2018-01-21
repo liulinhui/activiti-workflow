@@ -11,8 +11,8 @@ let readAccount = function () {
 
 let httpRequest = function (params, cb) {
     superagent
-        .post('http://192.168.1.134:8080/api/user/commitWork')
-        .send(params)
+        .get('http://192.168.1.134:8080/api/user/commitWork')
+        .query(params)
         .end(function (err, res) {
             if (err) {
                 console.error(err)
@@ -51,4 +51,4 @@ let pressTest = function (courseCode, benchmark) {
     )
 };
 
-pressTest('1572', 50);
+pressTest('1572', 10);
