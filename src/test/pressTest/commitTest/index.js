@@ -11,7 +11,7 @@ let readAccount = function () {
 
 let httpRequest = function (params, cb) {
     superagent
-        .post('http://127.0.0.1:8080/api/user/commitWork')
+        .post('http://192.168.1.134:8080/api/user/commitWork')
         .send(params)
         .end(function (err, res) {
             if (err) {
