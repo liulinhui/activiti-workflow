@@ -2,8 +2,9 @@ const fs = require('fs');
 const async = require('async');
 const superagent = require('superagent');
 let arguments = process.argv.splice(2);
-let count = parseInt(arguments[0]);
+let count = parseInt(arguments[1]);
 let random = require('randomstring');
+let courseCode = arguments[0];
 
 const workDetail = '张震，1976年10月14日出生于台湾省台北市，祖籍浙江余姚，中国台湾影视男演员、歌手';
 
@@ -54,4 +55,4 @@ let pressTest = function (courseCode, benchmark) {
     )
 };
 
-pressTest('1572', 100);
+pressTest(courseCode, 100);
