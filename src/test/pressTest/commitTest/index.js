@@ -5,6 +5,7 @@ let arguments = process.argv.splice(2);
 let count = parseInt(arguments[1]);
 let random = require('randomstring');
 let courseCode = arguments[0];
+let log = [];
 
 const workDetail = '张震，1976年10月14日出生于台湾省台北市，祖籍浙江余姚，中国台湾影视男演员、歌手';
 
@@ -19,23 +20,22 @@ let httpRequest = function (params, cb) {
         .query(params)
         .end(function (err, res) {
             if (err) {
-                console.error(err)
+                log.push(JSON.stringify(err))
             } else {
-                console.log(JSON.stringify(res.body));
+                log.push(JSON.stringify(res.body));
                 cb(null)
             }
         })
 };
 
 let pressTest = function (courseCode, benchmark) {
-    let beginTime = new Date().getMilliseconds();
-    // let account = readAccount();
+    let beginTime = new Date().getTime();
     let params = [];
     for (let i = 0; i < count; i++) {
         let param = {
             'courseCode': courseCode,
             'workDetail': workDetail,
-            'email': random.generate({length: 20}) + 'qq.com',
+            'email': random.generate({length: 20}) + '@qq.com',
             'userName': random.generate({length: 10}),
             'userType': 'student'
         };
@@ -47,12 +47,15 @@ let pressTest = function (courseCode, benchmark) {
         }, function (err) {
             if (err) {
                 console.log('*********************request error');
+                log.push('*********************request error');
             } else {
                 console.log('=====================request success');
-                console.log('=====================request consume time=' + ((new Date().getMilliseconds()) - beginTime));
+                console.log(count + '并发=====================request consume time=' + ((new Date().getTime()) - beginTime)+'ms');
+                log.push(count + '并发=====================request consume time=' + ((new Date().getTime()) - beginTime)+'ms');
             }
+            fs.writeFileSync('./result/' + courseCode + '_' + count + '.json', JSON.stringify(log))
         }
     )
 };
 
-pressTest(courseCode, 100);
+pressTest(courseCode, 300);

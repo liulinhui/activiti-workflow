@@ -6,5 +6,6 @@ let obj = {};
 for (let i = 0; i < count; i++) {
     obj[random.generate({length: 10})] = random.generate({length: 20}) + 'qq.com';
 }
-fs.writeFileSync('./account.json',JSON.stringify(obj));
-
+// fs.writeFileSync('./account.json',JSON.stringify(obj));
+let begin = parseInt(new Date().getTime());
+console.log((parseInt(new Date().getTime()) - begin) + 'ms')
