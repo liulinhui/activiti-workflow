@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "superagent": "^3.8.2",
-    "async": "^2.6.0"
+    "async": "^2.6.0",
+    "randomstring": "^1.1.5"
   }
 }
