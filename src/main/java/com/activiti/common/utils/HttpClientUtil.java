@@ -53,7 +53,7 @@ public class HttpClientUtil {
         String courseCode = studentWorkInfo.getCourseCode();
         String email = studentWorkInfo.getEmailAddress();
         String md5 = getMD5(email).toLowerCase();
-        String file_path = md5.substring(md5.length() - 2, md5.length()) + "/" + userName + "/" + courseCode + "/" + courseCode + ".json";
+        String file_path = "commitTest/"+md5.substring(md5.length() - 2, md5.length()) + "/" + userName + "/" + courseCode + "/" + courseCode + ".json";
         JSONObject jsonObject = new JSONObject();
         JSONObject content = new JSONObject();
         JSONObject student = new JSONObject();

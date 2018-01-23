@@ -2,10 +2,13 @@ package com.activiti.common.kafka;
 
 import com.activiti.common.utils.CommonUtil;
 import com.activiti.common.utils.ConstantsUtils;
+import com.activiti.common.utils.HttpClientUtil;
 import com.activiti.mapper.ToolsMapper;
 import com.activiti.pojo.email.EmailDto;
 import com.activiti.pojo.tools.EmailLog;
+import com.activiti.pojo.user.StudentWorkInfo;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +34,8 @@ public class Listener {
     private CommonUtil commonUtil;
     @Autowired
     private ToolsMapper toolsMapper;
+    @Autowired
+    private HttpClientUtil httpClientUtil;
 
 
     /**
@@ -49,6 +54,21 @@ public class Listener {
                 toolsMapper.insertEmailLog(new EmailLog(emailDto, "success", sendEmail));
             } catch (Exception e) {
                 toolsMapper.insertEmailLog(new EmailLog(emailDto, "fail", sendEmail));
+            }
+        }
+    }
+
+    @KafkaListener(topics = {ConstantsUtils.commitWorkTopic})
+    public void listenCommitWorkTopic(ConsumerRecord<?, ?> record) {
+        Optional<?> kafkaMessage = Optional.ofNullable(record.value());
+        if (kafkaMessage.isPresent()) {
+            Object message = kafkaMessage.get();
+            StudentWorkInfo studentWorkInfo = JSON.parseObject((String) message, StudentWorkInfo.class);
+            try {
+                httpClientUtil.commitWorkToGitlab(studentWorkInfo);
+                Thread.sleep(2000);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

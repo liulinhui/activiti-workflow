@@ -2,6 +2,7 @@ package com.activiti.common.kafka;
 
 import com.activiti.common.utils.ConstantsUtils;
 import com.activiti.pojo.email.EmailDto;
+import com.activiti.pojo.user.StudentWorkInfo;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -25,6 +26,10 @@ public class MailProducer {
     public void send(EmailDto emailDto) {
         String content = JSONObject.toJSONString(emailDto);
         kafkaTemplate.send(ConstantsUtils.emailTopic, content);
+    }
+
+    public void sendCommitWork(StudentWorkInfo studentWorkInfo) {
+        kafkaTemplate.send(ConstantsUtils.commitWorkTopic,JSONObject.toJSONString(studentWorkInfo));
     }
 
 }

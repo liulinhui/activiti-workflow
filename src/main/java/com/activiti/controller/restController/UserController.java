@@ -119,9 +119,7 @@ public class UserController {
         modelMap.put("email", email);
        // mailProducer.send(new EmailDto(email, EmailType.html, "答题成功", commonUtil.applyDataToView(modelMap, ConstantsUtils.successAnswerFtl)));
         activitiHelper.startAnswerToAssessment(courseCode, scheduleDto);
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("studentWorkInfo", studentWorkInfo);
-        asyncTasks.asyncTask(jsonObject, "commitWorkToGitlab");
+        mailProducer.sendCommitWork(studentWorkInfo);
         return studentWorkInfo;
     }
 

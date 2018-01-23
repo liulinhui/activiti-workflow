@@ -9,6 +9,7 @@ public class ConstantsUtils {
     //GitLab题目答案地址
     //https://api.github.com/repos/chyyuu/os_course_exercise_library/contents/data/json/16/1502.json
     public static final String emailTopic = "EMAIL";
+    public static final String commitWorkTopic = "COMMIT_WORK_TOPIC";
 
     public static final String sessionEmail = "userEmail";
 
