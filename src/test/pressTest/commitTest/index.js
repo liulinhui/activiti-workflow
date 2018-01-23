@@ -3,6 +3,7 @@ const async = require('async');
 const superagent = require('superagent');
 let arguments = process.argv.splice(2);
 let count = parseInt(arguments[0]);
+let random = require('randomstring');
 
 const workDetail = '张震，1976年10月14日出生于台湾省台北市，祖籍浙江余姚，中国台湾影视男演员、歌手';
 
@@ -27,21 +28,17 @@ let httpRequest = function (params, cb) {
 
 let pressTest = function (courseCode, benchmark) {
     let beginTime = new Date().getMilliseconds();
-    let account = readAccount();
+    // let account = readAccount();
     let params = [];
-    let a = 0;
-    for (let i in account) {
-        if (a < count) {
-            let param = {
-                'courseCode': courseCode,
-                'workDetail': workDetail,
-                'email': account[i],
-                'userName': i,
-                'userType': 'student'
-            };
-            params.push(param);
-        }
-        a++;
+    for (let i = 0; i < count; i++) {
+        let param = {
+            'courseCode': courseCode,
+            'workDetail': workDetail,
+            'email': random.generate({length: 20}) + 'qq.com',
+            'userName': random.generate({length: 10}),
+            'userType': 'student'
+        };
+        params.push(param);
     }
     async.eachLimit(
         params, benchmark, function (param, callback) {
